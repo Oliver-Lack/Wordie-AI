@@ -1,10 +1,12 @@
 body {
-  font-family: 'Helvetica Neue', sans-serif;
+  font-family: 'Tahoma', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #ffffff; 
-  color: #2c3e50; 
+  background-color: #222; 
+  color: #ffffff; 
   transition: background-color 0.3s ease;
+  scroll-behavior: smooth; /* Smooth scrolling */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 .container {
@@ -12,14 +14,14 @@ body {
   justify-content: center;
   align-items: center;
   height: 90vh;
-  background-color: #ffffff; 
+  background-color: #222; 
   transition: background-color 0.3s ease;
 }
 
 h1 {
-  font-size: 36px;
-  font-weight: bold;
-  color: #222; 
+  font-size: 24px;
+  font-weight: normal;
+  color: #ffffff; 
   margin-bottom: 20px;
   text-align: center;
   text-transform: none;
@@ -29,46 +31,157 @@ h1 {
 .logo {
   width: 200px;
   height: 200px;
-  font-size: 24px;
+  font-size: 18px;
   border-radius: 70px;
-  font-weight: bold;
+  font-weight: normal;
   transition: transform 0.3s ease;
   background-color: #ecf0f1; 
-  color: #2c3e50; 
 }
 
 .logo:hover {
   transform: scale(1.1);
 }
 
+.main-container {
+  display: flex;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 250px;
+  background-color: #212020;
+  color: #fff;
+  padding: 10px;
+}
+
+.sidebar h2 {
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 20px;
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline;
+}
+
+.quit-button {
+  background-color: transparent; /* Transparent background */
+  color: #555; /* Darker grey text */
+  border: 1px solid #555; /* Darker grey border */
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 5px;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 20px;
+  box-shadow: none; /* Remove box shadow */
+  transition: all 0.3s ease-in-out;
+}
+
+.quit-button:hover {
+  background-color: rgba(119, 119, 119, 0.1); /* Slightly visible on hover */
+  transform: scale(1.05);
+}
+
+.quit-button:active {
+  transform: scale(0.95);
+}
+
+#quit-prompt {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid black;
+  z-index: 1000;
+}
+
+#quit-prompt p {
+  margin: 0 0 10px;
+  color: #222;
+}
+
+#quit-prompt button {
+  margin-right: 10px;
+}
+
+.redirection-button {
+  background-color: transparent; /* Transparent background */
+  color: #de222c;
+  border: 2px solid #de222c;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-top: auto; /* Pushes the button to the bottom */
+  margin-left: 20px;
+  font-size: larger;
+  box-shadow: none; /* Remove box shadow */
+  transition: all 0.3s ease-in-out;
+}
+
+.redirection-button:hover {
+  background-color: rgba(255, 130, 102, 0.1); /* Slightly visible on hover */
+  transform: scale(1.05);
+}
+
+.redirection-button:active {
+  transform: scale(0.95);
+}
+
+.right-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height:90vh;
+}
+
 .header {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  background-color: #dddddd;
+  justify-content: left;
+  justify-items: left;
+  align-items: left;
+  padding: 10px;
+  background-color: #222;
   color: #FFFFFF;
-  transition: background-color 0.3s ease;
+  transition: background-color 3s ease;
 }
 
-.Website-name {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.smalllogo {
-  width: 70px;
-  height: 70px;
-  font-size: 24px;
-  font-weight: bold;
+.website-name h1 {
+  font-size: 10px;
+  font-weight: normal;
+  margin-left: 20px;
+  margin-top: 20px;
+  text-align: left; /* Ensure text is justified to the left */
 }
 
 button {
   background-color: #de222c;
   color: #FFFFFF;
   border: none;
-  padding: 10px 20px;
+  padding: 15px 25px;
   cursor: pointer;
   text-transform: uppercase;
   border-radius: 5px;
@@ -90,8 +203,8 @@ button:active {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  background-color: #ffffff;
+  padding: 30px;
+  background-color: #313131;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
@@ -101,9 +214,9 @@ button:active {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.login-form h2, .register-form h2 {
-  font-size: 24px;
-  font-weight: bold;
+.login-form h2 {
+  font-size: 18px;
+  font-weight: normal;
   color: #de222c;
   margin-bottom: 20px;
 }
@@ -115,10 +228,9 @@ button:active {
   margin-bottom: 10px;
 }
 
-.login-form input[type="text"], .login-form input[type="password"],
-.register-form input[type="text"], .register-form input[type="email"], .register-form input[type="password"] {
+.login-form input[type="text"] {
   display: block;
-  width: 100%;
+  width: 80%;
   padding: 10px;
   border: 1px solid #cccccc;
   border-radius: 3px;
@@ -128,12 +240,11 @@ button:active {
   transition: border-color 0.3s ease;
 }
 
-.login-form input[type="text"]:focus, .login-form input[type="password"]:focus,
-.register-form input[type="text"]:focus, .register-form input[type="email"]:focus, .register-form input[type="password"]:focus {
+.login-form input[type="text"]:focus {
   border-color: #de222c;
 }
 
-.login-form button[type="submit"], .register-form button[type="submit"] {
+.login-form button[type="submit"] {
   background-color: #de222c;
   color: #ffffff;
   border: none;
@@ -149,42 +260,90 @@ button:active {
   background-color: #b21724;
 }
 
-.register-entryzone {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .input-field {
-  border: 1px solid #F0F0F0;
+  width: 100%;
   padding: 10px;
-  margin-bottom: 20px;
-}
-
-.chat-area {
-  background-color: #F0F0F0;
-  padding: 20px;
-  overflow-y: auto;
-  height: 65vh;
-  scroll-behavior: smooth;
-}
-
-.chat-bubble {
-  max-width: 60%;
-  padding: 10px;
+  margin: 0;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 10px;
+  background-color: rgba(255, 255, 255, 0.8); /* Add transparency */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
 }
 
+.input-field:focus {
+  background-color: rgba(255, 255, 255, 1); /* Remove transparency on focus */
+}
+
+.chat-area {
+  background-color: #393939;
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal overflow */
+  height: 65vh;
+  scroll-behavior: smooth; /* Smooth scrolling */
+  flex-grow: 1;
+}
+
+.chat-messages-container {
+  overflow: hidden; /* Prevent content overflow */
+}
+
+.chat-bubble {
+  width: 60%;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: transparent; /* Completely transparent */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.chat-bubble:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Slightly visible on hover */
+}
+
+.chat-bubble.user-message {
+  margin-left: 10%; /* Slightly left of center */
+  margin-right: auto; /* Ensure it doesn't go within 30% of the right side */
+  border: 1px solid #444; /* Slightly darker border */
+}
+
+.chat-bubble.user-message:hover {
+  border-color: #ffffff; /* Lighter border on hover */
+}
+
+.user-label {
+  font-weight: bold;
+  color: #888; /* Slightly darker than the user message font */
+  margin-right: 10px; /* Space between label and message */
+}
+
+.chat-bubble.llm-message {
+  margin-left: auto; /* Ensure it doesn't go within 30% of the left side */
+  margin-right: 10%; /* Slightly right of center */
+  border: 1px solid transparent; /* No border by default */
+}
+
+.chat-bubble.llm-message:hover {
+  border-color: #ffffff; /* White border on hover */
+}
+
+.assistant-label {
+  font-weight: bold;
+  color: #555; /* Slightly darker than the assistant message font */
+  margin-right: 10px; /* Space between label and message */
+}
+
+.chat-bubble p {
+  margin: 0;
+  line-height: 1.5; /* Space out text better */
+}
+
 .user-message {
-  background-color: #FFFFFF;
   align-self: flex-end;
 }
 
-.chatgpt-message {
-  background-color: #de222c;
-  color: #FFFFFF;
+.llm-message {
+  color: #ffffff;
   margin-left: auto;
   align-self: flex-start;
 }
@@ -194,21 +353,28 @@ button:active {
   justify-content: space-evenly;
   align-items: center;
   padding: 20px;
-  border-top: 1px solid #F0F0F0;
-  background-color: #FFFFFF;
+  background-color: #393939; /* Darker background for input area */
+  margin-top: auto;
+  transition: box-shadow 0.3s ease 0.1s; /* Add transition for box-shadow with delay */
 }
 
 .text-input {
   flex-grow: 1;
-  border: 1px solid #F0F0F0;
-  padding: 10px;
-  width: 60vw;
-  margin-right: 10px;
-  transition: border-color 0.3s ease;
+  padding: 20px;
+  width: 30vw;
+  background-color: #5c5a5a; /* Darker background for text input */
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  margin-bottom: 40px;
+  transition: box-shadow 0.3s ease 0.1s; /* Add transition for box-shadow with delay */
 }
 
 .text-input:focus {
-  border-color: #de222c;
+  outline: none; /* Remove the default blue outline */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), /* Smaller shadow around other edges */
+              0 12px 24px rgba(0, 0, 0, 0.5); /* Larger shadow on the bottom edge */
+  border-radius: 15px;
 }
 
 select {
@@ -279,4 +445,23 @@ select option:checked {
 @keyframes loading {
   0%, 80%, 100% { transform: scale(0); }
   40% { transform: scale(1.0); }
+}
+
+/* Customize scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #333; /* Darker background for scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #555; /* Darker thumb color */
+  border-radius: 10px;
+  border: 3px solid #333; /* Match track color */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #777; /* Lighter thumb color on hover */
 }

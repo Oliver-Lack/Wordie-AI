@@ -190,5 +190,5 @@ if __name__ == '__main__':
     t.daemon = True
     t.start()
 
-    webview.create_window('Wordie', 'http://127.0.0.1:5000', width=960, height=800)
+    webview.create_window('wordie.ai', 'http://127.0.0.1:5000', width=1366, height=768)
     webview.start()

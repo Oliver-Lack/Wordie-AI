@@ -1,14 +1,124 @@
 {
     "users": {
-        "4": {
+        "1": {
             "username": "ollie",
             "interactions": [
                 {
                     "type": "message",
                     "content": {
-                        "message": "well well well",
-                        "response": "Hello! Is there anything else you would like to know or discuss?",
-                        "timestamp": "2025-01-06 15:39:59.384125"
+                        "message": "hi",
+                        "response": "Hello! How can I assist you today?",
+                        "timestamp": "2025-01-06 18:07:02.848019"
+                    }
+                }
+            ]
+        },
+        "7": {
+            "username": "f",
+            "interactions": [
+                {
+                    "type": "message",
+                    "content": {
+                        "message": "ergnjwr",
+                        "response": "It looks like you may have typed a random string of letters. Is there something specific you would like to discuss or ask about?",
+                        "timestamp": "2025-01-06 18:16:28.072621"
+                    }
+                }
+            ]
+        },
+        "10": {
+            "username": "c",
+            "interactions": [
+                {
+                    "type": "message",
+                    "content": {
+                        "message": "",
+                        "response": "Hello! How can I assist you today?",
+                        "timestamp": "2025-01-06 18:25:17.016662"
+                    }
+                },
+                {
+                    "type": "message",
+                    "content": {
+                        "message": "",
+                        "response": "Feel free to ask me anything or let me know if you need help with a specific topic.",
+                        "timestamp": "2025-01-06 18:25:36.363696"
+                    }
+                }
+            ]
+        },
+        "24": {
+            "username": "d",
+            "interactions": [
+                {
+                    "type": "message",
+                    "content": {
+                        "message": "",
+                        "response": "Hello! How can I assist you today?",
+                        "timestamp": "2025-01-06 19:30:36.051854"
+                    }
+                },
+                {
+                    "type": "message",
+                    "content": {
+                        "message": "",
+                        "response": "Feel free to ask me anything or let me know how I can help you!",
+                        "timestamp": "2025-01-06 19:51:38.516776"
+                    }
+                }
+            ]
+        },
+        "34": {
+            "username": "hello",
+            "interactions": [
+                {
+                    "type": "message",
+                    "content": {
+                        "message": "Hi",
+                        "response": "Hello! How can I assist you today?",
+                        "timestamp": "2025-01-06 19:44:17.460688"
+                    }
+                },
+                {
+                    "type": "message",
+                    "content": {
+                        "message": "this is a test",
+                        "response": "Got it! Feel free to ask me anything or tell me how I can help you further.",
+                        "timestamp": "2025-01-06 19:44:25.149423"
+                    }
+                },
+                {
+                    "type": "message",
+                    "content": {
+                        "message": "are you ai",
+                        "response": "Yes, I am an AI digital assistant designed to provide information and assistance to users. How can I help you today?",
+                        "timestamp": "2025-01-06 19:44:33.220126"
+                    }
+                }
+            ]
+        },
+        "36": {
+            "username": "k",
+            "interactions": [
+                {
+                    "type": "message",
+                    "content": {
+                        "message": "wdfer",
+                        "response": "It seems like you may have entered a random combination of letters. Can I assist you with anything specific today?",
+                        "timestamp": "2025-01-06 19:47:55.394387"
+                    }
+                }
+            ]
+        },
+        "42": {
+            "username": "Kkkkk",
+            "interactions": [
+                {
+                    "type": "message",
+                    "content": {
+                        "message": "Hi",
+                        "response": "Hello! How can I assist you today?",
+                        "timestamp": "2025-01-06 20:48:52.735867"
                     }
                 }
             ]
