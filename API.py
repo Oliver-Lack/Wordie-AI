@@ -44,7 +44,7 @@ class API_Call():
         openai.api_key = os.getenv("OPENAI_API_KEY")
         # Load the system prompt from a file
         if agent is None:
-            self.agent_data = load_agent("agents/Generic.json")
+            self.agent_data = load_agent("agents/default.json")
         else:
             self.agent_data = load_agent(f"agents/{agent}.json")
         

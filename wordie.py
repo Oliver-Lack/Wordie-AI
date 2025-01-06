@@ -6,6 +6,12 @@ import sys
 import webview
 import os
 import threading
+import json
+from datetime import datetime
+
+# Create a Flask app instance and set a secret key for session management
+app = Flask(__name__)
+app.secret_key = 'your_secret_key_here'
 
 # Initialize the SQLite database
 def init_db():
@@ -15,8 +21,7 @@ def init_db():
     # Create users table if it doesn't exist
     c.execute('''CREATE TABLE IF NOT EXISTS users 
                  (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                 username TEXT NOT NULL UNIQUE, 
-                 password TEXT NOT NULL)''')
+                 username TEXT NOT NULL UNIQUE)''')
     # Create messages table if it doesn't exist
     c.execute('''CREATE TABLE IF NOT EXISTS messages 
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,48 +33,40 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Delete message history for a user
-def delete_user_message_history(username):
-    conn = sqlite3.connect('users.db')
-    conn.text_factory = str
-    c = conn.cursor()
+# Function to Log user data to JSON file
+def log_user_data(data):
+    try:
+        with open('interactions.JSON', 'r') as f:
+            interactions = json.load(f)
+    except FileNotFoundError:
+        interactions = {"users": {}}
 
-    # Get the user_id for the provided username
-    c.execute("SELECT id FROM users WHERE username = ?", (username,))
-    user_id = c.fetchone()
+    user_id = str(data['user_id'])
+    if user_id not in interactions["users"]:
+        interactions["users"][user_id] = {
+            "username": data.get('username', ''),
+            "interactions": []
+        }
 
-    if user_id is not None:
-        # Delete messages with the corresponding user_id
-        c.execute("DELETE FROM messages WHERE user_id = ?", (user_id[0],))
-        conn.commit()
-        print(f"Message history for user {username} has been deleted.")
-    else:
-        print(f"No user found with username {username}.")
+    interaction_type = 'message' if 'message' in data else 'action'
+    interaction_content = {k: v for k, v in data.items() if k not in ['user_id', 'username']}
+    interactions["users"][user_id]["interactions"].append({
+        "type": interaction_type,
+        "content": interaction_content
+    })
 
-    conn.close()
+    with open('interactions.JSON', 'w') as f:
+        json.dump(interactions, f, indent=4)
 
 # Add a new user to the users table
-def add_user(username, password):
+def add_user(username):
     conn = sqlite3.connect('users.db')
     conn.text_factory = str
     c = conn.cursor()
-    c.execute('INSERT INTO users (username, password) VALUES (?, ?)', 
-              (username, generate_password_hash(password)))
+    c.execute('INSERT INTO users (username) VALUES (?, ?)', 
+              (username))
     conn.commit()
     conn.close()
-
-# Verify a user's credentials
-def verify_user(username, password):
-    conn = sqlite3.connect('users.db')
-    conn.text_factory = str
-    c = conn.cursor()
-    c.execute('SELECT * FROM users WHERE username = ?', (username,))
-    user = c.fetchone()
-    conn.close()
-    if user and check_password_hash(user[2], password):
-        return user
-    else:
-        return None
 
 # Add a message and its response to the messages table
 def add_message(user_id, message, response):
@@ -80,6 +77,14 @@ def add_message(user_id, message, response):
               (user_id, message, response))
     conn.commit()
     conn.close()
+    # Log the message and response
+    log_user_data({
+        'user_id': user_id,
+        'username': session.get('username'),
+        'message': message,
+        'response': response,
+        'timestamp': str(datetime.now())
+    })
 
 # Get the conversation history for a user
 def get_messages(user_id, systemprompt):
@@ -96,32 +101,33 @@ def get_messages(user_id, systemprompt):
     conn.close()
     return conversation
 
-
-# Create a Flask app instance and set a secret key for session management
-app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'
-
 # Define a route for the login page
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    # Handle POST request for login or signup
     if request.method == 'POST':
-        # Handle login request
-        if 'login' in request.form:
-            username = request.form['username']
-            password = request.form['password']
-            user = verify_user(username, password)
-            if user:
-                # Set session variables and show success message
-                session['user_id'] = user[0]
-                session['username'] = user[1]
-                flash('You have successfully logged in.', 'success')
-                return redirect(url_for('chat'))
-            else:
-                flash('Invalid username or password.', 'error')
-        # Handle signup request
-        elif 'signup' in request.form:
-            return redirect(url_for('register'))
+        username = request.form['username']
+        conn = sqlite3.connect('users.db')
+        c = conn.cursor()
+        
+        # Check if the user already exists
+        c.execute('SELECT id FROM users WHERE username = ?', (username,))
+        user = c.fetchone()
+        
+        if user:
+            user_id = user[0]
+        else:
+            # Insert new user and get the user_id
+            c.execute('INSERT INTO users (username) VALUES (?)', (username,))
+            user_id = c.lastrowid
+            conn.commit()
+        
+        session['user_id'] = user_id
+        session['username'] = username
+        flash('Connection successful!', 'success')
+        
+        conn.close()
+        return redirect(url_for('chat'))
+    
     return render_template('login.html')
 
 # Define a route for the chat page
@@ -132,7 +138,7 @@ def chat():
     if env_var is None:
         show_popup = True
     else:
-        show_popup = True
+        show_popup = False
 
     # Get the conversation history
     conversation = get_messages(session['user_id'], chatBot.agent_data["PrePrompt"])
@@ -144,10 +150,7 @@ def chat():
     # Handle POST request for new message
     if request.method == 'POST':
         message = request.form['message']
-        if "model" in request.form:
-            model = request.form['model']
-        else:
-            model = "gpt-3.5-turbo"
+        model = "gpt-3.5-turbo"  # Always use the default model
         conversation = chatBot.thinkAbout(message, conversation, model=model)
         response = conversation[-1]["content"]
         user_id = session['user_id']
@@ -155,46 +158,21 @@ def chat():
 
     return render_template('chat.html', username=session['username'], messages=conversation)
 
-# Define a route for the register page
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    # Handle POST request for registration or login
-    if request.method == 'POST':
-        # Handle registration request
-        if 'register' in request.form:
-            username = request.form['username']
-            password = request.form['password']
-            confirm_password = request.form['confirm_password']
-            if password != confirm_password:
-                flash('Passwords do not match.', 'error')
-                return redirect(url_for('register'))
-            existing_user = verify_user(username, password)
-            if existing_user:
-                flash('Username already exists. Please choose a different one.', 'error')
-                return redirect(url_for('register'))
-            add_user(username, password)
-            flash('Registration successful. Please log in.', 'success')
-            return redirect(url_for('login'))
-        # Handle login request
-        elif 'login' in request.form:
-            return redirect(url_for('login'))
-
-    return render_template('register.html')
-
 # Define a route for the logout functionality
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
+    # Log the logout timestamp
+    log_user_data({
+        'user_id': session.get('user_id'),
+        'username': session.get('username'),
+        'action': 'logout',
+        'timestamp': str(datetime.now())
+    })
     # Remove user session variables and show success message
     session.pop('user_id', None)
     session.pop('username', None)
-    flash('You have been logged out.', 'success')
-    return redirect(url_for('login'))
-
-# Define a route to reset the database for the current user
-@app.route('/reset_database', methods=['GET', 'POST'])
-def reset_db():
-    delete_user_message_history(session['username'])
-    return redirect(url_for('chat'))
+    flash('You are being redirected', 'success')
+    return redirect(url_for('QUALTRICSredirection.com'))
 
 # Function to run the Flask app
 def run_flask():

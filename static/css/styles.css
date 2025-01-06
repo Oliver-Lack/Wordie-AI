@@ -1,231 +1,216 @@
-/* styles.css */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+  font-family: 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff; 
+  color: #2c3e50; 
+  transition: background-color 0.3s ease;
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 90vh;
-    background-color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  background-color: #ffffff; 
+  transition: background-color 0.3s ease;
 }
 
 h1 {
-    font-size: 36px;
-    font-weight: bold;
-    color: #333333;
-    margin-bottom: 20px;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
+  font-size: 36px;
+  font-weight: bold;
+  color: #222; 
+  margin-bottom: 20px;
+  text-align: center;
+  text-transform: none;
+  letter-spacing: 2px;
+}
 
 .logo {
-    width: 200px;
-    height: 200px;
-    font-size: 24px;
-    border-radius: 70px;
-    font-weight: bold;
+  width: 200px;
+  height: 200px;
+  font-size: 24px;
+  border-radius: 70px;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+  background-color: #ecf0f1; 
+  color: #2c3e50; 
+}
+
+.logo:hover {
+  transform: scale(1.1);
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    background-color: #de222c;
-    color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #dddddd;
+  color: #FFFFFF;
+  transition: background-color 0.3s ease;
 }
 
-.WebSite-name {
-    font-size: 24px;
-    font-weight: bold;
+.Website-name {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .smalllogo {
-    width: 70px;
-    height: 70px;
-    font-size: 24px;
-    font-weight: bold;
+  width: 70px;
+  height: 70px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 button {
-    background-color: #de222c;
-    color: #FFFFFF;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    text-transform: uppercase;
-    border-radius: 5px;
-    margin-top: 5px;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease-in-out;
-  }
-
-button:hover {
-    background-color: #FF8266;
+  background-color: #de222c;
+  color: #FFFFFF;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 5px;
+  margin-top: 5px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
 }
 
-.login-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #ffffff;
-  }
-  
-  .login-form h2 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #de222c;
-    margin-bottom: 20px;
-  }
-  
-  .login-form label {
-    font-size: 14px;
-    font-weight: bold;
-    color: #333333;
-    margin-bottom: 10px;
-  }
-  
-  .login-form input[type="text"],
-  .login-form input[type="password"] {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cccccc;
-    border-radius: 3px;
-    font-size: 14px;
-    color: #333333;
-    margin-bottom: 20px;
-  }
-  
-  .login-form button[type="submit"] {
-    background-color: #de222c;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-size: 14px;
-    border-radius: 3px;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .login-form button[type="submit"]:hover {
-    background-color: #b21724;
-  }
-  
+button:hover {
+  background-color: #FF8266;
+  transform: scale(1.05);
+}
 
-  .register-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #ffffff;
-    padding: 20px;
-  }
-  
-  .register-form h2 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #de222c;
-    margin-bottom: 20px;
-  }
-  
-  .register-form label {
-    font-size: 14px;
-    font-weight: bold;
-    color: #333333;
-    margin-bottom: 10px;
-  }
-  
-  .register-form input[type="text"],
-  .register-form input[type="email"],
-  .register-form input[type="password"] {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cccccc;
-    border-radius: 3px;
-    font-size: 14px;
-    color: #333333;
-    margin-bottom: 20px;
-  }
-  
-  .register-form button[type="submit"] {
-    background-color: #de222c;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-size: 14px;
-    border-radius: 3px;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .register-form button[type="submit"]:hover {
-    background-color: #b21724;
-  }
+button:active {
+  transform: scale(0.95);
+}
+
+.login-form, .register-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.login-form:hover, .register-form:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.login-form h2, .register-form h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #de222c;
+  margin-bottom: 20px;
+}
+
+.login-form label, .register-form label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 10px;
+}
+
+.login-form input[type="text"], .login-form input[type="password"],
+.register-form input[type="text"], .register-form input[type="email"], .register-form input[type="password"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  font-size: 14px;
+  color: #333333;
+  margin-bottom: 20px;
+  transition: border-color 0.3s ease;
+}
+
+.login-form input[type="text"]:focus, .login-form input[type="password"]:focus,
+.register-form input[type="text"]:focus, .register-form input[type="email"]:focus, .register-form input[type="password"]:focus {
+  border-color: #de222c;
+}
+
+.login-form button[type="submit"], .register-form button[type="submit"] {
+  background-color: #de222c;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 14px;
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
+}
+
+.login-form button[type="submit"]:hover, .register-form button[type="submit"]:hover {
+  background-color: #b21724;
+}
+
 .register-entryzone {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .input-field {
-    border: 1px solid #F0F0F0;
-    padding: 10px;
-    margin-bottom: 20px;
+  border: 1px solid #F0F0F0;
+  padding: 10px;
+  margin-bottom: 20px;
 }
 
 .chat-area {
-    background-color: #F0F0F0;
-    padding: 20px;
-    overflow-y: auto;
-    height: 65vh;
-    scroll-behavior: smooth;
+  background-color: #F0F0F0;
+  padding: 20px;
+  overflow-y: auto;
+  height: 65vh;
+  scroll-behavior: smooth;
 }
 
 .chat-bubble {
-    max-width: 60%;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
+  max-width: 60%;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
 }
 
 .user-message {
-    background-color: #FFFFFF;
-    align-self: flex-end;
+  background-color: #FFFFFF;
+  align-self: flex-end;
 }
 
 .chatgpt-message {
-    background-color: #de222c;
-    color: #FFFFFF;
-    margin-left: auto;
-    align-self: flex-start;
+  background-color: #de222c;
+  color: #FFFFFF;
+  margin-left: auto;
+  align-self: flex-start;
 }
 
 .chat-input {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: 20px;
-    border-top: 1px solid #F0F0F0;
-    background-color: #FFFFFF;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 20px;
+  border-top: 1px solid #F0F0F0;
+  background-color: #FFFFFF;
 }
 
 .text-input {
-    flex-grow: 1;
-    border: 1px solid #F0F0F0;
-    padding: 10px;
-    width: 60vw;
-    margin-right: 10px;
+  flex-grow: 1;
+  border: 1px solid #F0F0F0;
+  padding: 10px;
+  width: 60vw;
+  margin-right: 10px;
+  transition: border-color 0.3s ease;
 }
 
-/* Reset default styles for select */
+.text-input:focus {
+  border-color: #de222c;
+}
+
 select {
   appearance: none;
   border: none;
@@ -239,7 +224,6 @@ select {
   position: relative;
 }
 
-/* Add a custom arrow icon */
 select:after {
   content: '';
   display: block;
@@ -254,12 +238,10 @@ select:after {
   pointer-events: none;
 }
 
-/* Style the dropdown when it's open */
 select:focus {
   outline: none;
 }
 
-/* Style the option elements */
 select option {
   background-color: #ffffff;
   color: #333333;
@@ -269,8 +251,32 @@ select option {
   cursor: pointer;
 }
 
-/* Style the selected option */
 select option:checked {
   background-color: #333333;
   color: #ffffff;
+}
+
+.loading {
+  display: inline-block;
+  width: 80px;
+  height: 24px;
+  text-align: center;
+}
+
+.loading span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin: 0 2px;
+  background-color: #333;
+  border-radius: 100%;
+  animation: loading 1.4s infinite ease-in-out both;
+}
+
+.loading span:nth-child(1) { animation-delay: -0.32s; }
+.loading span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes loading {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
 }

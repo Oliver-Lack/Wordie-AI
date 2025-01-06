@@ -35,15 +35,12 @@
 </head>
 <body>
     <header class="header">
-        <div class="WebSite-name">
-            FlaskGPT
+        <div class="Website-name">
+            <h1>Wordie.AI</h1>
         </div>
-        <form method="POST" action="{{ url_for('logout') }}">
-            <button type="submit">Log Out</button>
-        </form>
     </header>
     <main class="chat-area">
-        <div class="chat-messages-container">
+        <div class="chat-messages-container" id="chat-messages-container">
             {% for message in messages %}
             {% if message['role'] == "user" %}
                 <div class="chat-bubble user-message">
@@ -86,19 +83,67 @@
         
                
     </main>
-    <div class = chat-input>
-    <form method="POST" action="{{ url_for('chat') }}">
-        <input type="text" class="text-input" name="message" placeholder="Type your message here...">
-        <select id="model" name="model">
-          <option value="" disabled selected>Select a model</option>
-          <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
-          <option value="gpt-4">GPT-4</option>
-        </select>
-        <button type="submit">Send</button>
-    </form>
-    <form method="POST" action="{{ url_for('reset_db') }}" class="reset-db-form">
-        <button type="submit">Reset Message Database</button>
-    </form>
+    <div class="chat-input">
+        <form id="chat-form" method="POST" action="{{ url_for('chat') }}">
+            <input type="text" id="chat-input" class="text-input" name="message" placeholder="Type your message here...">
+            <button type="submit">Submit</button>
+        </form>
     </div>
+    
+    <div id="chat-container">
+    </div>
+    <div id="loading-indicator" class="loading" style="display: none;">
+        <span></span><span></span><span></span>
+    </div>
+
+    <script>
+        document.getElementById('chat-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const inputField = document.getElementById('chat-input');
+            const form = event.target;
+            const chatMessagesContainer = document.getElementById('chat-messages-container');
+    
+            // Append the user message immediately
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-bubble user-message';
+            userMessage.innerText = inputField.value;
+            chatMessagesContainer.appendChild(userMessage);
+    
+            // Create a container for the assistant's response
+            const assistantResponseContainer = document.createElement('div');
+            assistantResponseContainer.className = 'chat-bubble chatgpt-message';
+            chatMessagesContainer.appendChild(assistantResponseContainer);
+    
+            // Create and append the loading indicator inside the assistant's response container
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.id = 'loading-indicator';
+            loadingIndicator.className = 'loading';
+            loadingIndicator.innerHTML = '<span></span><span></span><span></span>';
+            assistantResponseContainer.appendChild(loadingIndicator);
+    
+            // Generate a random wait time between 2 and 6 seconds
+            const waitTime = Math.floor(Math.random() * 2500) + 600;
+
+            setTimeout(() => {
+                fetch(form.action, {
+                    method: form.method,
+                    body: new FormData(form)
+                }).then(response => response.text())
+                  .then(html => {
+                      const parser = new DOMParser();
+                      const doc = parser.parseFromString(html, 'text/html');
+                      const newMessages = doc.getElementById('chat-messages-container').innerHTML;
+                      document.getElementById('chat-messages-container').innerHTML = newMessages;
+                      inputField.value = '';
+                      inputField.focus();
+    
+                      // Remove the loading indicator
+                      loadingIndicator.remove();
+                  });
+            }, waitTime);
+        });
+    
+        document.getElementById('chat-input').focus();
+    </script>
 </body>
 </html>

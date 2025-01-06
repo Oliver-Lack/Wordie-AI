@@ -1,0 +1,17 @@
+{
+    "users": {
+        "4": {
+            "username": "ollie",
+            "interactions": [
+                {
+                    "type": "message",
+                    "content": {
+                        "message": "well well well",
+                        "response": "Hello! Is there anything else you would like to know or discuss?",
+                        "timestamp": "2025-01-06 15:39:59.384125"
+                    }
+                }
+            ]
+        }
+    }
+}

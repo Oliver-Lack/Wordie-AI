@@ -8,7 +8,7 @@ To start Wordie, run the following command:
 ```
 python wordie.py [agent_name]
 ```
-Replace `[agent_name]` with the name of the condition you want the Wordie to use (HighTemp, LowTemp, StandardTemp). If no agent name is provided, the default agent will be used. The agent is defined by the details of the API call modified by the .json file in the `agents` folder.
+Replace `[agent_name]` with the name of the condition you want the Wordie to use (HighTemp, LowTemp, StandardTemp). An agent name is required. "default" can be used for each LLMs default call options. The agent is defined by the details of the API call modified by the .json file in the `agents` folder.
 ```
 Terminal command example: python wordie.py StandardTemp
 ```
