@@ -3,7 +3,7 @@ import openai
 import requests
 import json
 
-def opeanai_api_request(model="gpt-3.5-turbo",
+def openai_api_request(model="gpt-3.5-turbo",
                         messages=None,
                         temperature=1,
                         top_p=1,
@@ -72,7 +72,7 @@ class API_Call():
             
             # Generate a response using OpenAI's GPT-3 model
             try:
-                response = response = opeanai_api_request(model="gpt-3.5-turbo",
+                response = response = openai_api_request(model="gpt-3.5-turbo",
                                                             messages=conversation,
                                                             temperature=self.agent_data["temperature"], 
                                                             frequency_penalty=self.agent_data["frequency_penalty"],
@@ -80,7 +80,7 @@ class API_Call():
                                                             top_p=self.agent_data["top_p"])
             except:
                 try:
-                    response = opeanai_api_request(model="gpt-3.5-turbo",
+                    response = openai_api_request(model="gpt-3.5-turbo",
                                                             messages=conversation,
                                                             temperature=self.agent_data["temperature"], 
                                                             frequency_penalty=self.agent_data["frequency_penalty"],
