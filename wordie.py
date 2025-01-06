@@ -1,36 +1,11 @@
 import sqlite3
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
-from BrainModule import chatGPT
+from API import API_Call
 import sys
 import webview
 import os
 import threading
-
-"""
-Copyright (c) 2023 Boris Burgarella
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-"""
-
-
-
 
 # Initialize the SQLite database
 def init_db():
@@ -229,13 +204,13 @@ if __name__ == '__main__':
     args = sys.argv
     # Initialize chat bot instance
     if len(args) > 1:
-        chatBot = chatGPT(agent=args[1])
+        chatBot = API_Call(agent=args[1])
     else:
-        chatBot = chatGPT()
+        chatBot = API_Call()
     init_db()
     t = threading.Thread(target=run_flask)
     t.daemon = True
     t.start()
 
-    webview.create_window('ChatBot', 'http://127.0.0.1:5000', width=960, height=800)
+    webview.create_window('Wordie', 'http://127.0.0.1:5000', width=960, height=800)
     webview.start()

@@ -1,1 +1,1 @@
-.\Python\python.exe chatbot.py
+.\Python\python.exe wordie.py
