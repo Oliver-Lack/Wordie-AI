@@ -2,7 +2,7 @@ body {
   font-family: 'Tahoma', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #222; 
+  background-color: #393939; 
   color: #ffffff; 
   transition: background-color 0.3s ease;
   scroll-behavior: smooth; /* Smooth scrolling */
@@ -13,7 +13,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: 100vh;
   background-color: #222; 
   transition: background-color 0.3s ease;
 }
@@ -44,16 +44,23 @@ h1 {
 
 .main-container {
   display: flex;
+  margin-top: auto;
 }
 
 .sidebar {
   display: flex;
+  position: fixed;
   flex-direction: column;
   justify-content: space-between;
-  width: 250px;
-  background-color: #212020;
+  width: 200px;
+  background-color: #393939; /* Same as chat-area */
+  border-right: 1px solid #222; /* Thin darker grey outline on right edge */
   color: #fff;
   padding: 10px;
+  height: 100vh; /* Make sidebar flush with header */
+  margin-top: 0; /* Remove margin to make it flush with header */
+  margin-bottom: 0; /* Remove margin to make it flush with footer */
+  left: 0;
 }
 
 .sidebar h2 {
@@ -83,13 +90,13 @@ h1 {
 
 .quit-button {
   background-color: transparent; /* Transparent background */
-  color: #555; /* Darker grey text */
-  border: 1px solid #555; /* Darker grey border */
+  color: #727070; /* Darker grey text */
+  border: 1px solid #727070; /* Darker grey border */
   padding: 10px 20px;
   cursor: pointer;
   text-transform: uppercase;
   border-radius: 5px;
-  margin-top: auto;
+  margin-top: 10%;
   margin-bottom: auto;
   margin-left: 20px;
   box-shadow: none; /* Remove box shadow */
@@ -129,21 +136,21 @@ h1 {
 .redirection-button {
   background-color: transparent; /* Transparent background */
   color: #de222c;
-  border: 2px solid #de222c;
+  position: flex;
+  border: 4px solid #de222c;
   padding: 10px 20px;
   cursor: pointer;
   text-transform: uppercase;
   font-weight: bold;
   border-radius: 5px;
-  margin-top: auto; /* Pushes the button to the bottom */
-  margin-left: 20px;
-  font-size: larger;
+  font-size: 16px;
   box-shadow: none; /* Remove box shadow */
-  transition: all 0.3s ease-in-out;
+  transition: all 1.5s ease-in-out;
+  margin-bottom: 20%;
 }
 
 .redirection-button:hover {
-  background-color: rgba(255, 130, 102, 0.1); /* Slightly visible on hover */
+  background-color: rgba(12, 8, 7, 0.1); /* Slightly visible on hover */
   transform: scale(1.05);
 }
 
@@ -160,25 +167,28 @@ h1 {
 
 .header {
   display: flex;
-  justify-content: left;
-  justify-items: left;
-  align-items: left;
+  position: fixed;
+  justify-content: right;
+  justify-items: right;
+  align-items: right;
   padding: 10px;
-  background-color: #222;
+  background-color: #393939; /* Same as chat-area */
   color: #FFFFFF;
-  transition: background-color 3s ease;
+  width: 100%;
+  height: 10vh;
+  border-bottom: 1px solid #222; /* Thin darker grey outline on bottom edge */
 }
 
 .website-name h1 {
   font-size: 10px;
   font-weight: normal;
-  margin-left: 20px;
   margin-top: 20px;
-  text-align: left; /* Ensure text is justified to the left */
+  margin-right: 10%;
+  text-align: right; /* Ensure text is justified to the left */
 }
 
 button {
-  background-color: #de222c;
+  background-color: #222;
   color: #FFFFFF;
   border: none;
   padding: 15px 25px;
@@ -199,7 +209,7 @@ button:active {
   transform: scale(0.95);
 }
 
-.login-form, .register-form {
+.login-form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -210,7 +220,7 @@ button:active {
   transition: box-shadow 0.3s ease;
 }
 
-.login-form:hover, .register-form:hover {
+.login-form:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
@@ -221,7 +231,7 @@ button:active {
   margin-bottom: 20px;
 }
 
-.login-form label, .register-form label {
+.login-form label {
   font-size: 14px;
   font-weight: bold;
   color: #333333;
@@ -245,7 +255,7 @@ button:active {
 }
 
 .login-form button[type="submit"] {
-  background-color: #de222c;
+  background-color: #761414;
   color: #ffffff;
   border: none;
   padding: 10px 20px;
@@ -256,8 +266,8 @@ button:active {
   transition: all 0.3s ease-in-out;
 }
 
-.login-form button[type="submit"]:hover, .register-form button[type="submit"]:hover {
-  background-color: #b21724;
+.login-form button[type="submit"]:hover {
+  background-color: #de222c;
 }
 
 .input-field {
@@ -268,7 +278,8 @@ button:active {
   border-radius: 5px;
   background-color: rgba(255, 255, 255, 0.8); /* Add transparency */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
+  transition: all 1.2s ease;
+  outline: none; /* Remove default focus outline */
 }
 
 .input-field:focus {
@@ -280,17 +291,21 @@ button:active {
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden; /* Prevent horizontal overflow */
-  height: 65vh;
+  height: 85vh;
+  margin-top: 15vh;
+  margin-left: 190px;
   scroll-behavior: smooth; /* Smooth scrolling */
   flex-grow: 1;
 }
 
 .chat-messages-container {
-  overflow: hidden; /* Prevent content overflow */
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-bubble {
   width: 60%;
+  font-size: 16px;
   padding: 15px;
   border-radius: 10px;
   background-color: transparent; /* Completely transparent */
@@ -302,7 +317,7 @@ button:active {
 }
 
 .chat-bubble.user-message {
-  margin-left: 10%; /* Slightly left of center */
+  margin-left: 20%; /* Slightly left of center */
   margin-right: auto; /* Ensure it doesn't go within 30% of the right side */
   border: 1px solid #444; /* Slightly darker border */
 }
@@ -319,7 +334,7 @@ button:active {
 
 .chat-bubble.llm-message {
   margin-left: auto; /* Ensure it doesn't go within 30% of the left side */
-  margin-right: 10%; /* Slightly right of center */
+  margin-right: 20%; /* Slightly right of center */
   border: 1px solid transparent; /* No border by default */
 }
 
@@ -329,7 +344,7 @@ button:active {
 
 .assistant-label {
   font-weight: bold;
-  color: #555; /* Slightly darker than the assistant message font */
+  color: #888; /* Slightly darker than the assistant message font */
   margin-right: 10px; /* Space between label and message */
 }
 
@@ -354,27 +369,31 @@ button:active {
   align-items: center;
   padding: 20px;
   background-color: #393939; /* Darker background for input area */
-  margin-top: auto;
-  transition: box-shadow 0.3s ease 0.1s; /* Add transition for box-shadow with delay */
+  transition: all 1.6s ease; /* Update transition to apply to all properties */
+  height: 5vh;
+  color: #ffffff;
 }
 
 .text-input {
   flex-grow: 1;
   padding: 20px;
-  width: 30vw;
-  background-color: #5c5a5a; /* Darker background for text input */
-  border-radius: 8px;
-  color: #ffffff;
+  margin-left: 190px;
+  margin-top: auto;
+  width: 25vw;
+  outline: none; /* Remove the default blue outline */
+  border: none;
+  background-color: #5a5a5a; /* Darker background for text input */
+  border-radius: 4px; 
+  color: #ffffff; 
   font-size: 14px;
-  margin-bottom: 40px;
-  transition: box-shadow 0.3s ease 0.1s; /* Add transition for box-shadow with delay */
+  transition: all 1.2s ease; /* Update transition to apply to all properties */
 }
 
 .text-input:focus {
   outline: none; /* Remove the default blue outline */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), /* Smaller shadow around other edges */
-              0 12px 24px rgba(0, 0, 0, 0.5); /* Larger shadow on the bottom edge */
-  border-radius: 15px;
+  border-radius: 30px;
+  color: #222;
+  background-color: #e4e4e4; /* Darker background for text input */
 }
 
 select {
@@ -434,7 +453,7 @@ select option:checked {
   width: 8px;
   height: 8px;
   margin: 0 2px;
-  background-color: #333;
+  background-color: #f40000;
   border-radius: 100%;
   animation: loading 1.4s infinite ease-in-out both;
 }

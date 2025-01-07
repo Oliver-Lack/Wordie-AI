@@ -176,7 +176,7 @@ def logout():
 
 # Function to run the Flask app
 def run_flask():
-    app.run(debug=False, host='127.0.0.1', port=5000)
+    app.run(debug=True, host='127.0.0.1', port=5000)
 
 if __name__ == '__main__':
     args = sys.argv
@@ -186,9 +186,9 @@ if __name__ == '__main__':
     else:
         chatBot = API_Call()
     init_db()
-    t = threading.Thread(target=run_flask)
-    t.daemon = True
-    t.start()
+
+    # Run Flask app in the main thread
+    run_flask()
 
     webview.create_window('wordie.ai', 'http://127.0.0.1:5000', width=1366, height=768)
     webview.start()

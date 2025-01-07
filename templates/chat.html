@@ -6,45 +6,8 @@
     <title>Chat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css" charset="UTF-8">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js" charset="UTF-8"></script>    
-
-    <script>
-        hljs.initHighlightingOnLoad();
-        document.querySelectorAll('code').forEach(function(block) {
-            block.insertAdjacentHTML('beforebegin', '<button class="copy-button" onclick="copyToClipboard(this)">Copy</button>');
-        });
-        function copyToClipboard(button) {
-            var code = button.nextElementSibling.innerText;
-            navigator.clipboard.writeText(code).then(function() {
-                button.innerText = "Copied!";
-                setTimeout(function() {
-                    button.innerText = "Copy";
-                }, 2000);
-            }, function() {
-                button.innerText = "Error";
-            });
-        }
-    </script>
-    
-    <script>
-        function showAlert() {
-            alert("Warning: The specified environment variable was not found!");
-        }
-    
-        function showQuitPrompt() {
-            document.getElementById('quit-prompt').style.display = 'block';
-        }
-    
-        function hideQuitPrompt() {
-            document.getElementById('quit-prompt').style.display = 'none';
-        }
-    
-        function quitStudy() {
-            // Logic to exit and close the application
-            window.close(); // This will close the current window/tab
-        }
-    </script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js" charset="UTF-8"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}" charset="UTF-8"></script>
 </head>
 <body>
     <header class="header">
@@ -54,13 +17,8 @@
     </header>
     <div class="main-container">
         <aside class="sidebar">
-            <ul>
-                <li><button class="quit-button" onclick="showQuitPrompt()">Quit Study</button></li>
-            </ul>
-            <h2>Sidebar</h2>
-            <ul>
-                <li><button class="redirection-button">Next <br>(back to survey)</button></li>
-            </ul>
+           <button class="quit-button" onclick="showQuitPrompt()">Quit Study</button>
+           <button class="redirection-button">Next <br>(back to survey)</button>
         </aside>
         <div class="right-container">
             <main class="chat-area">
@@ -102,54 +60,7 @@
         <button onclick="hideQuitPrompt()">No, I want to continue</button>
     </div>
     <script>
-        document.getElementById('chat-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const inputField = document.getElementById('chat-input');
-            const form = event.target;
-            const chatMessagesContainer = document.getElementById('chat-messages-container');
-
-            // Append the user message immediately
-            const userMessage = document.createElement('div');
-            userMessage.className = 'chat-bubble user-message';
-            userMessage.innerHTML = '<span class="user-label">User</span>' + inputField.value;
-            chatMessagesContainer.appendChild(userMessage);
-
-            // Create a container for the assistant's response
-            const assistantResponseContainer = document.createElement('div');
-            assistantResponseContainer.className = 'chat-bubble llm-message';
-            assistantResponseContainer.innerHTML = '<span class="assistant-label">AI</span>';
-            chatMessagesContainer.appendChild(assistantResponseContainer);
-
-            // Create and append the loading indicator inside the assistant's response container
-            const loadingIndicator = document.createElement('div');
-            loadingIndicator.id = 'loading-indicator';
-            loadingIndicator.className = 'loading';
-            loadingIndicator.innerHTML = '<span></span><span></span><span></span>';
-            assistantResponseContainer.appendChild(loadingIndicator);
-
-            // Generate a random wait time between 2 and 6 seconds
-            const waitTime = Math.floor(Math.random() * 2500) + 600;
-
-            setTimeout(() => {
-                fetch(form.action, {
-                    method: form.method,
-                    body: new FormData(form)
-                }).then(response => response.text())
-                  .then(html => {
-                      const parser = new DOMParser();
-                      const doc = parser.parseFromString(html, 'text/html');
-                      const newMessages = doc.getElementById('chat-messages-container').innerHTML;
-                      document.getElementById('chat-messages-container').innerHTML = newMessages;
-                      inputField.value = '';
-                      inputField.focus();
-
-                      // Remove the loading indicator
-                      loadingIndicator.remove();
-                  });
-            }, waitTime);
-        });
-
-        document.getElementById('chat-input').focus();
+    document.getElementById('chat-input').focus();
     </script>
 </body>
 </html>
