@@ -28,17 +28,25 @@ h1 {
 }
 
 .logo {
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: auto;
   font-size: 18px;
-  border-radius: 70px;
+  border-radius: 7px;
   font-weight: normal;
-  transition: transform 0.3s ease;
-  background-color: #ecf0f1; 
+  transition: filter 0.3s ease;
+  background-color: none; 
+  outline: none;
 }
 
 .logo:hover {
-  transform: scale(1.1);
+  filter: grayscale(100%);
+}
+
+.loading {
+  margin-right: 20px;
+  width: "auto";
+  height: "110";
+  border-radius: 90%;
 }
 
 .main-container {
@@ -262,7 +270,10 @@ button:active {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px;
+  padding-bottom: 30px;
+  padding-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
   background-color: #313131;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -370,6 +381,7 @@ button:active {
 .chat-bubble.user-message {
   margin-left: 20%;
   margin-right: auto;
+  margin-top: 2%;
   border: 1px solid #444;
 }
 

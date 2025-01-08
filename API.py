@@ -3,6 +3,10 @@ import openai
 import requests
 import json
 
+def load_agent(filepath):
+    with open(filepath, 'r') as file:
+        return json.load(file)
+
 def openai_api_request(model="gpt-3.5-turbo",
                         messages=None,
                         temperature=1,
@@ -26,23 +30,24 @@ def openai_api_request(model="gpt-3.5-turbo",
         "top_p":top_p,
         "n":n,
         "presence_penalty":presence_penalty,
-        "frequency_penalty":frequency_penalty
+        "frequency_penalty":frequency_penalty,
     }
 
-    return requests.post(url, headers=headers, json=data).json()
-
-def load_agent(file):
-    with open(file, 'r') as f:
-        # Load the contents of the file into a dictionary
-        data = json.load(f)
-    return data
+    response = requests.post(url, headers=headers, json=data)
+    response_json = response.json()
+    
+    # Extract token usage information
+    token_usage = response_json.get('usage', {})
+    prompt_tokens = token_usage.get('prompt_tokens', 0)
+    completion_tokens = token_usage.get('completion_tokens', 0)
+    total_tokens = token_usage.get('total_tokens', 0)
+    
+    return response_json, prompt_tokens, completion_tokens, total_tokens
 
 class API_Call():
 
     def __init__(self, agent=None):
-        # Get the API key
         openai.api_key = os.getenv("OPENAI_API_KEY")
-        # Load the system prompt from a file
         if agent is None:
             self.agent_data = load_agent("agents/default.json")
         else:
@@ -52,7 +57,6 @@ class API_Call():
         self.agent_data = load_agent(filename)
 
     def thinkAbout(self, message, conversation, model=None, debug=False):
-        # Check if the user's message is valid using OpenAI's Moderation API
         try:
             response = openai.Moderation.create(
                 input=message
@@ -68,13 +72,11 @@ class API_Call():
             model = self.agent_data.get("model", "gpt-3.5-turbo")
             
         if valid_message:
-            # Format the user's message and add it to the conversation
             FormattedMessage = {"role": "user", "content": message}
             conversation.append(FormattedMessage)
             
-            # Generate a response using OpenAI's GPT-3 model
             try:
-                response = openai_api_request(model=model,
+                response, prompt_tokens, completion_tokens, total_tokens = openai_api_request(model=model,
                                               messages=conversation,
                                               temperature=self.agent_data["temperature"], 
                                               frequency_penalty=self.agent_data["frequency_penalty"],
@@ -82,7 +84,7 @@ class API_Call():
                                               top_p=self.agent_data["top_p"])
             except:
                 try:
-                    response = openai_api_request(model="gpt-3.5-turbo",
+                    response, prompt_tokens, completion_tokens, total_tokens = openai_api_request(model="gpt-3.5-turbo",
                                                   messages=conversation,
                                                   temperature=self.agent_data["temperature"], 
                                                   frequency_penalty=self.agent_data["frequency_penalty"],
@@ -98,22 +100,18 @@ class API_Call():
                 conversation.append({"role": "assistant", "content":response["error"]["message"]})
                 return conversation                
 
-            # Format the response and add it to the conversation
             conversation.append({"role": "assistant", "content":response['choices'][0]['message']['content']})
             
-            # Write the conversation to a log file
             if debug:
                 with open("logs.txt", "w", encoding="utf-8") as file:
                     for i in conversation:
                         file.write(str(i)+"\n")
                     
-            return conversation
+            return conversation, prompt_tokens, completion_tokens, total_tokens
         
         else:
-            # If the user's message is not valid, add an error message to the conversation
             FormattedMessage = {"role": "user", "content": message}
             conversation.append(FormattedMessage)
             conversation.append({"role": "assistant", "content":"Je suis désolé, ceci est un message non valide car contraire aux termes et conditions"})
         
-        # Return the conversation with or without the response depending on whether the message was valid
-        return conversation
+        return conversation, 0, 0, 0

@@ -33,8 +33,9 @@ def init_db():
 def log_user_data(data):
     try:
         with open('interactions.JSON', 'r') as f:
-            interactions = json.load(f)
-    except FileNotFoundError:
+            file_content = f.read().strip()  # Read and strip whitespace
+            interactions = json.loads(file_content) if file_content else {"users": {}}
+    except (FileNotFoundError, json.JSONDecodeError):
         interactions = {"users": {}}
 
     user_id = str(data['user_id'])
@@ -64,7 +65,7 @@ def add_user(username):
     conn.close()
 
 # Add a message and its response to the messages table
-def add_message(user_id, message, response, model, temperature):
+def add_message(user_id, message, response, model, temperature, prompt_tokens, completion_tokens, total_tokens):
     conn = sqlite3.connect('users.db')
     conn.text_factory = str
     c = conn.cursor()
@@ -79,6 +80,9 @@ def add_message(user_id, message, response, model, temperature):
         'response': response,
         'model': model,
         'temperature': temperature,
+        'prompt_tokens': prompt_tokens,
+        'completion_tokens': completion_tokens,
+        'total_tokens': total_tokens,
         'timestamp': str(datetime.now())
     })
 
@@ -128,24 +132,28 @@ def chat():
     if 'username' not in session:
         return redirect(url_for('login'))
 
-    conversation = get_messages(session['user_id'], wordie.agent_data["PrePrompt"])
+    try:
+        conversation = get_messages(session['user_id'], wordie.agent_data["PrePrompt"])
 
-    if request.method == 'POST':
-        message = request.form.get('message')
-        if not message:
-            flash('Message cannot be empty', 'error')
-            return jsonify({'error': 'Message cannot be empty'}), 400
-        try:
+        if request.method == 'POST':
+            message = request.form.get('message')
+            if not message:
+                flash('Message cannot be empty', 'error')
+                return jsonify({'error': 'Message cannot be empty'}), 400
+            
             model = wordie.agent_data.get("model", "gpt-3.5-turbo")
-            conversation = wordie.thinkAbout(message, conversation, model=model)
-            response = conversation[-1]["content"]
-            user_id = session['user_id']
-            add_message(user_id, message, str(response), model, wordie.agent_data["temperature"])
-            return jsonify({'response': response})
-        except Exception as e:
-            return jsonify({'error': 'Error processing message'}), 500
+            try:
+                conversation, prompt_tokens, completion_tokens, total_tokens = wordie.thinkAbout(message, conversation, model=model)
+                response = conversation[-1]["content"]
+                user_id = session['user_id']
+                add_message(user_id, message, str(response), model, wordie.agent_data["temperature"], prompt_tokens, completion_tokens, total_tokens)
+                return jsonify({'response': response})
+            except Exception as e:
+                return jsonify({'error': 'Error processing message'}), 500
 
-    return render_template('chat.html', username=session['username'], messages=conversation, show_popup=show_popup)
+        return render_template('chat.html', username=session['username'], messages=conversation, show_popup=show_popup)
+    except Exception as ex:
+        return jsonify({'error': 'Unexpected error occurred'}), 500
 
 # Define a route for the logout functionality
 @app.route('/logout', methods=['GET', 'POST'])

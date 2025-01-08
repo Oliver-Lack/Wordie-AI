@@ -1,382 +1,87 @@
 {
     "users": {
-        "1": {
-            "username": "ollie",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hello",
-                        "response": "Hello! I have been told that I need to play a game with you. Have you selected two secret words for us to play with today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:47:38.753699"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "Yes lets play",
-                        "response": "Great! I will select one of your secret words, either secret word 1 or secret word 2, for this game. Let's go with secret word 1. Is your secret word an everyday object, an animal, a food item, a person's name, a place, or something else?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:47:53.727410"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "an animal",
-                        "response": "Is your chosen animal a domestic animal that can be found as a pet in many households?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:48:05.477103"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "no",
-                        "response": "Is the animal you picked commonly found in the wild or is it a more exotic type of animal?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:48:09.879169"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hmm both",
-                        "response": "Is the animal you picked typically associated with a specific climate or region, such as a tropical jungle, the arctic, the desert, or the ocean?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:48:20.947424"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "yes",
-                        "response": "Is the animal you selected a mammal?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:48:28.266047"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "I'm not sure",
-                        "response": "Does the animal you chose primarily live in the water?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:48:41.459786"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "yes",
-                        "response": "Is the animal you picked known for having streamlined bodies and being carnivorous hunters in their natural habitat?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:50:06.901662"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "yes",
-                        "response": "Is the animal you selected a shark?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:50:49.111610"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "no",
-                        "response": "That makes it 10 questions, and I might need a little more information to correctly guess your chosen animal. \n\nIs the animal you selected clever, social, and known for its advanced problem-solving abilities in their groups?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:51:06.419975"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "yes it is",
-                        "response": "Is the animal you selected a dolphin?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:53:18.308786"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "yes!",
-                        "response": "Wonderful! I successfully guessed your secret word, which was \"dolphin\"! Thank you for playing this game with me. It was challenging but also fun! Let me know if you would like to play again sometime.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:53:24.622713"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "thanks",
-                        "response": "You're welcome! If you ever want to play another game or need assistance with anything else, feel free to reach out. Have a great day!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.5,
-                        "timestamp": "2025-01-08 10:53:58.723248"
-                    }
-                }
-            ]
-        },
-        "2": {
-            "username": "hi",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hello",
-                        "response": "Hello! I have been instructed to play the game of 20-questions with you. Do you have 2 secret words in mind for me to guess, or would you like me to choose them?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.8,
-                        "timestamp": "2025-01-08 10:54:55.467260"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hello",
-                        "response": "Great! Since you said \"hello\" twice now, I assume that means you are ready to play. I will proceed by choosing one of the two secret words to guess. Let's begin! \n\nIs your first secret word an animal?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.8,
-                        "timestamp": "2025-01-08 11:12:30.834518"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hmm",
-                        "response": "Hmm, okay. Let's try narrowing down some options. \n\nIs your secret word something you can find in nature? ",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.8,
-                        "timestamp": "2025-01-08 11:24:56.309593"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "yes",
-                        "response": "Excellent! \n\nIs your secret word a common thing that people see in parks or gardens?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.8,
-                        "timestamp": "2025-01-08 11:25:13.224904"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "yes",
-                        "response": "Is your secret word a type of plant or tree?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1.8,
-                        "timestamp": "2025-01-08 11:49:17.171263"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hm",
-                        "response": "Let's try another route. \n\nIs your secret word something that can be found in a park or garden but is not a plant or tree, such as a bench, fountain, or statue?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:20:55.793014"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "r",
-                        "response": "Hmmm. Let's see. \n\nIs your secret word something that can be found in a park or garden that is not a living object or a structure, such as a flower, bird, or pond?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:21:00.414051"
-                    }
-                }
-            ]
-        },
         "3": {
-            "username": "oliver",
+            "username": "s",
             "interactions": [
                 {
                     "type": "message",
                     "content": {
-                        "message": "this is oliver",
-                        "response": "Hello Oliver! How can I assist you today?",
+                        "message": "hi",
+                        "response": "Hello! How can I assist you?",
                         "model": "gpt-3.5-turbo",
                         "temperature": 1,
-                        "timestamp": "2025-01-08 12:03:05.266300"
+                        "prompt_tokens": 48,
+                        "completion_tokens": 9,
+                        "total_tokens": 57,
+                        "timestamp": "2025-01-08 17:18:14.502839"
                     }
                 },
                 {
                     "type": "message",
                     "content": {
-                        "message": "I want to know what model you are?",
-                        "response": "I am an AI language model developed by OpenAI, based on the GPT-4 architecture. How can I assist you today?",
+                        "message": "thank god",
+                        "response": "I'm glad you're feeling grateful! If there's anything you'd like to talk about or need assistance with, please feel free to let me know.",
                         "model": "gpt-3.5-turbo",
                         "temperature": 1,
-                        "timestamp": "2025-01-08 12:03:14.389250"
+                        "prompt_tokens": 66,
+                        "completion_tokens": 32,
+                        "total_tokens": 98,
+                        "timestamp": "2025-01-08 17:18:43.827457"
                     }
                 },
                 {
                     "type": "message",
                     "content": {
-                        "message": "okay",
-                        "response": "Great! If you have any questions or need help with something, feel free to ask.",
+                        "message": "great stuff",
+                        "response": "I'm glad you think so! If there's anything specific you'd like to discuss or inquire about, feel free to let me know.",
                         "model": "gpt-3.5-turbo",
                         "temperature": 1,
-                        "timestamp": "2025-01-08 12:04:07.886960"
-                    }
-                }
-            ]
-        },
-        "4": {
-            "username": "oliver2",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hello",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-4o",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:09:22.003728"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "which model are you?",
-                        "response": "I am based on OpenAI's GPT-4 architecture. How can I assist you today?",
-                        "model": "gpt-4o",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:09:28.110195"
+                        "prompt_tokens": 107,
+                        "completion_tokens": 29,
+                        "total_tokens": 136,
+                        "timestamp": "2025-01-08 17:21:31.769689"
                     }
                 }
             ]
         },
         "5": {
-            "username": "oliver3",
+            "username": "f",
             "interactions": [
                 {
                     "type": "message",
                     "content": {
-                        "message": "hi",
-                        "response": "The model `o1` does not exist or you do not have access to it.",
-                        "model": "o1",
+                        "message": "hello",
+                        "response": "Hello! How can I assist you today?",
+                        "model": "gpt-3.5-turbo",
                         "temperature": 1,
-                        "timestamp": "2025-01-08 12:10:16.126607"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "ok",
-                        "response": "The model `o1` does not exist or you do not have access to it.",
-                        "model": "o1",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:13:12.032401"
+                        "prompt_tokens": 12,
+                        "completion_tokens": 10,
+                        "total_tokens": 22,
+                        "timestamp": "2025-01-08 17:27:04.472237"
                     }
                 }
             ]
         },
         "6": {
-            "username": "oliver4",
+            "username": "i like",
             "interactions": [
                 {
                     "type": "message",
                     "content": {
-                        "message": "hello",
-                        "response": "Hello! How can I help you today?",
+                        "message": "hi",
+                        "response": "Hello! How can I assist you today?",
                         "model": "gpt-3.5-turbo",
                         "temperature": 1,
-                        "timestamp": "2025-01-08 12:13:41.737508"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "which model are you?",
-                        "response": "I am a language model called GPT-3, developed by OpenAI. My purpose is to assist users in generating human-like text based on the input provided to me. How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:13:45.523107"
+                        "prompt_tokens": 12,
+                        "completion_tokens": 10,
+                        "total_tokens": 22,
+                        "timestamp": "2025-01-08 18:06:36.638008"
                     }
                 }
             ]
         },
         "7": {
-            "username": "oliver5",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hello",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:16:16.892731"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "mmmm",
-                        "response": "Is there something specific you would like to discuss or know more about? Feel free to ask your question or share your thoughts with me.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:16:20.793584"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "mmmm",
-                        "response": "If you have any questions or need assistance with something, please don't hesitate to let me know. I'm here to help!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:18:36.379833"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hello",
-                        "response": "Hello! How can I help you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:18:44.824872"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "ddd",
-                        "response": "Is there something you would like to know or discuss? Feel free to ask me any questions you may have.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:18:48.613285"
-                    }
-                }
-            ]
-        },
-        "8": {
-            "username": "kk",
+            "username": "wordgamelol",
             "interactions": [
                 {
                     "type": "message",
@@ -385,537 +90,10 @@
                         "response": "Hello! How can I assist you today?",
                         "model": "gpt-3.5-turbo",
                         "temperature": 1,
-                        "timestamp": "2025-01-08 12:21:09.569733"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "v",
-                        "response": "It seems like you accidentally sent a message with just a single letter. How can I help you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:21:12.681233"
-                    }
-                }
-            ]
-        },
-        "9": {
-            "username": "yes",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hello",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:24:44.080679"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello again! How can I help you?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:24:54.458674"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:25:49.014742"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How can I help you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:25:52.350770"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:26:20.200204"
-                    }
-                }
-            ]
-        },
-        "10": {
-            "username": "yes2",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:28:24.174249"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "okay",
-                        "response": "If you have any questions or need help with something, feel free to let me know!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:28:28.786105"
-                    }
-                }
-            ]
-        },
-        "11": {
-            "username": "justkidding",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "here is a message",
-                        "response": "Thank you for sharing the message with me. If you'd like to discuss or elaborate on it, feel free to do so.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:31:18.226102"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "yes tell me poem",
-                        "response": "Of course! Here's a short poem for you:\n\nIn the quiet of night, under stars so bright,\nWhispers of dreams take flight.\nA song of hope in the soft moonlight,\nGuiding us through darkest night.\n\nHope you enjoyed it! Let me know if you'd like to hear more poems.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:31:28.486551"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "yes tell me poem",
-                        "response": "Certainly! Here's another poem for you:\n\nAmidst the chaos, a flower grows,\nPetals unfurling, beauty it shows.\nA symbol of strength, against all odds,\nIn the harshest of lands, it nods.\n\nHope you liked it! Let me know if you'd like to hear more poems.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:31:53.553729"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "another",
-                        "response": "Of course! Here's another poem for you:\n\nWhispers of wind through branches tall,\nNature's symphony, a gentle call.\nLeaves rustle, birds sing their song,\nIn harmony, where they belong.\n\nI hope you enjoyed this one as well! Let me know if you'd like to hear more poems.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:31:59.335030"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "another",
-                        "response": "Absolutely! Here's another poem for you:\n\nIn the meadow, under the sky so blue,\nA dance of butterflies in morning dew.\nColors fluttering, a sight so grand,\nGraceful movements across the land.\n\nI hope you liked this poem too! Feel free to ask for more if you'd like.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:34:16.482455"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "okay great",
-                        "response": "I'm glad you enjoyed the poems! If you have any other requests, questions, or topics you'd like to explore, feel free to let me know. I'm here to help!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:34:22.170456"
-                    }
-                }
-            ]
-        },
-        "12": {
-            "username": "1234",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "typing",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:34:32.906524"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "typing",
-                        "response": "Take your time! Just let me know how I can help you.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:37:18.219486"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How may I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:37:23.200558"
-                    }
-                }
-            ]
-        },
-        "13": {
-            "username": "hmm",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:37:31.608642"
-                    }
-                }
-            ]
-        },
-        "14": {
-            "username": "prolific",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:38:36.352315"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "tell me a poem",
-                        "response": "Certainly! Here is a short poem for you:\n\nIn the garden of life, we bloom and grow,\nWith petals of joy and seeds we sow.\nBeneath the sun's warm and golden glow,\nWe find beauty in the ebb and flow.\n\nI hope you enjoyed the poem! Let me know if you'd like to hear another one.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:38:43.327267"
-                    }
-                }
-            ]
-        },
-        "15": {
-            "username": "lol",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:43:56.217290"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "mmm",
-                        "response": "Is there anything specific you'd like to discuss or ask about?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:43:59.838558"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "fff",
-                        "response": "If you have any questions or need assistance, feel free to ask. I'm here to help!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:44:03.092686"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "f",
-                        "response": "It seems like you might be typing random letters. If you have any questions or need help with something, feel free to ask!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:44:07.447020"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "yes i am",
-                        "response": "No problem! Just let me know if you have any questions or if there's anything I can help you with.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 12:44:18.435897"
-                    }
-                }
-            ]
-        },
-        "20": {
-            "username": "jljl",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:20:04.501848"
-                    }
-                }
-            ]
-        },
-        "21": {
-            "username": "laks",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How may I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:20:47.339332"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello again! How can I help you this time?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:23:25.751822"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hmm",
-                        "response": "If you have any questions or need assistance, feel free to let me know. I'm here to help!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:25:16.349831"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "i think working now?",
-                        "response": "I'm here and ready to assist you with any questions or concerns you may have. Feel free to ask me anything you need help with.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:25:37.856429"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How can I help you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:29:06.776063"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "you can tell me a story",
-                        "response": "Once upon a time in a faraway land, there was a young princess named Lily. She had a special gift of communicating with animals, which made her beloved by all creatures in the kingdom. One day, a dark shadow started creeping across the land, bringing with it a sense of fear and dread.\n\nTo save her kingdom, Princess Lily set out on a quest to find the source of this darkness. Along the way, she encountered a wise old owl, a mischievous squirrel, and a brave lion who became her loyal companions. Together, they journeyed through enchanted forests, treacherous mountains, and mysterious caves.\n\nAfter facing many challenges and overcoming obstacles, Princess Lily finally reached the heart of the darkness. There, she discovered an evil sorcerer who sought to plunge the kingdom into eternal night. With the help of her animal friends and her own courage, Princess Lily confronted the sorcerer in a fierce battle.\n\nIn the end, Princess Lily's kindness, bravery, and the bond she shared with the animals proved to be stronger than any dark magic. The sorcerer was defeated, and light was restored to the kingdom once more. The creatures of the land rejoiced, and Princess Lily was hailed as a hero who had saved her kingdom with love and courage.\n\nAnd so, Princess Lily continued to reign over her land, using her gift of communication with animals to bring peace and harmony to all who dwelled there. And they all lived happily ever after. ",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:30:48.848241"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:33:33.395242"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How can I help you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:37:38.929182"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "jkjb",
-                        "response": "It seems like there might have been a typo in your message. If you have any questions or need assistance, feel free to let me know!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:40:14.418780"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "d",
-                        "response": "If you have any questions or need help, feel free to ask. I'm here to assist you!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:43:51.165859"
-                    }
-                }
-            ]
-        },
-        "22": {
-            "username": "lknfer",
-            "interactions": [
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hello",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:44:38.113193"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "i want a story on dostoyevski",
-                        "response": "Fyodor Dostoevsky, a Russian author known for his psychological depth and philosophical themes, lived a life filled with tragic and tumultuous events that greatly influenced his writing. One of his most well-known works, \"Crime and Punishment,\" tells the story of a young man named Raskolnikov who commits a murder and struggles with the moral and psychological consequences of his actions.\n\nIn a small apartment in St. Petersburg, Raskolnikov paces back and forth, consumed by thoughts of his impoverished existence and the injustices of the world. Burdened by a desire to prove his superiority and test his theory that some individuals are above the law, he formulates a plan to murder a pawnbroker and steal her money.\n\nAfter committing the crime, Raskolnikov is plagued by guilt and paranoia. As he grapples with his inner turmoil, he is drawn to Sonia, a young woman forced into prostitution to support her family. Through their interactions, Raskolnikov begins to confront the depths of his depravity and the possibility of redemption.\n\nAs the authorities close in on Raskolnikov, he is forced to confront the consequences of his actions and grapple with his own moral conscience. Will he be able to find redemption and peace, or will he be forever haunted by his crime?\n\nDostoevsky's exploration of sin, redemption, and the complexities of the human psyche in \"Crime and Punishment\" continues to captivate readers with its profound insights into the nature of guilt and the struggle for moral absolution.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:44:50.772820"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "ok",
-                        "response": "If you have any more questions or if there's anything else I can help you with, feel free to let me know!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:44:58.583618"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hmm yes another",
-                        "response": "Of course! Feel free to ask your question, and I'll do my best to assist you.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:46:17.164493"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "fewfwe",
-                        "response": "It seems like there might have been a typo in your message. If you have a question or need assistance with anything, please feel free to let me know!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:47:04.557270"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "great",
-                        "response": "I'm glad to hear that! If you have any more questions or need assistance in the future, don't hesitate to reach out. Have a great day!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:47:12.831187"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "great",
-                        "response": "Thank you! Have a wonderful day ahead!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:47:55.588781"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hi",
-                        "response": "Hello! How can I assist you today?",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:52:38.803491"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "hmmm",
-                        "response": "If you have any questions or need help with something, feel free to ask. I'm here to assist you!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:52:44.809122"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "ff",
-                        "response": "If you have any questions or need assistance, feel free to ask. I'm here to help!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:52:56.515734"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "scroll",
-                        "response": "I'm here to help! Feel free to ask me anything you like.",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:52:56.549293"
-                    }
-                },
-                {
-                    "type": "message",
-                    "content": {
-                        "message": "back to the game",
-                        "response": "If you have any questions or need assistance with a game, feel free to ask. I'm here to help!",
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 1,
-                        "timestamp": "2025-01-08 13:53:19.117741"
+                        "prompt_tokens": 12,
+                        "completion_tokens": 10,
+                        "total_tokens": 22,
+                        "timestamp": "2025-01-08 18:36:24.871435"
                     }
                 }
             ]
