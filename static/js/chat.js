@@ -78,6 +78,9 @@ function appendUserMessage() {
 }
 
 function generateAssistantResponse(userMessage) {
+    // Insert the GIF placeholder
+    const gifPlaceholder = insertLoaderPlaceholder();
+
     // Generate a random delay between 600ms to 4000ms
     const randomDelay = Math.floor(Math.random() * (5000 - 600 + 1)) + 600;
 
@@ -92,6 +95,13 @@ function generateAssistantResponse(userMessage) {
         })
         .then(response => response.json())
         .then(data => {
+            // Remove the GIF placeholder
+            gifPlaceholder.remove();
+        
+            // Show the sphere
+            document.querySelector('.sphere').classList.remove('hidden');
+            
+        
             if (data.error) {
                 console.error('Error:', data.error);
                 appendMessage('Error retrieving response from the assistant.', 'llm');
@@ -100,8 +110,31 @@ function generateAssistantResponse(userMessage) {
             }
         })
         .catch(error => {
+            // Remove the GIF placeholder
+            gifPlaceholder.remove();
+        
+            // Show the sphere
+            document.querySelector('.sphere').classList.remove('hidden');
+        
             console.error('Error:', error);
             appendMessage('Error retrieving response from the assistant.', 'llm');
         });
     }, randomDelay);
+}
+
+function insertLoaderPlaceholder() {
+    const chatContainer = document.getElementById('chat-messages-container');
+    const gifPlaceholder = document.createElement('div');
+    gifPlaceholder.className = 'loader-placeholder';
+    gifPlaceholder.innerHTML = '<img src="/static/images/sphere2.gif" alt="AI">';
+    chatContainer.appendChild(gifPlaceholder);
+    chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
+        behavior: 'smooth'
+    });
+
+    // Hide the sphere
+    document.querySelector('.sphere').classList.add('hidden');
+
+    return gifPlaceholder;
 }

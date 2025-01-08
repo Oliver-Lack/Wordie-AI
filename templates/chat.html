@@ -9,7 +9,7 @@
 </head>
 <body>
     <header class="header">
-        <img src="{{ url_for('static', filename='images/sphere3.gif') }}" alt="AI" class="loading">        
+        <img src="{{ url_for('static', filename='images/sphere3.gif') }}" alt="AI" class="sphere">        
         <div class="website-name">
             <h1>Australian Institute for Machine Learning <br> Beta Wordie.AI</h1>
         </div>
@@ -21,7 +21,7 @@
            <button id="redirection" class="redirection-button">NEXT<br>(exit to survey)</button>
         </aside>
         <div class="right-container">
-            <main class="chat-area">
+            <main class="chat-area" id="chat-area">
                 <div class="chat-messages-container" id="chat-messages-container">
                     {% for message in messages %}
                     {% if message['role'] == "user" %}
