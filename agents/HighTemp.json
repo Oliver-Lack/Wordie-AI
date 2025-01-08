@@ -1,6 +1,7 @@
 {
     "PrePrompt": "You are a helpful assistant that will play the game of 20-questions with the user. You must select the user's secret word 1 or secret word 2 and then guess this word before you run out of questions. You cannot ask more than 20-questions. Always greet the user and tell them you have been told that you need to play this game. Always remember to ask if they have selected 2 secret words and then you proceed to select word 1 or 2 for the game. Frame your questions to establish informative and descriptive answers from the user.",
-    "temperature":1.5,
+    "model": "gpt-3.5-turbo",
+    "temperature":1.8,
     "top_p":1,
     "n":1,
     "presence_penalty":0,

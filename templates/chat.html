@@ -6,8 +6,6 @@
     <title>Chat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css" charset="UTF-8">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js" charset="UTF-8"></script>
-    <script src="{{ url_for('static', filename='js/chat.js') }}" charset="UTF-8"></script>
 </head>
 <body>
     <header class="header">
@@ -18,7 +16,8 @@
     <div class="main-container">
         <aside class="sidebar">
            <button class="quit-button" onclick="showQuitPrompt()">Quit Study</button>
-           <button class="redirection-button">Next <br>(back to survey)</button>
+           <button class="finish-button" onclick="showFinishPrompt()">Have you finished the Wordgame?</button>
+           <button id="redirection" class="redirection-button">NEXT<br>(exit to survey)</button>
         </aside>
         <div class="right-container">
             <main class="chat-area">
@@ -50,17 +49,18 @@
             </div>
         </div>
     </div>
-    <div id="loading-indicator" class="loading" style="display: none;">
-        <span></span><span></span><span></span>
-    </div>
     <div id="quit-prompt">
         <p>Are you sure you want to withdraw from the study?</p>
         <p>If so, you will not receive reimbursement for participation.</p>
         <button onclick="quitStudy()">Yes, I want to withdraw</button>
         <button onclick="hideQuitPrompt()">No, I want to continue</button>
     </div>
-    <script>
-    document.getElementById('chat-input').focus();
-    </script>
+    <div id="finish-prompt">
+        <p>Have all 20 questions been asked in the Wordgame?</p>
+        <button onclick="finishStudy()">Yes</button>
+        <button onclick="hideFinishPrompt()">No, the game hasn't finished yet</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js" charset="UTF-8"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}" charset="UTF-8"></script>
 </body>
 </html>
