@@ -99,8 +99,9 @@ function generateAssistantResponse(userMessage) {
             gifPlaceholder.remove();
         
             // Show the sphere
-            document.querySelector('.sphere').classList.remove('hidden');
-            
+            const sphere = document.querySelector('.sphere');
+            sphere.classList.add('visible');
+            sphere.classList.remove('hidden');
         
             if (data.error) {
                 console.error('Error:', data.error);
@@ -114,7 +115,9 @@ function generateAssistantResponse(userMessage) {
             gifPlaceholder.remove();
         
             // Show the sphere
-            document.querySelector('.sphere').classList.remove('hidden');
+            const sphere = document.querySelector('.sphere');
+            sphere.classList.add('visible');
+            sphere.classList.remove('hidden');
         
             console.error('Error:', error);
             appendMessage('Error retrieving response from the assistant.', 'llm');
@@ -134,7 +137,9 @@ function insertLoaderPlaceholder() {
     });
 
     // Hide the sphere
-    document.querySelector('.sphere').classList.add('hidden');
+    const sphere = document.querySelector('.sphere');
+    sphere.classList.add('hidden');
+    sphere.classList.remove('visible');
 
     return gifPlaceholder;
 }
