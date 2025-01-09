@@ -65,7 +65,7 @@ def add_user(username):
     conn.close()
 
 # Add a message and its response to the messages table
-def add_message(user_id, message, response, model, temperature, prompt_tokens, completion_tokens, total_tokens):
+def add_message(user_id, message, response, model, temperature, prompt_tokens, completion_tokens, total_tokens, logprobs_list):
     conn = sqlite3.connect('users.db')
     conn.text_factory = str
     c = conn.cursor()
@@ -83,6 +83,7 @@ def add_message(user_id, message, response, model, temperature, prompt_tokens, c
         'prompt_tokens': prompt_tokens,
         'completion_tokens': completion_tokens,
         'total_tokens': total_tokens,
+        'logprobs': logprobs_list,  # Log each token's log probability list
         'timestamp': str(datetime.now())
     })
 
@@ -143,16 +144,22 @@ def chat():
             
             model = wordie.agent_data.get("model", "gpt-3.5-turbo")
             try:
-                conversation, prompt_tokens, completion_tokens, total_tokens = wordie.thinkAbout(message, conversation, model=model)
+                # Get logprobs_list along with other return values
+                conversation, prompt_tokens, completion_tokens, total_tokens, logprobs_list = wordie.thinkAbout(message, conversation, model=model)
                 response = conversation[-1]["content"]
                 user_id = session['user_id']
-                add_message(user_id, message, str(response), model, wordie.agent_data["temperature"], prompt_tokens, completion_tokens, total_tokens)
+                # Include logprobs_list here
+                add_message(user_id, message, str(response), model, wordie.agent_data["temperature"], prompt_tokens, completion_tokens, total_tokens, logprobs_list)
                 return jsonify({'response': response})
             except Exception as e:
+                # Log the exception details
+                app.logger.error(f"Error processing message: {e}")
                 return jsonify({'error': 'Error processing message'}), 500
 
         return render_template('chat.html', username=session['username'], messages=conversation, show_popup=show_popup)
     except Exception as ex:
+        # Log the exception details
+        app.logger.error(f"Unexpected error occurred: {ex}")
         return jsonify({'error': 'Unexpected error occurred'}), 500
 
 # Define a route for the logout functionality
