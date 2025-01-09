@@ -47,9 +47,13 @@ def openai_api_request(model="gpt-3.5-turbo",
     # Extract the logprobs of each token
     choices = response_json.get('choices', [])
     if choices:
-        logprobs_list = choices[0].get('logprobs', {}).get('token_logprobs', [])
+        logprobs_list = [logprob['logprob'] for logprob in choices[0].get('logprobs', {}).get('content', [])]
     else:
         logprobs_list = []
+
+    # Debugging information
+    if not logprobs_list:
+        print("Logprobs are empty. Response JSON:", response_json)
 
     return response_json, prompt_tokens, completion_tokens, total_tokens, logprobs_list
 
@@ -118,6 +122,10 @@ class API_Call():
                 with open("logs.txt", "w", encoding="utf-8") as file:
                     for i in conversation:
                         file.write(str(i) + "\n")
+
+            # Debugging information
+            if not logprobs_list:
+                print("Logprobs are empty. Response JSON:", response)
 
             # Return additional logprob information
             return conversation, prompt_tokens, completion_tokens, total_tokens, logprobs_list
