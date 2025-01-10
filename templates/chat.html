@@ -11,7 +11,7 @@
     <header class="header">
         <img src="{{ url_for('static', filename='images/sphereSlow.gif') }}" alt="AI" class="sphere hidden">        
         <div class="website-name">
-            <h1>Australian Institute for Machine Learning <br> Beta Wordie.AI</h1>
+            <h1>Australian Institute for Machine&nbsp;Learning<br>Beta Wordie.AI</h1>
         </div>
     </header>
     <div class="main-container">
@@ -43,7 +43,7 @@
                 </div>
             </main>
             <div class="chat-input">
-                <form id="chat-form" method="POST" action="{{ url_for('chat') }}">
+                <form id="chat-form" method="POST" action="{{ url_for('chat') }}" autocomplete="off">
                     <input type="text" id="chat-input" class="text-input" name="message" placeholder="Type your message here...">
                     <button class="submit-button" type="submit">Submit</button>
                 </form>
@@ -58,7 +58,7 @@
     </div>
     <div id="finish-prompt">
         <p>Have all 20 questions been asked in the Wordgame?</p>
-        <button onclick="finishStudy()">Yes</button>
+        <button id="reset" onclick="finishStudy()">Yes</button>
         <button onclick="hideFinishPrompt()">No, the game hasn't finished yet</button>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js" charset="UTF-8"></script>

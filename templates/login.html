@@ -7,20 +7,106 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <form action="/" method="post">
-        <div class="container">
-            <div class="login-form">
-                <img src="{{ url_for('static', filename='images/sphere1.png') }}" alt="Website Logo" class="logo">
-                <h1>Artificial Intelligence <br>Gateway</h1>
-                {% if get_flashed_messages()[0] != "" %}
-                    <h5>{{get_flashed_messages()[0]}}</h5>
-                {% endif %}
-                <input type="text" class="input-field" placeholder="Prolific_ID" name="username" id="username">
-                <button type="submit" name="login">Connect</button>
-            </div>
+   <form action="/" method="post" autocomplete="off">
+    <div class="container">
+        <div class="login-form">
+            <img src="{{ url_for('static', filename='images/sphere1.png') }}" alt="Website Logo" class="logo">
+            <h1>Artificial Intelligence <br>Gateway</h1>
+            {% if get_flashed_messages()[0] != "" %}
+                <h5>{{get_flashed_messages()[0]}}</h5>
+            {% endif %}
+            <input type="text" class="input-field" placeholder="Prolific_ID" name="username" id="username">
+            <input type="password" class="input-field" placeholder="Password" name="password" id="password">
+            <button type="submit" name="login">Connect</button>
+            <table class="password-table">
+                <thead>
+                    <tr>
+                        <th>Password <br><br></th>
+                        <th>Agent <br>Condition <br><br></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>hat</td>
+                        <td>1HighTemp</td>
+                    </tr>
+                    <tr>
+                        <td>lake</td>
+                        <td>1LowTemp</td>
+                    </tr>
+                    <tr>
+                        <td>music</td>
+                        <td>1MidTemp</td>
+                    </tr>
+                    <tr>
+                        <td>red</td>
+                        <td>2HighTemp</td>
+                    </tr>
+                    <tr>
+                        <td>blue</td>
+                        <td>2LowTemp</td>
+                    </tr>
+                    <tr>
+                        <td>orange</td>
+                        <td>2MidTemp</td>
+                    </tr>
+                    <tr>
+                        <td>pilot1</td>
+                        <td>temp0</td>
+                    </tr>
+                    <tr>
+                        <td>pilot2</td>
+                        <td>temp0_2</td>
+                    </tr>
+                    <tr>
+                        <td>pilot3</td>
+                        <td>temp0_4</td>
+                    </tr>
+                    <tr>
+                        <td>pilot4</td>
+                        <td>temp0_7</td>
+                    </tr>
+                    <tr>
+                        <td>pilot5</td>
+                        <td>temp1</td>
+                    </tr>
+                    <tr>
+                        <td>pilot6</td>
+                        <td>temp1_2</td>
+                    </tr>
+                    <tr>
+                        <td>pilot7</td>
+                        <td>temp1_4</td>
+                    </tr>
+                    <tr>
+                        <td>pilot8</td>
+                        <td>temp1_7</td>
+                    </tr>
+                    <tr>
+                        <td>pilot9</td>
+                        <td>temp2</td>
+                    </tr>
+                    <tr>
+                        <td>wordie123</td>
+                        <td>default</td>
+                    </tr>
+                    <tr>
+                        <td>elderberry</td>
+                        <td>experimental</td>
+                    </tr>
+                    <tr>
+                        <td>gpt4o</td>
+                        <td>llm_gpt4o</td>
+                    </tr>
+                    <tr>
+                        <td>o1</td>
+                        <td>llm_o1</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </form>
-    
+    </div>
+</form>
     <script>
         document.getElementById('username').focus();
     </script>

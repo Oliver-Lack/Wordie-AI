@@ -1,6 +1,15 @@
 // Focus on the chat input field when the page loads
 document.getElementById('chat-input').focus();
 
+// Scroll bottom on refresh
+document.addEventListener('DOMContentLoaded', function() {
+    const chatContainer = document.getElementById('chat-messages-container');
+    chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
+        behavior: 'smooth'
+    });
+});
+
 // Environment variable alert
 function showAlert() {
     alert("Warning: The specified environment variable was not found!");
@@ -143,3 +152,51 @@ function insertLoaderPlaceholder() {
 
     return gifPlaceholder;
 }
+
+// Finish Prompt button pops up after 18 submit hits and then highlights after 21 submit hits
+
+        // Retrieve the submit count from localStorage or initialize it to 0
+let submitCount = localStorage.getItem('submitCount') ? parseInt(localStorage.getItem('submitCount')) : 0;
+
+        // Update the finish button display and color based on the stored submit count
+const finishButton = document.querySelector('.finish-button');
+const chatForm = document.getElementById('chat-form');
+const resetButton = document.getElementById('reset');
+
+if (submitCount >= 6) {
+    finishButton.style.display = 'block';
+}
+if (submitCount >= 18) {
+    finishButton.style.backgroundColor = '#222';
+}
+if (submitCount >= 21) {
+    finishButton.style.backgroundColor = '#FF8266';
+}
+
+chatForm.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+    submitCount++;
+    localStorage.setItem('submitCount', submitCount); // Store the updated submit count
+
+    // Change display to block after 6 submits
+    if (submitCount >= 6) {
+        finishButton.style.display = 'block';
+    }
+
+    // Change background-color to #222 after 18 submits
+    if (submitCount >= 15) {
+        finishButton.style.backgroundColor = '#222';
+    }
+
+    // Change background-color to #FF8266 after 21 submits
+    if (submitCount >= 21) {
+        finishButton.style.backgroundColor = '#FF8266';
+    }
+});
+
+resetButton.addEventListener('click', function() {
+    submitCount = 0;
+    localStorage.setItem('submitCount', submitCount); // Reset the submit count in localStorage
+    finishButton.style.display = 'none';
+    finishButton.style.backgroundColor = 'transparent';
+});

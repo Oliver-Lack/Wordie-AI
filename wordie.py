@@ -6,6 +6,10 @@ import sys
 import os
 import json
 from datetime import datetime
+import subprocess
+
+# Run add_passwords.py script to initialise the users.db with passwords connected to agent conditions
+subprocess.run([sys.executable, 'add_passwords.py'])
 
 # Create a Flask app instance and set a secret key for session management
 app = Flask(__name__)
@@ -26,6 +30,9 @@ def init_db():
                  response TEXT NOT NULL,
                  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                  FOREIGN KEY (user_id) REFERENCES users (id))''')
+    c.execute('''CREATE TABLE IF NOT EXISTS passwords 
+                 (password TEXT PRIMARY KEY, 
+                 agent TEXT NOT NULL)''')
     conn.commit()
     conn.close()
 
@@ -107,6 +114,7 @@ def get_messages(user_id, systemprompt):
 def login():
     if request.method == 'POST':
         username = request.form['username']
+        password = request.form['password']
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
         c.execute('SELECT id FROM users WHERE username = ?', (username,))
@@ -117,11 +125,20 @@ def login():
             c.execute('INSERT INTO users (username) VALUES (?)', (username,))
             user_id = c.lastrowid
             conn.commit()
-        session['user_id'] = user_id
-        session['username'] = username
-        flash('', 'success')
-        conn.close()
-        return redirect(url_for('chat'))
+        c.execute('SELECT agent FROM passwords WHERE password = ?', (password,))
+        agent = c.fetchone()
+        if agent:
+            session['user_id'] = user_id
+            session['username'] = username
+            session['agent'] = agent[0]
+            wordie.update_agent(f"agents/{agent[0]}.json")  # Update the agent for the wordie instance
+            flash('', 'success')
+            conn.close()
+            return redirect(url_for('chat'))
+        else:
+            flash('Invalid password', 'error')
+            conn.close()
+            return redirect(url_for('login'))
     return render_template('login.html')
 
 # Define a route for the chat page
@@ -134,6 +151,8 @@ def chat():
         return redirect(url_for('login'))
 
     try:
+        agent = session.get('agent', 'default')
+        wordie.update_agent(f"agents/{agent}.json")
         conversation = get_messages(session['user_id'], wordie.agent_data["PrePrompt"])
 
         if request.method == 'POST':
@@ -144,21 +163,17 @@ def chat():
             
             model = wordie.agent_data.get("model", "gpt-3.5-turbo")
             try:
-                # Get logprobs_list along with other return values
                 conversation, prompt_tokens, completion_tokens, total_tokens, logprobs_list = wordie.thinkAbout(message, conversation, model=model)
                 response = conversation[-1]["content"]
                 user_id = session['user_id']
-                # Include logprobs_list here
                 add_message(user_id, message, str(response), model, wordie.agent_data["temperature"], prompt_tokens, completion_tokens, total_tokens, logprobs_list)
                 return jsonify({'response': response})
             except Exception as e:
-                # Log the exception details
                 app.logger.error(f"Error processing message: {e}")
                 return jsonify({'error': 'Error processing message'}), 500
 
         return render_template('chat.html', username=session['username'], messages=conversation, show_popup=show_popup)
     except Exception as ex:
-        # Log the exception details
         app.logger.error(f"Unexpected error occurred: {ex}")
         return jsonify({'error': 'Unexpected error occurred'}), 500
 
@@ -181,7 +196,6 @@ def run_flask():
     app.run(debug=True, host='127.0.0.1', port=5000)
 
 if __name__ == '__main__':
-    args = sys.argv
-    wordie = API_Call(agent=args[1]) if len(args) > 1 else API_Call()
     init_db()
+    wordie = API_Call()  # Initialize without agent
     run_flask()

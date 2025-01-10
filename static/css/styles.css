@@ -53,7 +53,7 @@ h1 {
 }
 
 .sphere {
-  margin-right: 20px;
+  margin-right: 0;
   width: "auto";
   height: "110";
   border-radius: 90%;
@@ -145,7 +145,8 @@ h1 {
 }
 
 .finish-button {
-  background-color: #222;
+  display: none;
+  background-color: transparent;
   position: flex;
   color: #FFFFFF;
   border: none;
@@ -322,7 +323,7 @@ button:active {
   margin-bottom: 10px;
 }
 
-.login-form input[type="text"] {
+.login-form .input-field {
   display: block;
   width: 80%;
   padding: 10px;
@@ -334,7 +335,7 @@ button:active {
   transition: border-color 0.3s ease;
 }
 
-.login-form input[type="text"]:focus {
+.login-form .input-field:focus {
   border-color: #de222c;
 }
 
@@ -352,6 +353,20 @@ button:active {
 
 .login-form button[type="submit"]:hover {
   background-color: #de222c;
+}
+
+.password-table {
+  position: absolute;
+  right: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.password-table td, .password-table th {
+  padding: 0 10px; /* Adjust the value as needed */
 }
 
 .input-field {

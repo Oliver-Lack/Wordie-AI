@@ -2,6 +2,8 @@
 
 1. Register for an API key and and create an environment variable named "OPENAI_API_KEY" with the key in it
 
+2. Run the add_passwords.py file to setup database for link between passwords and loading conditions (agents) into app.
+
 2. Start the app
 
 To start Wordie, run the following command:
