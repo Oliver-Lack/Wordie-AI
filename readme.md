@@ -26,7 +26,6 @@ Extra info:
 
 
 ToDo:
-1. logprobs raw to json
 2. calculate sum of logprobs for each message and log to json
 3. calculate sum of logprobs for each conversation and log to json
 4. finish button popup after 20 user messages
@@ -35,3 +34,9 @@ ToDo:
 6. Figure way to launch different agents based on new login app
 7. Finalise agent content
 8. backup log of json data as json and csv to cloud server. 
+
+Measures of unpredictability required:
+1. joint probability of sequence and interactions (iterated exponent of the summed logprobs)
+2. prompt engineering score
+3. Human Perception of unpredictability (survey)
+4. zipf law score

@@ -1,14 +1,13 @@
-# This works towards calculating a join probability of a sequence of tokens from each user interaction.
+# This script works towards calculating a join probability of a sequence of tokens from each user interaction.
 #logprobs logs all the logarithmic probabilities calculated for each sampled token in every response.
-#This can be seen in the interactions.json file.
+#An example can be seen in the interactions.json file (These have not been controlled for temperature differences).
 #https://cookbook.openai.com/examples/using_logprobs
 
 
-# LLM sampling sequence is UserInput->LLMStuff-> RawLogits->TemperatureScalingOfRawLogits->Softmax(LogProbs)->TokenSampling
+# Relevant LLM computational sequence is UserInput->LLMStuff-> RawLogits->TemperatureScalingOfRawLogits->Softmax(LogProbs)->TokenSampling
 # Current understanding: TEMP DOES EFFECT LOGPROBS!! SHOULD NOT SEE HUGE DIFFERENCE DISTRIBUTION OF LOGPROBS IN HIGH/LOW TEMP AGENTS
-# Therefore, the calculated joint probability of the logprobs in the interactions.json file  will only control for stochastic sampling.
-# This does not provide a "true" joint probability unless iterate again with a fixed temperature.
-
+# Therefore, the calculated joint probability of the logprobs in the interactions.json file (relativeSequenceProbability)  will only control for stochastic sampling.
+# This does not provide a "true" joint probability unless token sequences of all conditions are iterated with a fixed temperature and model. 
 
 
 ########### Create Temperature controlled logprobs
