@@ -42,6 +42,10 @@ function finishStudy() {
     document.getElementById('finish-prompt').style.display = 'none';
 }
 
+function redirectionReset() {
+    document.getElementById('redirection').style.display = 'none';
+}
+
 // Appending the chat-area and loading icons
 function appendMessage(message, role) {
     const chatContainer = document.getElementById('chat-messages-container');
@@ -162,6 +166,15 @@ let submitCount = localStorage.getItem('submitCount') ? parseInt(localStorage.ge
 const finishButton = document.querySelector('.finish-button');
 const chatForm = document.getElementById('chat-form');
 const resetButton = document.getElementById('reset');
+const chatMessagesContainer = document.getElementById('chat-messages-container');
+
+// Check if there are no messages appended to the page
+if (chatMessagesContainer.children.length === 0) {
+    submitCount = 0;
+    localStorage.setItem('submitCount', submitCount);
+    finishButton.style.display = 'none';
+    finishButton.style.backgroundColor = 'transparent';
+}
 
 if (submitCount >= 6) {
     finishButton.style.display = 'block';
@@ -179,7 +192,7 @@ chatForm.addEventListener('submit', function(event) {
     localStorage.setItem('submitCount', submitCount); // Store the updated submit count
 
     // Change display to block after 6 submits
-    if (submitCount >= 6) {
+    if (submitCount >= 8) {
         finishButton.style.display = 'block';
     }
 

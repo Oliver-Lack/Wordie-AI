@@ -9,7 +9,7 @@
 </head>
 <body>
     <header class="header">
-        <img src="{{ url_for('static', filename='images/sphereSlow.gif') }}" alt="AI" class="sphere hidden">        
+        <img src="{{ url_for('static', filename='images/sphere2.gif') }}" alt="AI" class="sphere hidden">        
         <div class="website-name">
             <h1>Australian Institute for Machine&nbsp;Learning<br>Beta Wordie.AI</h1>
         </div>
@@ -18,7 +18,7 @@
         <aside class="sidebar">
            <button class="quit-button" onclick="showQuitPrompt()">Quit Study</button>
            <button class="finish-button" onclick="showFinishPrompt()">Have you finished the Wordgame?</button>
-           <button id="redirection" class="redirection-button">NEXT<br>(exit to survey)</button>
+           <button id="redirection" onclick="redirectionReset()" class="redirection-button">NEXT<br>(exit to survey)</button>
         </aside>
         <div class="right-container">
             <main class="chat-area" id="chat-area">

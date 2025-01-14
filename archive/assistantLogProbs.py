@@ -1,9 +1,9 @@
 # This script works towards calculating a join probability of a sequence of tokens from each user interaction.
-#logprobs logs all the logarithmic probabilities calculated for each sampled token in every response.
+#logprobs calls all the logarithmic probabilities calculated for each sampled token in every response.
 #An example can be seen in the interactions.json file (These have not been controlled for temperature differences).
 #https://cookbook.openai.com/examples/using_logprobs
 
-
+    # Run 
 # Relevant LLM computational sequence is UserInput->LLMStuff-> RawLogits->TemperatureScalingOfRawLogits->Softmax(LogProbs)->TokenSampling
 # Current understanding: TEMP DOES EFFECT LOGPROBS!! SHOULD NOT SEE HUGE DIFFERENCE DISTRIBUTION OF LOGPROBS IN HIGH/LOW TEMP AGENTS
 # Therefore, the calculated joint probability of the logprobs in the interactions.json file (relativeSequenceProbability)  will only control for stochastic sampling.
@@ -11,6 +11,9 @@
 
 
 ########### Create Temperature controlled logprobs
+
+import json
+import openai
 
 def get_logprobs_for_response(response_text, original_message, model="gpt-3.5-turbo"):
     # Formulate the message history for context
@@ -26,7 +29,7 @@ def get_logprobs_for_response(response_text, original_message, model="gpt-3.5-tu
         max_tokens=0,
         messages=messages,
         logprobs=5,
-        temperature=1
+        temperature=1  # This is the "iteration_temp"
     )
     
     # Assuming the model allows; in practice, you might directly access logprobs using pattern knowledge by inspecting the API request format
@@ -48,26 +51,30 @@ def process_and_log_interactions(input_json_path, output_json_path):
         new_interactions = []
         
         for interaction in interactions:
-            if interaction['type'] == 'message':
-                content = interaction['content']
-                message = content['message']
-                response = content['response']
-                
-                # Get original response logprobs without generating new text
-                logprobs = get_logprobs_for_response(response, message)
-                
-                # Create a new entry with logprobs
-                new_interactions.append({
-                    "type": "logprobs_analysis",
-                    "content": {
-                        "original_response": response,
-                        "logprobs": logprobs,
-                        "model": content['model'],
-                        "timestamp": content['timestamp']
-                    }
-                })
+            # Access information directly from interaction as structured in the sample provided
+            message = interaction['message']
+            response = interaction['response']
+            model = interaction['model']
+            original_temp = interaction['temperature']
+            
+            # Get original response logprobs without generating new text
+            logprobs = get_logprobs_for_response(response, message)
+            
+            # Create a new entry with logprobs
+            new_interactions.append({
+                "type": "logprobs_analysis",
+                "content": {
+                    "original_response": response,
+                    "logprobs": logprobs,
+                    "model": model,
+                    "original_temp": original_temp,
+                    "iteration_temp": 1,  # As specified in the new API call
+                    "user_message": message,
+                    "timestamp": interaction['timestamp']
+                }
+            })
         
-        # Store processed interactions in new data structure
+        # Store processed interactions in the new data structure
         new_data["users"][user_id] = {
             "username": username,
             "interactions": new_interactions
@@ -82,7 +89,32 @@ process_and_log_interactions('interactions.json', 'tempControlledLogProbs.json')
 
 
 
+
+
+
+
+
+
+
+
+
 ############ Log new logprobs to tempControlledLogprobs.json with user info
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
