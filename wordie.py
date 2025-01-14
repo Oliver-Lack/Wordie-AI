@@ -7,6 +7,7 @@ import os
 import json
 from datetime import datetime
 import subprocess
+import math
 
 # Run add_passwords.py script to initialise the users.db with passwords connected to agent conditions
 subprocess.run([sys.executable, 'add_passwords.py'])
@@ -36,11 +37,21 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Function to log user data to JSON file
+# Function to calculate and return the joint logarithmic probability from logprobs.
+    # This function was changed from the exponentiated sum of loprobs to JUST the sum of logprobs.
+    # This is because of underflow problems, approximating the former as 0 for most sequences. 
+    # This function returns the joint log probability from logprobs.
+        # You can compare log probability sums directly. The less negative the value, the 
+        # higher the probability. For example, if one log probability is -5 and another is -10, 
+        # the former represents a higher probability than the latter.
+def calculate_joint_log_probability(logprobs):
+    return sum(logprobs) 
+
+# Function to log data to JSON file
 def log_user_data(data):
     try:
-        with open('interactions.JSON', 'r') as f:
-            file_content = f.read().strip()  # Read and strip whitespace
+        with open('interactions.json', 'r') as f:
+            file_content = f.read().strip()
             interactions = json.loads(file_content) if file_content else {"users": {}}
     except (FileNotFoundError, json.JSONDecodeError):
         interactions = {"users": {}}
@@ -54,12 +65,28 @@ def log_user_data(data):
 
     interaction_type = 'message' if 'message' in data else 'action'
     interaction_content = {k: v for k, v in data.items() if k not in ['user_id', 'username']}
-    interactions["users"][user_id]["interactions"].append({
-        "type": interaction_type,
-        "content": interaction_content
-    })
+    
+    # Calculate and add the relativeSequenceJointLogProbability
+    logprobs = data.get('logprobs', [])
+    interaction_content['relativeSequenceJointLogProbability'] = calculate_joint_log_probability(logprobs)
+    
+    # Creating variable with all of users logprobs from interaction
+    all_logprobs = []
+    for interaction in interactions["users"][user_id]["interactions"]:
+        if 'logprobs' in interaction:
+            all_logprobs.extend(interaction['logprobs'])
 
-    with open('interactions.JSON', 'w') as f:
+    # Include the logprobs from the current message too
+    all_logprobs.extend(logprobs)
+
+    #Calculate and add the relativeInteractionJointLogProbability
+    interaction_content['relativeInteractionJointLogProbability'] = calculate_joint_log_probability(all_logprobs)
+    
+    # Add interaction content to user interactions
+    interactions["users"][user_id]["interactions"].append(interaction_content)
+
+    # Write updated data back to the JSON file
+    with open('interactions.json', 'w') as f:
         json.dump(interactions, f, indent=4)
 
 # Add a new user to the users table
