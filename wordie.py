@@ -188,7 +188,7 @@ def chat():
                 flash('Message cannot be empty', 'error')
                 return jsonify({'error': 'Message cannot be empty'}), 400
             
-            model = wordie.agent_data.get("model", "gpt-3.5-turbo")
+            model = wordie.agent_data.get("model", "gpt-4o")
             try:
                 conversation, prompt_tokens, completion_tokens, total_tokens, logprobs_list = wordie.thinkAbout(message, conversation, model=model)
                 response = conversation[-1]["content"]
