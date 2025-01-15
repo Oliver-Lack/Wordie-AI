@@ -1,5 +1,7 @@
 Flask
 Werkzeug
 PyWebview
+pyinstaller
 openai
 requests
+py2app

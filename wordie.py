@@ -8,6 +8,7 @@ import json
 from datetime import datetime
 import subprocess
 import math
+import webview
 
 # Run add_passwords.py script to initialise the users.db with passwords connected to agent conditions
 subprocess.run([sys.executable, 'add_passwords.py'])
@@ -15,6 +16,7 @@ subprocess.run([sys.executable, 'add_passwords.py'])
 # Create a Flask app instance and set a secret key for session management
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
+window = webview.create_window('Wordie.ai', app, width=1920, height=1080)
 
 # Initialize the SQLite database
 def init_db():
@@ -220,7 +222,8 @@ def logout():
 
 # Function to run the Flask app
 def run_flask():
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    #app.run(debug=True, host='127.0.0.1', port=5000)
+    webview.start()
 
 if __name__ == '__main__':
     init_db()
