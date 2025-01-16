@@ -5,3 +5,4 @@ pyinstaller
 openai
 requests
 py2app
+gunicorn

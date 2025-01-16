@@ -2680,6 +2680,67 @@
                     "relativeInteractionJointLogProbability": -24.60120428321085
                 }
             ]
+        },
+        "9": {
+            "username": "ollie888",
+            "interactions": [
+                {
+                    "message": "hi",
+                    "response": "Hello! I've been told we need to play a game of 20-questions. Have you selected two secret words? Once you confirm, I'll choose to play with either secret word 1 or 2.",
+                    "model": "gpt-4o",
+                    "temperature": 1,
+                    "prompt_tokens": 177,
+                    "completion_tokens": 43,
+                    "total_tokens": 220,
+                    "logprobs": [
+                        -0.0040812474,
+                        -0.029750952,
+                        -0.033422638,
+                        -0.001945057,
+                        -0.40946907,
+                        -1.3916887,
+                        -0.016464345,
+                        0.0,
+                        -4.990154e-05,
+                        -0.18002427,
+                        -0.014103801,
+                        -0.0018518929,
+                        -1.0445127e-05,
+                        0.0,
+                        -0.30031016,
+                        -0.0007100478,
+                        -0.10562897,
+                        -0.032467816,
+                        -3.1281633e-07,
+                        -0.013233759,
+                        -0.51669526,
+                        0.0,
+                        0.0,
+                        -0.5390094,
+                        -1.1773217,
+                        -0.9573633,
+                        -0.091144554,
+                        -0.003227741,
+                        -2.4130812,
+                        -0.0842511,
+                        -0.41319242,
+                        -0.4441134,
+                        -0.14657477,
+                        -0.35149902,
+                        -0.007077175,
+                        -6.704273e-07,
+                        -2.808727e-05,
+                        0.0,
+                        0.0,
+                        -0.06356921,
+                        -3.1281633e-07,
+                        -0.035890162
+                    ],
+                    "timestamp": "2025-01-16 15:40:39.720386",
+                    "relativeSequenceJointLogProbability": -9.77925286809696,
+                    "relativeInteractionJointLogProbability": -9.77925286809696
+                }
+            ]
         }
     }
 }

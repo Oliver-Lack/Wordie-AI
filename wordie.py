@@ -10,15 +10,7 @@ import subprocess
 import math
 import webview
 
-# Run add_passwords.py script to initialise the users.db with passwords connected to agent conditions
-subprocess.run([sys.executable, 'add_passwords.py'])
-
-# Create a Flask app instance and set a secret key for session management
-app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'
-window = webview.create_window('Wordie.ai', app, width=1920, height=1080)
-
-# Initialize the SQLite database
+# Function to initialize the SQLite database for users, passwords, and chat message history.
 def init_db():
     conn = sqlite3.connect('users.db')
     conn.text_factory = str
@@ -38,6 +30,17 @@ def init_db():
                  agent TEXT NOT NULL)''')
     conn.commit()
     conn.close()
+
+# Initialize the database and wordie instance outside of any function for Gunicorn and AWS integration
+init_db()
+wordie = API_Call() 
+
+# Run add_passwords.py script to initialise the users.db with passwords connected to agent conditions
+subprocess.run([sys.executable, 'add_passwords.py'])
+
+# Create a Flask app instance and set a secret key for session management
+app = Flask(__name__)
+app.secret_key = os.environ['FLASK_SECRET_KEY']
 
 # Function to calculate and return the joint logarithmic probability from logprobs.
     # This function was changed from the exponentiated sum of loprobs to JUST the sum of logprobs.
@@ -220,12 +223,7 @@ def logout():
     flash('You are being redirected', 'success')
     return redirect(url_for('QUALTRICSredirection.com'))
 
-# Function to run the Flask app
-def run_flask():
-    #app.run(debug=True, host='127.0.0.1', port=5000)
-    webview.start()
 
 if __name__ == '__main__':
-    init_db()
-    wordie = API_Call()  # Initialize without agent
-    run_flask()
+    # No need to call init_db() or create wordie here, as it's done at the module level for Gunicorn and AWS integration.
+    pass
