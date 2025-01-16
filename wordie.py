@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, jsonify, render_template, request, session, redirect, url_for, flash
+from flask import Flask, jsonify, render_template, request, session, redirect, url_for, flash, g
 from werkzeug.security import generate_password_hash, check_password_hash
 from API import API_Call
 import sys
@@ -9,6 +9,7 @@ from datetime import datetime
 import subprocess
 import math
 import webview
+import csv
 
 # Function to initialize the SQLite database for users, passwords, and chat message history.
 def init_db():
@@ -93,6 +94,30 @@ def log_user_data(data):
     # Write updated data back to the JSON file
     with open('interactions.json', 'w') as f:
         json.dump(interactions, f, indent=4)
+
+       # Also append to CSV
+    csv_headers = ["timestamp", "user_id", "username", "interaction_type", "message", "response", "model", "temperature", "logprobs"]
+    interaction_data = [
+        data.get('timestamp', ''),
+        data.get('user_id', ''),
+        data.get('username', ''),
+        interaction_type,
+        data.get('message', ''),
+        data.get('response', ''),
+        data.get('model', ''),
+        data.get('temperature', ''),
+        logprobs
+    ]
+
+    # Check if CSV needs headers
+    csv_file = 'interactions_backup.csv'
+    write_headers = not os.path.exists(csv_file)
+
+    with open(csv_file, 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        if write_headers:
+            writer.writerow(csv_headers)
+        writer.writerow(interaction_data)
 
 # Add a new user to the users table
 def add_user(username):
