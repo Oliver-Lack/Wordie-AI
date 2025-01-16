@@ -6,3 +6,4 @@ openai
 requests
 py2app
 gunicorn
+boto3

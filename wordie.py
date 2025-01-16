@@ -10,6 +10,10 @@ import subprocess
 import math
 import webview
 import csv
+import boto3
+
+#batch for logging data to AWS bucket
+interaction_batch = []
 
 # Function to initialize the SQLite database for users, passwords, and chat message history.
 def init_db():
@@ -55,69 +59,78 @@ def calculate_joint_log_probability(logprobs):
 
 # Function to log data to JSON file
 def log_user_data(data):
-    try:
-        with open('interactions.json', 'r') as f:
-            file_content = f.read().strip()
-            interactions = json.loads(file_content) if file_content else {"users": {}}
-    except (FileNotFoundError, json.JSONDecodeError):
-        interactions = {"users": {}}
+       global interaction_batch
 
-    user_id = str(data['user_id'])
-    if user_id not in interactions["users"]:
-        interactions["users"][user_id] = {
-            "username": data.get('username', ''),
-            "interactions": []
-        }
+       # Retain existing logging to interactions.json and interactions_backup.csv
+       try:
+           with open('interactions.json', 'r') as f:
+               file_content = f.read().strip()
+               interactions = json.loads(file_content) if file_content else {"users": {}}
+       except (FileNotFoundError, json.JSONDecodeError):
+           interactions = {"users": {}}
 
-    interaction_type = 'message' if 'message' in data else 'action'
-    interaction_content = {k: v for k, v in data.items() if k not in ['user_id', 'username']}
-    
-    # Calculate and add the relativeSequenceJointLogProbability
-    logprobs = data.get('logprobs', [])
-    interaction_content['relativeSequenceJointLogProbability'] = calculate_joint_log_probability(logprobs)
-    
-    # Creating variable with all of users logprobs from interaction
-    all_logprobs = []
-    for interaction in interactions["users"][user_id]["interactions"]:
-        if 'logprobs' in interaction:
-            all_logprobs.extend(interaction['logprobs'])
+       user_id = str(data['user_id'])
+       if user_id not in interactions["users"]:
+           interactions["users"][user_id] = {
+               "username": data.get('username', ''),
+               "interactions": []
+           }
 
-    # Include the logprobs from the current message too
-    all_logprobs.extend(logprobs)
+       interaction_type = 'message' if 'message' in data else 'action'
+       interaction_content = {k: v for k, v in data.items() if k not in ['user_id', 'username']}
+       
+       # Calculate and add the relativeSequenceJointLogProbability
+       logprobs = data.get('logprobs', [])
+       interaction_content['relativeSequenceJointLogProbability'] = calculate_joint_log_probability(logprobs)
+       
+       all_logprobs = []
+       for interaction in interactions["users"][user_id]["interactions"]:
+           if 'logprobs' in interaction:
+               all_logprobs.extend(interaction['logprobs'])
 
-    #Calculate and add the relativeInteractionJointLogProbability
-    interaction_content['relativeInteractionJointLogProbability'] = calculate_joint_log_probability(all_logprobs)
-    
-    # Add interaction content to user interactions
-    interactions["users"][user_id]["interactions"].append(interaction_content)
+       all_logprobs.extend(logprobs)
+       interaction_content['relativeInteractionJointLogProbability'] = calculate_joint_log_probability(all_logprobs)
+       
+       interactions["users"][user_id]["interactions"].append(interaction_content)
 
-    # Write updated data back to the JSON file
-    with open('interactions.json', 'w') as f:
-        json.dump(interactions, f, indent=4)
+       with open('interactions.json', 'w') as f:
+           json.dump(interactions, f, indent=4)
 
-       # Also append to CSV
-    csv_headers = ["timestamp", "user_id", "username", "interaction_type", "message", "response", "model", "temperature", "logprobs"]
-    interaction_data = [
-        data.get('timestamp', ''),
-        data.get('user_id', ''),
-        data.get('username', ''),
-        interaction_type,
-        data.get('message', ''),
-        data.get('response', ''),
-        data.get('model', ''),
-        data.get('temperature', ''),
-        logprobs
-    ]
+       csv_headers = ["timestamp", "user_id", "username", "interaction_type", "message", "response", "model", "temperature", "logprobs"]
+       interaction_data = [
+           data.get('timestamp', ''),
+           data.get('user_id', ''),
+           data.get('username', ''),
+           interaction_type,
+           data.get('message', ''),
+           data.get('response', ''),
+           data.get('model', ''),
+           data.get('temperature', ''),
+           logprobs
+       ]
 
-    # Check if CSV needs headers
-    csv_file = 'interactions_backup.csv'
-    write_headers = not os.path.exists(csv_file)
+       csv_file = 'interactions_backup.csv'
+       write_headers = not os.path.exists(csv_file)
 
-    with open(csv_file, 'a', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        if write_headers:
-            writer.writerow(csv_headers)
-        writer.writerow(interaction_data)
+       with open(csv_file, 'a', newline='') as csvfile:
+           writer = csv.writer(csvfile)
+           if write_headers:
+               writer.writerow(csv_headers)
+           writer.writerow(interaction_data)
+
+       # Append the current interaction data to the batch
+       interaction_batch.append(data)
+
+       # Check if the batch size is 10
+       if len(interaction_batch) >= 10:
+           process_and_store_batch(interaction_batch)
+           interaction_batch.clear()  # Clear the batch after processing
+
+def process_and_store_batch(batch):
+       batch_json = json.dumps(batch, indent=4)
+       
+       with open('batched_interactions.json', 'a') as f:
+           f.write(batch_json + '\n')
 
 # Add a new user to the users table
 def add_user(username):
