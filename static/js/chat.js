@@ -95,7 +95,7 @@ function generateAssistantResponse(userMessage) {
     const gifPlaceholder = insertLoaderPlaceholder();
 
     // Generate a random delay between 600ms to 4000ms
-    const randomDelay = Math.floor(Math.random() * (4000 - 600 + 1)) + 600;
+    const randomDelay = Math.floor(Math.random() * (3000 - 600 + 1)) + 600;
 
     // Simulate a delay for the assistant's response
     setTimeout(() => {
