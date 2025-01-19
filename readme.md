@@ -2,20 +2,16 @@
 
 1. Register for an API key and and create an environment variable named "OPENAI_API_KEY" with the key in it
 
-2. Run the add_passwords.py file to setup database for link between passwords and loading conditions (agents) into app.
-
 2. Start the app
 
 To start Wordie, run the following command:
+
 ```
-python wordie.py [agent_name]
-```
-Replace `[agent_name]` with the name of the condition you want the Wordie to use (HighTemp, LowTemp, StandardTemp). An agent name is required. "default" can be used for each LLMs default call options. The agent is defined by the details of the API call modified by the .json file in the `agents` folder.
-```
-Terminal command example: python wordie.py StandardTemp
+gunicorn -w 4 -b 0.0.0.0:8000 wordie:app
+
 ```
 
-3. Upon starting the app, you are prompted to input a prolific ID. 
+3. Upon starting the app, you will be prompted to login with a prolific ID and password that is connected to an agent (experimental condition). 
 
 
 
