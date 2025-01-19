@@ -1,5 +1,27 @@
 # Wordie is a Flask based AI interface web app for Human-AI interaction research
 
+The app runs with gunicorn, currently integrated with an OpenAI API, and dumps data to various files when API calls are made. This includes interactions.json, interactions_backup.csv, and AWS S3 bucket API integration. 
+Each data files collects the same data from the interaction. That is:
+- user_id
+- prolific_id
+- temperature
+- model
+- user message
+- AI message
+- logprobs (log probabilities) of AI message
+- sequence log probability
+- interaction log probability
+- prompt-tokens
+- completion-tokens
+- total-tokens
+- timestamps
+
+The users.db is used to store prolific IDs, interface assigned user_ids, conversation history, and passwords for experimental condition assignment.
+The users.db is used for the apps functionality and not data collection or analyses. 
+
+
+## How to run Wordie:
+
 1. Register for an API key and and create an environment variable named "OPENAI_API_KEY" with the key in it
 
 2. Start the app
@@ -23,10 +45,8 @@ Extra info:
 
 
 ToDo:
-2. calculate sum of logprobs for each message and log to json
-3. calculate sum of logprobs for each conversation and log to json
-8. backup log of json data as json and csv to cloud server. 
-9. get other models working
+8. S3 Bucket send data 
+9. Get other models working
 
 Measures of unpredictability required:
 1. joint probability of sequence and interactions (iterated exponent of the summed logprobs)

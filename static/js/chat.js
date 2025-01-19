@@ -25,7 +25,13 @@ function hideQuitPrompt() {
 }
 
 function quitStudy() {
-    window.close(); // This will close the current window/tab
+    // Redirect to the specified link
+    window.location.href = 'https://adelaideuniwide.qualtrics.com/jfe/form/SV_cuyJvIsumG4zjMy';
+    
+    // Close the current window after a short delay to ensure the redirect happens
+    setTimeout(() => {
+        window.open('', '_self').close();
+    }, 1000); // Adjust the delay as needed
 }
 
 // Finish study popup functions
@@ -55,13 +61,27 @@ function appendMessage(message, role) {
         <span class="${role === 'user' ? 'user-label' : 'assistant-label'}">
             ${role === 'user' ? 'User' : 'AI'}
         </span>
-        <span class="message-content">${message}</span>
+        <span class="message-content"></span>
     `;
     chatContainer.appendChild(newMessage);
     chatContainer.scrollTo({
         top: chatContainer.scrollHeight,
         behavior: 'smooth'
     });
+
+    const messageContent = newMessage.querySelector('.message-content');
+    const words = message.split(' ');
+    let wordIndex = 0;
+
+    function appendWord() {
+        if (wordIndex < words.length) {
+            messageContent.innerHTML += words[wordIndex] + ' ';
+            wordIndex++;
+            setTimeout(appendWord, 50); // Adjust the delay as needed
+        }
+    }
+
+    appendWord();
 }
 
 document.getElementById('chat-form').addEventListener('submit', function(event) {
@@ -192,17 +212,17 @@ chatForm.addEventListener('submit', function(event) {
     localStorage.setItem('submitCount', submitCount); // Store the updated submit count
 
     // Change display to block after 6 submits
-    if (submitCount >= 8) {
+    if (submitCount >= 6) {
         finishButton.style.display = 'block';
     }
 
     // Change background-color to #222 after 18 submits
-    if (submitCount >= 15) {
+    if (submitCount >= 12) {
         finishButton.style.backgroundColor = '#222';
     }
 
     // Change background-color to #FF8266 after 21 submits
-    if (submitCount >= 21) {
+    if (submitCount >= 18) {
         finishButton.style.backgroundColor = '#FF8266';
     }
 });
