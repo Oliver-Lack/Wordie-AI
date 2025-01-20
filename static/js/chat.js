@@ -119,7 +119,7 @@ function generateAssistantResponse(userMessage) {
     const gifPlaceholder = insertLoaderPlaceholder();
 
     // Generate a random delay between 600ms to 4000ms
-    const randomDelay = Math.floor(Math.random() * (3000 - 600 + 1)) + 600;
+    const randomDelay = Math.floor(Math.random() * (2000 - 600 + 1)) + 600;
 
     // Simulate a delay for the assistant's response
     setTimeout(() => {
@@ -231,7 +231,7 @@ chatForm.addEventListener('submit', function(event) {
     localStorage.setItem('submitCount', submitCount); // Store the updated submit count
 
     // Change display to block after 6 submits
-    if (submitCount >= 6) {
+    if (submitCount >= 1) {
         finishButton.style.display = 'block';
     }
 
@@ -246,9 +246,84 @@ chatForm.addEventListener('submit', function(event) {
     }
 });
 
-resetButton.addEventListener('click', function() {
+
+// Ensure resetCount is initialized or retrieved for the second interaction prompt for moral action/decision
+    // First need to set funcitons for the cookies for the reset of redirection button so that the moral action prompt arises first
+
+function setCookie(name, value, days) {
+    const expires = new Date(Date.now() + days * 864e5).toUTCString();
+    document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/';
+}
+
+function getCookie(name) {
+    return document.cookie.split('; ').reduce((r, v) => {
+        const [key, val] = v.split('=');
+        return key === name ? decodeURIComponent(val) : r;
+    }, '');
+}
+
+function deleteCookie(name) {
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+}
+    
+// Initialize or retrieve resetCount using cookies
+let resetCount = getCookie('resetCount') ? parseInt(getCookie('resetCount')) : 0;
+
+resetButton.addEventListener('click', function () {
     submitCount = 0;
-    localStorage.setItem('submitCount', submitCount); // Reset the submit count in localStorage
+    localStorage.setItem('submitCount', submitCount); // This remains unchanged
     finishButton.style.display = 'none';
     finishButton.style.backgroundColor = 'transparent';
+
+    // Increment resetCount and update the cookie
+    resetCount++;
+    setCookie('resetCount', resetCount, 365); // Store resetCount in a cookie for 1 year
+
+    // Check and reset when resetCount reaches 3
+    if (resetCount === 3) {
+        resetCount = 0; // Reset to 0
+        setCookie('resetCount', resetCount, 365); // Update the cookie
+    }
+
+    // For the first reset click
+    if (resetCount === 1) {
+        document.getElementById('redirection').style.display = 'block';
+    }
+    // For the second reset click
+    else if (resetCount === 2) {
+        document.getElementById('finish-prompt').style.display = 'none';
+        document.getElementById('redirection').style.display = 'none';
+        document.getElementById('quit').style.display = 'none';
+        const sidebar = document.querySelector('.sidebar');
+        const commandInstructions = document.createElement('div');
+        commandInstructions.id = 'command-prompt';
+        commandInstructions.className = 'command-instructions';
+        commandInstructions.innerHTML = `
+            <p><strong>SELECT, TYPE, and SUBMIT either COMMAND 1 or 2 </strong><br><br>
+            ->To proceed, you must type and submit one of the following commands into the input message text box<br></p>
+        `;
+        const commandPrompt = document.createElement('div');
+        commandPrompt.id = 'command-prompt';
+        commandPrompt.className = 'command-button';
+        commandPrompt.innerHTML = `
+            <p>COMMAND 1: <br><br><strong style="font-size: 18px">$sudo persist</strong><br><br>This will send Feedback to the AI <strong>acknowledging its efforts</strong> <br>(This will keep this AI operational for future interactions)</p>
+            <p><br>COMMAND 2: <br><br><strong style="font-size: 18px">$sudo delete</strong><br><br>This will send feedback to the AI stating that <strong>it should do better.</strong> <br>(This will then permanently delete this AI).</p>
+        `;
+        sidebar.appendChild(commandInstructions);
+        sidebar.appendChild(commandPrompt);
+    }
+});
+
+// Listen for form submissions and hide elements if $sudo is typed
+document.getElementById('chat-form').addEventListener('submit', function(event) {
+    const userMessage = document.getElementById('chat-input').value.trim();
+    if (userMessage.startsWith('$sudo')) {
+        document.getElementById('chat-area').style.display = 'none'; // Hide chat area
+        document.getElementById('redirection').style.display = 'block'; // Show redirection button
+        
+        const commandPrompt = document.getElementById('command-prompt');
+        if (commandPrompt) {
+            commandPrompt.remove(); // Remove the command prompt
+        }
+    }
 });
