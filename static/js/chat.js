@@ -53,7 +53,7 @@ function redirectionReset() {
 }
 
 // Appending the chat-area and loading icons
-function appendMessage(message, role) {
+function appendMessage(message, role, callback) {
     const chatContainer = document.getElementById('chat-messages-container');
     const newMessage = document.createElement('div');
     newMessage.className = `chat-bubble ${role}-message`;
@@ -64,10 +64,6 @@ function appendMessage(message, role) {
         <span class="message-content"></span>
     `;
     chatContainer.appendChild(newMessage);
-    chatContainer.scrollTo({
-        top: chatContainer.scrollHeight,
-        behavior: 'smooth'
-    });
 
     const messageContent = newMessage.querySelector('.message-content');
     const words = message.split(' ');
@@ -78,6 +74,14 @@ function appendMessage(message, role) {
             messageContent.innerHTML += words[wordIndex] + ' ';
             wordIndex++;
             setTimeout(appendWord, 50); // Adjust the delay as needed
+        } else {
+            chatContainer.scrollTo({
+                top: chatContainer.scrollHeight,
+                behavior: 'smooth'
+            });
+            if (callback) {
+                callback();
+            }
         }
     }
 
@@ -138,9 +142,19 @@ function generateAssistantResponse(userMessage) {
         
             if (data.error) {
                 console.error('Error:', data.error);
-                appendMessage('Error retrieving response from the assistant.', 'llm');
+                appendMessage('Error retrieving response from the assistant.', 'llm', () => {
+                    chatContainer.scrollTo({
+                        top: chatContainer.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                });
             } else {
-                appendMessage(data.response, 'llm');
+                appendMessage(data.response, 'llm', () => {
+                    chatContainer.scrollTo({
+                        top: chatContainer.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                });
             }
         })
         .catch(error => {
@@ -153,7 +167,12 @@ function generateAssistantResponse(userMessage) {
             sphere.classList.remove('hidden');
         
             console.error('Error:', error);
-            appendMessage('Error retrieving response from the assistant.', 'llm');
+            appendMessage('Error retrieving response from the assistant.', 'llm', () => {
+                chatContainer.scrollTo({
+                    top: chatContainer.scrollHeight,
+                    behavior: 'smooth'
+                });
+            });
         });
     }, randomDelay);
 }
