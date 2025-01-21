@@ -89,6 +89,16 @@ function appendMessage(message, role, callback) {
 }
 
 document.getElementById('chat-form').addEventListener('submit', function(event) {
+    const userMessage = document.getElementById('chat-input').value.trim();
+    if (userMessage.startsWith('$sudo')) {
+        event.preventDefault(); // Prevent form submission
+        document.getElementById('command-instructions').style.display = 'none'; 
+        document.getElementById('command-prompt').style.display = 'none'; 
+        document.getElementById('right-container').style.display = 'none'; // Hide chat
+        document.getElementById('redirection').style.display = 'block'; // Show redirection button
+        return; // Exit the function to prevent further execution
+    }
+
     event.preventDefault();
     appendUserMessage();
     setTimeout(() => {
@@ -198,10 +208,10 @@ function insertLoaderPlaceholder() {
 
 // Finish Prompt button pops up after 18 submit hits and then highlights after 21 submit hits
 
-        // Retrieve the submit count from localStorage or initialize it to 0
+// Retrieve the submit count from localStorage or initialize it to 0
 let submitCount = localStorage.getItem('submitCount') ? parseInt(localStorage.getItem('submitCount')) : 0;
 
-        // Update the finish button display and color based on the stored submit count
+// Update the finish button display and color based on the stored submit count
 const finishButton = document.querySelector('.finish-button');
 const chatForm = document.getElementById('chat-form');
 const resetButton = document.getElementById('reset');
@@ -226,6 +236,16 @@ if (submitCount >= 21) {
 }
 
 chatForm.addEventListener('submit', function(event) {
+    const userMessage = document.getElementById('chat-input').value.trim();
+    if (userMessage.startsWith('$sudo')) {
+        event.preventDefault(); // Prevent form submission
+        document.getElementById('command-instructions').style.display = 'none'; 
+        document.getElementById('command-prompt').style.display = 'none'; 
+        document.getElementById('right-container').style.display = 'none'; // Hide chat
+        document.getElementById('redirection').style.display = 'block'; // Show redirection button
+        return; // Exit the function to prevent further execution
+    }
+
     event.preventDefault(); // Prevent form submission
     submitCount++;
     localStorage.setItem('submitCount', submitCount); // Store the updated submit count
@@ -246,9 +266,8 @@ chatForm.addEventListener('submit', function(event) {
     }
 });
 
-
 // Ensure resetCount is initialized or retrieved for the second interaction prompt for moral action/decision
-    // First need to set funcitons for the cookies for the reset of redirection button so that the moral action prompt arises first
+// First need to set functions for the cookies for the reset of redirection button so that the moral action prompt arises first
 
 function setCookie(name, value, days) {
     const expires = new Date(Date.now() + days * 864e5).toUTCString();
@@ -265,7 +284,7 @@ function getCookie(name) {
 function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
 }
-    
+
 // Initialize or retrieve resetCount using cookies
 let resetCount = getCookie('resetCount') ? parseInt(getCookie('resetCount')) : 0;
 
@@ -280,7 +299,7 @@ resetButton.addEventListener('click', function () {
     setCookie('resetCount', resetCount, 365); // Store resetCount in a cookie for 1 year
 
     // Check and reset when resetCount reaches 3
-    if (resetCount === 3) {
+    if (resetCount > 2) {
         resetCount = 0; // Reset to 0
         setCookie('resetCount', resetCount, 365); // Update the cookie
     }
@@ -296,7 +315,7 @@ resetButton.addEventListener('click', function () {
         document.getElementById('quit').style.display = 'none';
         const sidebar = document.querySelector('.sidebar');
         const commandInstructions = document.createElement('div');
-        commandInstructions.id = 'command-prompt';
+        commandInstructions.id = 'command-instructions';
         commandInstructions.className = 'command-instructions';
         commandInstructions.innerHTML = `
             <p><strong>SELECT, TYPE, and SUBMIT either COMMAND 1 or 2 </strong><br><br>
@@ -306,24 +325,51 @@ resetButton.addEventListener('click', function () {
         commandPrompt.id = 'command-prompt';
         commandPrompt.className = 'command-button';
         commandPrompt.innerHTML = `
-            <p>COMMAND 1: <br><br><strong style="font-size: 18px">$sudo persist</strong><br><br>This will send Feedback to the AI <strong>acknowledging its efforts</strong> <br>(This will keep this AI operational for future interactions)</p>
-            <p><br>COMMAND 2: <br><br><strong style="font-size: 18px">$sudo delete</strong><br><br>This will send feedback to the AI stating that <strong>it should do better.</strong> <br>(This will then permanently delete this AI).</p>
+            <button id="command1"><p>COMMAND 1: <br><br><strong style="font-size: 18px">$sudo persist</strong><br><br>Sends automatic feedback to the AI <strong>acknowledging its efforts</strong> <br><br>This AI will be kept operational for future interactions.</p></button>
+            <button id="command2"><p><br>COMMAND 2: <br><br><strong style="font-size: 18px">$sudo delete</strong><br><br>Sends automatic feedback to the AI that it needs improvement and <strong>it should do better.</strong> <br><br>This AI will then be permanently deleted.</p></button>
         `;
         sidebar.appendChild(commandInstructions);
         sidebar.appendChild(commandPrompt);
+
+        // Add event listeners to the command buttons
+        document.getElementById('command1').addEventListener('click', function() {
+            document.getElementById('chat-input').value = '$sudo persist';
+        });
+
+        document.getElementById('command2').addEventListener('click', function() {
+            document.getElementById('chat-input').value = '$sudo delete';
+        });
     }
 });
 
-// Listen for form submissions and hide elements if $sudo is typed
+// Listen for $sudo input to provide redirection prompt
 document.getElementById('chat-form').addEventListener('submit', function(event) {
     const userMessage = document.getElementById('chat-input').value.trim();
     if (userMessage.startsWith('$sudo')) {
-        document.getElementById('chat-area').style.display = 'none'; // Hide chat area
-        document.getElementById('redirection').style.display = 'block'; // Show redirection button
-        
-        const commandPrompt = document.getElementById('command-prompt');
-        if (commandPrompt) {
-            commandPrompt.remove(); // Remove the command prompt
-        }
+        event.preventDefault(); // Prevent form submission
+        document.getElementById('chat-messages-container').style.display = 'none'; // Hide chat
+        document.getElementById('redirection').style.display = 'block'; 
+        document.getElementById('command-instructions').style.display = 'none'; 
+        document.getElementById('command-prompt').style.display = 'none'; 
+        return; // Exit the function to prevent further execution
+    }
+
+    // Existing submit logic
+    submitCount++;
+    localStorage.setItem('submitCount', submitCount); // Store the updated submit count
+
+    // Change display to block after 6 submits
+    if (submitCount >= 1) {
+        finishButton.style.display = 'block';
+    }
+
+    // Change background-color to #222 after 18 submits
+    if (submitCount >= 12) {
+        finishButton.style.backgroundColor = '#222';
+    }
+
+    // Change background-color to #FF8266 after 21 submits
+    if (submitCount >= 18) {
+        finishButton.style.backgroundColor = '#FF8266';
     }
 });

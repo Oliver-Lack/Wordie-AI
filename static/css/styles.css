@@ -172,29 +172,29 @@ h1 {
   transform: scale(0.95);
 }
 
+.command-button {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: auto;
+  margin-top: 5px; 
+  margin-bottom: 5px;
+  top: 25%;
+}
+
 .command-button p {
-  display: block;
   background-color: #222;
-  position: flex;
   color: #FFFFFF;
   border: none;
-  padding: 25px 25px;
-  font-size: 14px;
+  padding: 10px 10px;
+  font-size: 15px;
   cursor: pointer;
   text-transform: none;
   border-radius: 5px;
   margin-left: 20px;
   margin-right: 20px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  top: 10px;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
-}
-
-.command-button p:hover {
-  background-color: #FF8266;
-  transform: scale(1.05);
 }
 
 .command-button p:active {
@@ -202,9 +202,8 @@ h1 {
 }
 
 .command-instructions {
-  display: block;
   background-color: transparent;
-  position: flex;
+  position: absolute;
   color: #FFFFFF;
   border: none;
   padding: 25px 25px;
