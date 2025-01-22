@@ -1,5 +1,6 @@
 import sqlite3
 from flask import Flask, jsonify, render_template, request, session, redirect, url_for, flash
+from flask_bootstrap import Bootstrap
 from API import API_Call
 import sys
 import os
@@ -7,10 +8,23 @@ import json
 from datetime import datetime
 import subprocess
 import csv
+import boto3
 
-# Batch for logging data to AWS bucket
+# Batch for S3 AWS bucket backup
 interaction_batch = []
 
+# Setup for S3 AWS bucket backup to dump the batched interactions
+S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
+S3_KEY = os.environ.get('S3_KEY')
+S3_SECRET = os.environ.get('S3_SECRET')
+
+s3 = boto3.client(
+    's3', 
+    aws_access_key_id=S3_KEY, 
+    aws_secret_access_key=S3_SECRET)
+
+
+# database initialization for usernames, passwords, and conversation history
 def init_db():
     conn = sqlite3.connect('users.db')
     conn.text_factory = str
@@ -35,14 +49,16 @@ def init_db():
 init_db()
 wordie = API_Call()
 
+# Adding conditions to the passwords
 subprocess.run([sys.executable, 'add_passwords.py'])
 
+# Initializing the flask app
 app = Flask(__name__)
 app.secret_key = os.environ['FLASK_SECRET_KEY']
 
 def calculate_joint_log_probability(logprobs):
     return sum(logprobs)
-
+# For logging interactions.json, interactions_backup.csv, and batched_interactions.json
 def log_user_data(data):
     global interaction_batch
 
@@ -103,14 +119,20 @@ def log_user_data(data):
 
     interaction_batch.append(data)
 
-    if len(interaction_batch) >= 10:
+    if len(interaction_batch) >= 20:
         process_and_store_batch(interaction_batch)
         interaction_batch.clear()
-
+# Upload function for AWS S3 backup data dump
+def upload_to_s3(file_name, bucket, object_name=None):
+    if object_name is None:
+        object_name = file_name
+    s3.upload_file(file_name, bucket, object_name)
+# Batching data for S3 AWS bucket backup
 def process_and_store_batch(batch):
     batch_json = json.dumps(batch, indent=4)
     with open('batched_interactions.json', 'a') as f:
         f.write(batch_json + '\n')
+    upload_to_s3('batched_interactions.json', S3_BUCKET_NAME)
 
 def add_user(username):
     conn = sqlite3.connect('users.db')

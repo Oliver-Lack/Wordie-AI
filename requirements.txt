@@ -7,3 +7,5 @@ requests
 py2app
 gunicorn
 boto3
+flask-bootstrap
+awscli

@@ -22,9 +22,27 @@ The users.db is used for the apps functionality and not data collection or analy
 
 ## How to run Wordie:
 
-1. Register for an API key and and create an environment variable named "OPENAI_API_KEY" with the key in it
-2. Create an env variable named "FLASK_SECRET_KEY" with a secret key for the Flask app
-3. For AWS S3 bucket integration on a production server, follow AWS documentation (Not necessary for local development, currently just a backup data dump method) 
+1. Setup environment variables
+
+- Register for an LLM API key and and create an environment variable named "OPENAI_API_KEY" with the key in it
+- Create an env variable named "FLASK_SECRET_KEY" with a secret key for the Flask app
+- For AWS S3 bucket integration on a production server, follow AWS documentation (S3 not necessary for local development, currently just a backup data dump method) 
+
+Here's a rough bash command to set the env variables when deploying an EC2 instance:
+            #!/bin/bash
+            # OpenAI API Key
+            export OPENAI_API_KEY="your-openai-api-key"
+
+            # Flask Secret Key
+            export FLASK_SECRET_KEY="your-flask-secret-key"
+
+            # AWS Credentials
+            export AWS_ACCESS_KEY_ID="your-aws-access-key-id"
+            export AWS_SECRET_ACCESS_KEY="your-aws-secret-access-key"
+            export AWS_DEFAULT_REGION="your-aws-region"
+
+            echo "Environment variables have been set."
+
 
 4. Start the app
 
