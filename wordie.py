@@ -1,21 +1,16 @@
 import sqlite3
-from flask import Flask, jsonify, render_template, request, session, redirect, url_for, flash, g
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, jsonify, render_template, request, session, redirect, url_for, flash
 from API import API_Call
 import sys
 import os
 import json
 from datetime import datetime
 import subprocess
-import math
-import webview
 import csv
-import boto3
 
-#batch for logging data to AWS bucket
+# Batch for logging data to AWS bucket
 interaction_batch = []
 
-# Function to initialize the SQLite database for users, passwords, and chat message history.
 def init_db():
     conn = sqlite3.connect('users.db')
     conn.text_factory = str
@@ -26,6 +21,7 @@ def init_db():
     c.execute('''CREATE TABLE IF NOT EXISTS messages 
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                  user_id INTEGER NOT NULL,
+                 password TEXT NOT NULL,
                  message TEXT NOT NULL,
                  response TEXT NOT NULL,
                  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -36,103 +32,86 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Initialize the database and wordie instance outside of any function for Gunicorn and AWS integration
 init_db()
-wordie = API_Call() 
+wordie = API_Call()
 
-# Run add_passwords.py script to initialise the users.db with passwords connected to agent conditions
 subprocess.run([sys.executable, 'add_passwords.py'])
 
-# Create a Flask app instance and set a secret key for session management
 app = Flask(__name__)
 app.secret_key = os.environ['FLASK_SECRET_KEY']
 
-# Function to calculate and return the joint logarithmic probability from logprobs.
-    # This function was changed from the exponentiated sum of loprobs to JUST the sum of logprobs.
-    # This is because of underflow problems, approximating the former as 0 for most sequences. 
-    # This function returns the joint log probability from logprobs.
-        # You can compare log probability sums directly. The less negative the value, the 
-        # higher the probability. For example, if one log probability is -5 and another is -10, 
-        # the former represents a higher probability than the latter.
 def calculate_joint_log_probability(logprobs):
-    return sum(logprobs) 
+    return sum(logprobs)
 
-# Function to log data to JSON file
 def log_user_data(data):
-       global interaction_batch
+    global interaction_batch
 
-       # Retain existing logging to interactions.json and interactions_backup.csv
-       try:
-           with open('interactions.json', 'r') as f:
-               file_content = f.read().strip()
-               interactions = json.loads(file_content) if file_content else {"users": {}}
-       except (FileNotFoundError, json.JSONDecodeError):
-           interactions = {"users": {}}
+    try:
+        with open('interactions.json', 'r') as f:
+            file_content = f.read().strip()
+            interactions = json.loads(file_content) if file_content else {"users": {}}
+    except (FileNotFoundError, json.JSONDecodeError):
+        interactions = {"users": {}}
 
-       user_id = str(data['user_id'])
-       if user_id not in interactions["users"]:
-           interactions["users"][user_id] = {
-               "username": data.get('username', ''),
-               "interactions": []
-           }
+    user_id = str(data['user_id'])
+    if user_id not in interactions["users"]:
+        interactions["users"][user_id] = {
+            "username": data.get('username', ''),
+            "interactions": []
+        }
 
-       interaction_type = 'message' if 'message' in data else 'action'
-       interaction_content = {k: v for k, v in data.items() if k not in ['user_id', 'username']}
-       
-       # Calculate and add the relativeSequenceJointLogProbability
-       logprobs = data.get('logprobs', [])
-       interaction_content['relativeSequenceJointLogProbability'] = calculate_joint_log_probability(logprobs)
-       
-       all_logprobs = []
-       for interaction in interactions["users"][user_id]["interactions"]:
-           if 'logprobs' in interaction:
-               all_logprobs.extend(interaction['logprobs'])
+    interaction_content = {k: v for k, v in data.items() if k not in ['user_id', 'username']}
+    interaction_content['password'] = session.get('password', 'N/A')
 
-       all_logprobs.extend(logprobs)
-       interaction_content['relativeInteractionJointLogProbability'] = calculate_joint_log_probability(all_logprobs)
-       
-       interactions["users"][user_id]["interactions"].append(interaction_content)
+    if 'logprobs' in data:
+        logprobs = data.get('logprobs', [])
+        interaction_content['relativeSequenceJointLogProbability'] = calculate_joint_log_probability(logprobs)
+        all_logprobs = [lp for interaction in interactions["users"][user_id]["interactions"] if 'logprobs' in interaction for lp in interaction['logprobs']]
+        all_logprobs.extend(logprobs)
+        interaction_content['relativeInteractionJointLogProbability'] = calculate_joint_log_probability(all_logprobs)
 
-       with open('interactions.json', 'w') as f:
-           json.dump(interactions, f, indent=4)
+    interactions["users"][user_id]["interactions"].append(interaction_content)
 
-       csv_headers = ["timestamp", "user_id", "username", "interaction_type", "message", "response", "model", "temperature", "logprobs"]
-       interaction_data = [
-           data.get('timestamp', ''),
-           data.get('user_id', ''),
-           data.get('username', ''),
-           interaction_type,
-           data.get('message', ''),
-           data.get('response', ''),
-           data.get('model', ''),
-           data.get('temperature', ''),
-           logprobs
-       ]
+    with open('interactions.json', 'w') as f:
+        json.dump(interactions, f, indent=4)
 
-       csv_file = 'interactions_backup.csv'
-       write_headers = not os.path.exists(csv_file)
+    csv_headers = [
+        "timestamp", "user_id", "username", "password", "interaction_type", 
+        "message", "response", "model", "temperature", "logprobs"
+    ]
+    interaction_data = [
+        data.get('timestamp', ''),
+        data.get('user_id', ''),
+        data.get('username', ''),
+        session.get('password', 'N/A'),
+        data.get('interaction_type', ''),
+        data.get('message', ''),
+        data.get('response', ''),
+        data.get('model', ''),
+        data.get('temperature', ''),
+        data.get('logprobs', [])
+    ]
 
-       with open(csv_file, 'a', newline='') as csvfile:
-           writer = csv.writer(csvfile)
-           if write_headers:
-               writer.writerow(csv_headers)
-           writer.writerow(interaction_data)
+    csv_file = 'interactions_backup.csv'
+    write_headers = not os.path.exists(csv_file)
 
-       # Append the current interaction data to the batch
-       interaction_batch.append(data)
+    with open(csv_file, 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        if write_headers:
+            writer.writerow(csv_headers)
+        writer.writerow(interaction_data)
 
-       # Check if the batch size is 10
-       if len(interaction_batch) >= 10:
-           process_and_store_batch(interaction_batch)
-           interaction_batch.clear()  # Clear the batch after processing
+    interaction_batch.append(data)
+
+    if len(interaction_batch) >= 10:
+        process_and_store_batch(interaction_batch)
+        interaction_batch.clear()
 
 def process_and_store_batch(batch):
-       batch_json = json.dumps(batch, indent=4)
-       
-       with open('batched_interactions.json', 'a') as f:
-           f.write(batch_json + '\n')
+    batch_json = json.dumps(batch, indent=4)
+    with open('batched_interactions.json', 'a') as f:
+        f.write(batch_json + '\n')
 
-# Add a new user to the users table
 def add_user(username):
     conn = sqlite3.connect('users.db')
     conn.text_factory = str
@@ -141,18 +120,18 @@ def add_user(username):
     conn.commit()
     conn.close()
 
-# Add a message and its response to the messages table
-def add_message(user_id, message, response, model, temperature, prompt_tokens, completion_tokens, total_tokens, logprobs_list):
+def add_message(user_id, password, message, response, model, temperature, prompt_tokens, completion_tokens, total_tokens, logprobs_list):
     conn = sqlite3.connect('users.db')
     conn.text_factory = str
     c = conn.cursor()
-    c.execute('INSERT INTO messages (user_id, message, response) VALUES (?, ?, ?)', 
-              (user_id, message, response))
+    c.execute('INSERT INTO messages (user_id, password, message, response) VALUES (?, ?, ?, ?)', 
+              (user_id, password, message, response))
     conn.commit()
     conn.close()
     log_user_data({
         'user_id': user_id,
         'username': session.get('username'),
+        'interaction_type': 'message',
         'message': message,
         'response': response,
         'model': model,
@@ -160,26 +139,24 @@ def add_message(user_id, message, response, model, temperature, prompt_tokens, c
         'prompt_tokens': prompt_tokens,
         'completion_tokens': completion_tokens,
         'total_tokens': total_tokens,
-        'logprobs': logprobs_list,  # Log each token's log probability list
+        'logprobs': logprobs_list,
         'timestamp': str(datetime.now())
     })
 
-# Get the conversation history for a user
-def get_messages(user_id, systemprompt):
+def get_messages(user_id, password, systemprompt):
     conn = sqlite3.connect('users.db')
     conn.text_factory = str
     conversation = []
     c = conn.cursor()
-    c.execute('SELECT * FROM messages WHERE user_id = ? ORDER BY timestamp', (user_id,))
+    c.execute('SELECT * FROM messages WHERE user_id = ? AND password = ? ORDER BY timestamp', (user_id, password))
     messages = c.fetchall()
     conversation.append({"role": "system", "content": systemprompt})
     for message in messages:
-        conversation.append({"role": "user", "content": message[2]})
-        conversation.append({"role": "assistant", "content": message[3]})
+        conversation.append({"role": "user", "content": message[3]})
+        conversation.append({"role": "assistant", "content": message[4]})
     conn.close()
     return conversation
 
-# Define a route for the login page
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -200,8 +177,9 @@ def login():
         if agent:
             session['user_id'] = user_id
             session['username'] = username
+            session['password'] = password
             session['agent'] = agent[0]
-            wordie.update_agent(f"agents/{agent[0]}.json")  # Update the agent for the wordie instance
+            wordie.update_agent(f"agents/{agent[0]}.json")
             flash('', 'success')
             conn.close()
             return redirect(url_for('chat'))
@@ -211,7 +189,6 @@ def login():
             return redirect(url_for('login'))
     return render_template('login.html')
 
-# Define a route for the chat page
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
     env_var = os.environ.get('OPENAI_API_KEY')
@@ -223,7 +200,7 @@ def chat():
     try:
         agent = session.get('agent', 'default')
         wordie.update_agent(f"agents/{agent}.json")
-        conversation = get_messages(session['user_id'], wordie.agent_data["PrePrompt"])
+        conversation = get_messages(session['user_id'], session['password'], wordie.agent_data["PrePrompt"])
 
         if request.method == 'POST':
             message = request.form.get('message')
@@ -235,33 +212,19 @@ def chat():
             try:
                 conversation, prompt_tokens, completion_tokens, total_tokens, logprobs_list = wordie.thinkAbout(message, conversation, model=model)
                 response = conversation[-1]["content"]
-                user_id = session['user_id']
-                add_message(user_id, message, str(response), model, wordie.agent_data["temperature"], prompt_tokens, completion_tokens, total_tokens, logprobs_list)
-                return jsonify({'response': response})
             except Exception as e:
                 app.logger.error(f"Error processing message: {e}")
                 return jsonify({'error': 'Error processing message'}), 500
+
+            user_id = session['user_id']
+            password = session['password']
+            add_message(user_id, password, message, str(response), model, wordie.agent_data["temperature"], prompt_tokens, completion_tokens, total_tokens, logprobs_list)
+            return jsonify({'response': response})
 
         return render_template('chat.html', username=session['username'], messages=conversation, show_popup=show_popup)
     except Exception as ex:
         app.logger.error(f"Unexpected error occurred: {ex}")
         return jsonify({'error': 'Unexpected error occurred'}), 500
 
-# Define a route for the logout functionality
-@app.route('/logout', methods=['GET', 'POST'])
-def logout():
-    log_user_data({
-        'user_id': session.get('user_id'),
-        'username': session.get('username'),
-        'action': 'logout',
-        'timestamp': str(datetime.now())
-    })
-    session.pop('user_id', None)
-    session.pop('username', None)
-    flash('You are being redirected', 'success')
-    return redirect(url_for('QUALTRICSredirection.com'))
-
-
 if __name__ == '__main__':
-    # No need to call init_db() or create wordie here, as it's done at the module level for Gunicorn and AWS integration.
     pass

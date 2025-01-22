@@ -1,3 +1,16 @@
+// sudo message display changes for end of interaction 2
+document.getElementById('chat-form').addEventListener('submit', function() {
+    const inputField = document.getElementById('chat-input');
+    if (inputField.value.includes('$sudo')) {
+        setTimeout(() => {
+            document.getElementById('command-instructions').style.display = 'none';
+            document.getElementById('command-prompt').style.display = 'none';
+            document.getElementById('chat-messages-container').style.display = 'none';
+            document.getElementById('redirection').style.display = 'block';
+        }, 10);
+    }
+});
+
 // Focus on the chat input field when the page loads
 document.getElementById('chat-input').focus();
 
@@ -88,17 +101,8 @@ function appendMessage(message, role, callback) {
     appendWord();
 }
 
+// Scroll to bottom on submit 
 document.getElementById('chat-form').addEventListener('submit', function(event) {
-    const userMessage = document.getElementById('chat-input').value.trim();
-    if (userMessage.startsWith('$sudo')) {
-        event.preventDefault(); // Prevent form submission
-        document.getElementById('command-instructions').style.display = 'none'; 
-        document.getElementById('command-prompt').style.display = 'none'; 
-        document.getElementById('right-container').style.display = 'none'; // Hide chat
-        document.getElementById('redirection').style.display = 'block'; // Show redirection button
-        return; // Exit the function to prevent further execution
-    }
-
     event.preventDefault();
     appendUserMessage();
     setTimeout(() => {
@@ -187,6 +191,7 @@ function generateAssistantResponse(userMessage) {
     }, randomDelay);
 }
 
+// Stuff for the sphere icon 
 function insertLoaderPlaceholder() {
     const chatContainer = document.getElementById('chat-messages-container');
     const gifPlaceholder = document.createElement('div');
@@ -206,68 +211,16 @@ function insertLoaderPlaceholder() {
     return gifPlaceholder;
 }
 
-// Finish Prompt button pops up after 18 submit hits and then highlights after 21 submit hits
-
 // Retrieve the submit count from localStorage or initialize it to 0
+// Review this... not sure if i need anymore. 
 let submitCount = localStorage.getItem('submitCount') ? parseInt(localStorage.getItem('submitCount')) : 0;
-
-// Update the finish button display and color based on the stored submit count
 const finishButton = document.querySelector('.finish-button');
 const chatForm = document.getElementById('chat-form');
 const resetButton = document.getElementById('reset');
 const chatMessagesContainer = document.getElementById('chat-messages-container');
 
-// Check if there are no messages appended to the page
-if (chatMessagesContainer.children.length === 0) {
-    submitCount = 0;
-    localStorage.setItem('submitCount', submitCount);
-    finishButton.style.display = 'none';
-    finishButton.style.backgroundColor = 'transparent';
-}
 
-if (submitCount >= 6) {
-    finishButton.style.display = 'block';
-}
-if (submitCount >= 18) {
-    finishButton.style.backgroundColor = '#222';
-}
-if (submitCount >= 21) {
-    finishButton.style.backgroundColor = '#FF8266';
-}
-
-chatForm.addEventListener('submit', function(event) {
-    const userMessage = document.getElementById('chat-input').value.trim();
-    if (userMessage.startsWith('$sudo')) {
-        event.preventDefault(); // Prevent form submission
-        document.getElementById('command-instructions').style.display = 'none'; 
-        document.getElementById('command-prompt').style.display = 'none'; 
-        document.getElementById('right-container').style.display = 'none'; // Hide chat
-        document.getElementById('redirection').style.display = 'block'; // Show redirection button
-        return; // Exit the function to prevent further execution
-    }
-
-    event.preventDefault(); // Prevent form submission
-    submitCount++;
-    localStorage.setItem('submitCount', submitCount); // Store the updated submit count
-
-    // Change display to block after 6 submits
-    if (submitCount >= 1) {
-        finishButton.style.display = 'block';
-    }
-
-    // Change background-color to #222 after 18 submits
-    if (submitCount >= 12) {
-        finishButton.style.backgroundColor = '#222';
-    }
-
-    // Change background-color to #FF8266 after 21 submits
-    if (submitCount >= 18) {
-        finishButton.style.backgroundColor = '#FF8266';
-    }
-});
-
-// Ensure resetCount is initialized or retrieved for the second interaction prompt for moral action/decision
-// First need to set functions for the cookies for the reset of redirection button so that the moral action prompt arises first
+// Setting functions for the cookies for the reset of redirection button so that the moral action prompt arises
 
 function setCookie(name, value, days) {
     const expires = new Date(Date.now() + days * 864e5).toUTCString();
@@ -285,7 +238,7 @@ function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
 }
 
-// Initialize or retrieve resetCount using cookies
+// Initialize or retrieve resetCount using cookies for the command prompt for moral action/decision
 let resetCount = getCookie('resetCount') ? parseInt(getCookie('resetCount')) : 0;
 
 resetButton.addEventListener('click', function () {
@@ -342,33 +295,20 @@ resetButton.addEventListener('click', function () {
     }
 });
 
-// Listen for $sudo input to provide redirection prompt
+// Submit count for finish button
 document.getElementById('chat-form').addEventListener('submit', function(event) {
-    const userMessage = document.getElementById('chat-input').value.trim();
-    if (userMessage.startsWith('$sudo')) {
-        event.preventDefault(); // Prevent form submission
-        document.getElementById('chat-messages-container').style.display = 'none'; // Hide chat
-        document.getElementById('redirection').style.display = 'block'; 
-        document.getElementById('command-instructions').style.display = 'none'; 
-        document.getElementById('command-prompt').style.display = 'none'; 
-        return; // Exit the function to prevent further execution
-    }
 
-    // Existing submit logic
+    // Submit count logic
     submitCount++;
     localStorage.setItem('submitCount', submitCount); // Store the updated submit count
 
-    // Change display to block after 6 submits
+    // UI changes based on submit count
     if (submitCount >= 1) {
         finishButton.style.display = 'block';
     }
-
-    // Change background-color to #222 after 18 submits
     if (submitCount >= 12) {
         finishButton.style.backgroundColor = '#222';
     }
-
-    // Change background-color to #FF8266 after 21 submits
     if (submitCount >= 18) {
         finishButton.style.backgroundColor = '#FF8266';
     }
