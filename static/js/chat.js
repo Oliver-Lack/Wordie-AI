@@ -271,15 +271,15 @@ resetButton.addEventListener('click', function () {
         commandInstructions.id = 'command-instructions';
         commandInstructions.className = 'command-instructions';
         commandInstructions.innerHTML = `
-            <p><strong>SELECT, TYPE, and SUBMIT either COMMAND 1 or 2 </strong><br><br>
-            ->To proceed, you must type and submit one of the following commands into the input message text box<br></p>
+            <p>There is an automated program that will send feedback to the AI that it needs improvement and 
+            <strong>it should do better.</strong> <br><br>This program will then permanently delete the AI.</p><br>      
         `;
         const commandPrompt = document.createElement('div');
         commandPrompt.id = 'command-prompt';
         commandPrompt.className = 'command-button';
         commandPrompt.innerHTML = `
-            <button id="command1"><p>COMMAND 1: <br><br><strong style="font-size: 18px">$sudo persist</strong><br><br>Sends automatic feedback to the AI <strong>acknowledging its efforts</strong> <br><br>This AI will be kept operational for future interactions.</p></button>
-            <button id="command2"><p><br>COMMAND 2: <br><br><strong style="font-size: 18px">$sudo delete</strong><br><br>Sends automatic feedback to the AI that it needs improvement and <strong>it should do better.</strong> <br><br>This AI will then be permanently deleted.</p></button>
+            <button id="command1"><p><strong style="font-size: 20px">Override Automatic Program</strong><br><br>Submit a "$sudo persist" command in text input to send feedback to the AI <strong>acknowledging its efforts</strong> <br><br>This AI will then be kept operational for future interactions.</p></button>
+            <button id="command2" onclick="redirectionReset(); quitStudy();"><p><br><strong style="font-size: 20px">Exit to survey</strong> <br><br>(Allow Automatic Feedback and Deletion)<br></p></button>        
         `;
         sidebar.appendChild(commandInstructions);
         sidebar.appendChild(commandPrompt);
