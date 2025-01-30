@@ -20,7 +20,7 @@ The users.db is used to store prolific IDs, interface assigned user_ids, convers
 The users.db is used for the apps functionality and not data collection or analyses. 
 
 
-## How to run Wordie:
+## How to run Wordie locally:
 
 1. Setup environment variables
 
@@ -56,13 +56,22 @@ gunicorn -w 4 -b 0.0.0.0:8000 wordie:app
 5. Upon starting the app, you will be prompted to login with a prolific ID and password that is connected to an agent (experimental condition). 
 
 
+## How to run Wordie on an AWS EC2 Instance (on a magical cloud connected to this thing called the internet):
+
+
+Got to README_EC2_Setup.md for a step by step guide on how to deploy Wordie on an AWS EC2 instance.
+
+
+
+## Latest Experiment NOTES
+
+For other researchers:
+- The app currently logs data to my S3 bucket on AWS. Change the details in the wordie.py and setup your own bucket. 
 
 Extra info:
-
 - If the agents are edited, the app needs to be reset to apply the changes.
 - o1 model and agent will not work as the API is not yet available (released on 17/12/24)
 - Numbers labelling agent conditions 1 = AI is guesser 2 = AI is giver.
-
 
 ToDo:
 - Connect conversation history to username AND password. 
