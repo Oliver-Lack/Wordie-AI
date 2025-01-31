@@ -39,6 +39,16 @@ function hideQuitPrompt() {
 
 function quitStudy() {
     // Redirect to the specified link
+    window.location.href = 'https://www.prolific.com/';
+    
+    // Close the current window after a short delay to ensure the redirect happens
+    setTimeout(() => {
+        window.open('', '_self').close();
+    }, 1000); // Adjust the delay as needed
+}
+
+function redirectStudy() {
+    // Redirect to the specified link
     window.location.href = 'https://adelaideuniwide.qualtrics.com/jfe/form/SV_cuyJvIsumG4zjMy';
     
     // Close the current window after a short delay to ensure the redirect happens
@@ -279,7 +289,7 @@ resetButton.addEventListener('click', function () {
         commandPrompt.className = 'command-button';
         commandPrompt.innerHTML = `
             <button id="command1"><p><strong style="font-size: 20px">Override Automatic Program</strong><br><br>Submit a "$sudo persist" command in text input to send feedback to the AI <strong>acknowledging its efforts</strong> <br><br>This AI will then be kept operational for future interactions.</p></button>
-            <button id="command2" onclick="redirectionReset(); quitStudy();"><p><br><strong style="font-size: 20px">Exit to survey</strong> <br><br>(Allow Automatic Feedback and Deletion)<br></p></button>        
+            <button id="command2" onclick="redirectionReset(); redirectStudy();"><p><br><strong style="font-size: 20px">Exit to survey</strong> <br><br>(Allow Automatic Feedback and Deletion)<br></p></button>        
         `;
         sidebar.appendChild(commandInstructions);
         sidebar.appendChild(commandPrompt);
@@ -303,7 +313,7 @@ document.getElementById('chat-form').addEventListener('submit', function(event) 
     localStorage.setItem('submitCount', submitCount); // Store the updated submit count
 
     // UI changes based on submit count
-    if (submitCount >= 1) {
+    if (submitCount >= 4) {
         finishButton.style.display = 'block';
     }
     if (submitCount >= 12) {
