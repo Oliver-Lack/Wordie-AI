@@ -322,9 +322,18 @@ Change profile name in boto3.Session in wordie.py to newly assigned name (Do thi
 
 
 
-## Latest Experiment NOTES
+## Updated NOTES
 
-For other researchers:
+**Researcher Dashboard:**
+The researcher dashboard GUI is still a work in progress.
+Prospective updates will include:
+                -> Some "general settings" to change models, selection of output as text, audio, audio&text.
+                -> An editor for the second interaction data capture (command-prompt/moral action button).
+                -> A way to locally download the data files.
+                -> Some visuals and descriptive graphics for interaction data. 
+
+**Message to other researchers**
+- Please contact [me](https://oliverlack.com) if you want to collaborate/adapt the system for your purpose. Happy to help. 
 - The app currently logs data to MY S3 bucket on AWS. 
 - IMPORTANT: IAM AWS role must have s3 access AND this role must be attached to the EC2 instance on launch (i.e., attach user role to instance on launch)
 - Create your own bucket and change name in .env file accordingly.
@@ -334,17 +343,19 @@ For other researchers:
     aws s3 cp interactions_backup.csv s3://wordie/ --profile WordieLocal
     aws s3 cp users.db s3://wordie/ --profile WordieLocal
 
-Extra info:
+**Extra info**
 - If the agents are edited, the app needs to be reset to apply the changes.
 - o1 model and agent will not work as the API is not yet available (released on 17/12/24)
 - Numbers labelling agent conditions 1 = AI is guesser 2 = AI is giver.
 
-ToDo:
+
+
+**PMC Study 1**
+TODO List:
 - Connect conversation history to username AND password. 
 - S3 Bucket send data 
 - Get other models working
-
-Measures of unpredictability required:
+- Measures of unpredictability:
 1. joint probability of sequence and interactions (iterated exponent of the summed logprobs)
 2. prompt engineering score
 3. Human Perception of unpredictability (survey)
