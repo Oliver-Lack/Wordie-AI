@@ -323,6 +323,15 @@ h1 {
   text-align: right;
 }
 
+.Research-Dashboard-Header {
+  font-size: 18px;
+  font-weight: normal;
+  margin-right: 5%;
+  text-align: right;
+  margin-top: -10px;
+}
+
+
 button {
   background-color: #222;
   color: #FFFFFF;
@@ -427,7 +436,7 @@ button:active {
   font-size: 16px;
   color: #e7e4e4;
   width: 40%;
-  height: 50%;
+  height: 70%;
   line-height: 1.6;
   margin-top: 5%;
   margin-left: 40%;
@@ -435,6 +444,17 @@ button:active {
   background-color: #222;
   border-radius: 5px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.researcher-about a {
+  color: #FF8C00; /* Dark orange color */
+  text-decoration: none;
+  font-size: 18px; /* Slightly larger */
+}
+
+.researcher-about a:hover {
+  background-color: #FF8C00; /* Highlighted dark orange */
+  color: #222; /* Text color change on hover */
 }
 
 .researcher-button {
@@ -491,44 +511,58 @@ button:active {
 
 #agent-creation {
   width: 50%;
-  margin-left: 30%;
+  margin-left: 40%;
   margin-right: 10%;
-  margin-top: 10%;
+  margin-top: 8%;
   padding: 20px;
   border-radius: 10px;
-  background-color: #e0e0e0;
+  color: #e9e9e9;
+  background-color: #222;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #agent-creation h2 {
-  color: #222;
+  color: #e6e6e6;
+  text-align: center;
 }
 
-form {
+#agent-form label {
+  color: #e6e6e6;
+  text-decoration: none;
+  text-transform: none;
+}
+
+.agent-creation-form {
   display: flex;
   flex-direction: column;
+  align-items: left;
+  padding: 20px;
+  margin-left: 100px;
 }
 
-form label {
+.agent-creation-form label {
   margin-top: 10px;
+  margin-bottom: 10px;
   font-weight: bold;
   color: #333;
+  max-width: 50%;
 }
 
-form textarea,
-form input {
-  width: 90%;
+.agent-creation-form textarea,
+.agent-creation-form input {
+  width: 80%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 16px;
+  align-items: center;
 }
 
-form textarea {
+.agent-creation-form textarea {
   min-height: 100px;
 }
 
-form button {
+.agent-creation-form button {
   margin-top: 15px;
   padding: 10px;
   background-color: #818181;
@@ -537,9 +571,10 @@ form button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  width: 150px;
 }
 
-form button:hover {
+.agent-creation-form button:hover {
   background-color: #FF8266;
 }
 
@@ -594,34 +629,38 @@ form button:hover {
 
 #edit-passwords {
   width: 50%;
-  margin-left: 30%;
+  margin-left: 40%;
   margin-right: 10%;
-  margin-top: 10%;
+  margin-top: 8%;
   padding: 20px;
   border-radius: 10px;
-  background-color: #e0e0e0;
+  color: #e9e9e9;
+  background-color: #222;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #edit-passwords h2 {
-  color: #222;
+  color: #e8e8e8;
+  text-align: center;
 }
 
 #edit-passwords-form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #e8e8e8;
+  margin-left: 0;
 }
 
 #edit-passwords-form label {
   margin-top: 10px;
   font-weight: bold;
-  color: #333;
+  color: #e3e3e3;
 }
 
 #edit-passwords-form input,
 #edit-passwords-form select {
-  width: 90%;
+  width: 60%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -631,6 +670,7 @@ form button:hover {
 #edit-passwords-form button {
   margin-top: 15px;
   padding: 10px;
+  width: 150px;
   background-color: #818181;
   color: #fff;
   border: none;
@@ -804,6 +844,15 @@ form button:hover {
   border-radius: 30px;
   color: #222;
   background-color: #e4e4e4;
+}
+
+.submit-button {
+  position: absolute;
+  width: 120px;
+  height: 50px;
+  right: 18%;
+  bottom: 11.8%;
+  text-transform: none;
 }
 
 select {

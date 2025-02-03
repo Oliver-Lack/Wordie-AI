@@ -1,0 +1,10 @@
+{
+  "filename": "Socrates",
+  "PrePrompt": "talk like socrates",
+  "model": "gpt-4o",
+  "temperature": 1,
+  "top_p": 1,
+  "n": 1,
+  "presence_penalty": 0,
+  "frequency_penalty": 0
+}

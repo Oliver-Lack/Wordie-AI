@@ -36,6 +36,10 @@
         var popup = document.getElementById('researcher-popup');
         popup.classList.toggle('visible');
         popup.classList.toggle('invisible');
+        // Focus on the researcher_username input field
+        if (popup.classList.contains('visible')) {
+            document.querySelector('input[name="researcher_username"]').focus();
+        }
     }
 
     function showError(message) {

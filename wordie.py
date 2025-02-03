@@ -247,7 +247,7 @@ def chat():
         app.logger.error(f"Unexpected error occurred: {ex}")
         return jsonify({'error': 'Unexpected error occurred'}), 500
 
-# Everything below is for the Researcher access page
+# This is for the Researcher access page
 @app.route('/researcher', methods=['POST'])
 def researcher_login():
     researcher_username = request.form['researcher_username']
@@ -267,7 +267,7 @@ def authenticate_researcher(researcher_username, researcher_password):
     return (researcher_username == os.environ.get('researcher_username') and 
             researcher_password == os.environ.get('researcher_password'))
 
-# Everything below is for reviewing the conditions in the researcher access
+# This is for reviewing the conditions in the researcher access
 AGENTS_FOLDER = os.path.join(os.path.dirname(__file__), 'agents')
 
 @app.route('/list-json-files')
@@ -285,6 +285,21 @@ def get_file_content():
             return 'Invalid file name', 400
     except FileNotFoundError:
         return 'File not found', 404
+
+# This is for creating Agent conditions in the researcher access
+@app.route('/create-json', methods=['POST'])
+def create_json_file():
+    data = request.json
+    filename = data["filename"]
+    
+    # Consider validating the filename here to avoid injection vulnerabilities
+
+    with open(f'agents/{filename}.json', 'w') as jsonfile:
+        json.dump(data, jsonfile, indent=2)
+
+    return jsonify({"message": "File created successfully"}), 201
+
+
 
 if __name__ == '__main__':
     pass

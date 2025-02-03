@@ -8,7 +8,8 @@
 </head>
 <body>
     <header class="header">
-        <div class="website-name">
+        <div class="Research-Dashboard-Header">
+            <p>Wordie.AI</p>
             <h1>Research Dashboard</h1>
         </div>
     </header>
@@ -17,14 +18,15 @@
             <a href="{{ url_for('login') }}" class="special-back-button researcher-sidebar-content">Back to Login</a>
             <button class="researcher-sidebar-content" onclick="showForm('about')">About</button>
             <button class="researcher-sidebar-content" onclick="showForm('agent-creation')">Create Agent Condition</button>
+            <button class="researcher-sidebar-content" onclick="showForm('edit-passwords')">Create Agent Condition Password</button>
             <button class="researcher-sidebar-content" onclick="showForm('review-conditions')">Review Conditions</button>
-            <button class="researcher-sidebar-content" onclick="showForm('edit-passwords')">Edit Agent Condition Passwords</button>
+            <button class="researcher-sidebar-content" onclick="showForm('review-passwords')">Review Condition Passwords</button>
         </aside>
         <div class="right-container">
             <main id="about">
                 <h2>About</h2>
                 <p class="researcher-about">This research dashboard is the draft GUI to check and create agent conditions. This GUI is mainly
-                    designed to help out researchers that don't want to dig in and edit the code.<br>
+                    designed to help out researchers that don't want to dig deep into the code.<br>
                 <br>Prospective updates will include: <br>
                 -> Some "general settings" to change models, selection of output as text, audio, audio&text. <br>
                 -> An editor for the second interaction data capture (command-prompt/moral action button). <br>
@@ -32,7 +34,8 @@
                 -> Some visuals and descriptive graphics for interaction data<br><br>
                     <strong> For the most updated version of the interface visit the public repo:</strong><br>
                     <a href="https://github.com/Oliver-Lack/Wordie-AI" target="_blank">Wordie.ai</a><br><br>
-                    <strong>For open-source usage, questions or collaborations, please cite/acknowledge/contact Oliver Lack.</strong><br>
+                    <strong>For usage, questions or collaborations, please cite/acknowledge/contact: <br><br>
+                        Oliver Lack.</strong><br>
                     <strong>Australian Institute for Machine Learning (AIML) | School of Psychology <br>
                         The University of Adelaide<br>
                         oliver.lack@adelaide.edu.au | oliver@oliverlack.com<br>
@@ -40,27 +43,29 @@
             </p>
                 
             </main>
-            <main id="agent-creation">
+            <main id="agent-creation" class="agent-creation-form">
                 <h2>Create Agent Condition</h2>
-                <form id="agent-form">
-                    <label for="preprompt">PrePrompt (System Message):<br></label>
-                    <textarea id="preprompt" name="PrePrompt" required></textarea>
-                    <label for="model"><br>Model (gpt-4o):<br></label>
-                    <input type="text" id="model" name="model" value="gpt-4o" required>
-                    <label for="temperature"><br>Temperature <br><br><em>(default: 1. Temp transformation of logits can be set between 0-2):</em></label>
-                    <input type="number" id="temperature" name="temperature" step="0.01" min="0" max="1" value="1" required>
-                    <label for="top_p"><br>Top P <br><br><em>(default: 1. For example, 0.1 means only the tokens 
-                        comprising the top 10% probability mass are considered):</em></label>
-                    <input type="number" id="top_p" name="top_p" step="0.01" min="0" max="1" value="1" required>
-                    <label for="n"> <br>N <br><br><em>(default: 1. How many chat completion choices to generate for each input message):</em></label>
-                    <input type="number" id="n" name="n" value="1" required>
-                    <label for="presence_penalty"><br>Presence Penalty <br><br><em>(default: 0. Number between -2.0 and 2.0. Positive values 
-                        penalize new tokens based on whether they appear in the text so far):</em></label>
-                    <input type="number" id="presence_penalty" name="presence_penalty" step="0.01" min="0" max="1" value="0" required>
-                    <label for="frequency_penalty"><br>Frequency Penalty <br><br><em>(default: 0. Number between -2.0 and 2.0. Positive values 
-                        penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim):</em></label>
-                    <input type="number" id="frequency_penalty" name="frequency_penalty" step="0.01" min="0" max="1" value="0" required>
-                    <button type="button" onclick="createJsonFile()">Create JSON</button>
+                <form id="agent-form" class="agent-creation-form">
+                    <label for="json-filename">JSON File Name:<br></label>
+                    <input type="text" id="json-filename" name="json-filename" required>
+                    <label for="preprompt"><br>PrePrompt (System Message):<br></label><br>
+                    <textarea id="preprompt" name="PrePrompt" required></textarea><br>
+                    <label for="model"><br>Model (gpt-4o):<br></label><br>
+                    <input type="text" id="model" name="model" value="gpt-4o" required><br>
+                    <label for="temperature"><br>Temperature <br><em>(default: 1. Temp transformation of logits can be set between 0-2):</em></label><br>
+                    <input type="number" id="temperature" name="temperature" step="0.01" min="0" max="1" value="1" required><br>
+                    <label for="top_p"><br>Top P <br><em>(default: 1. For example, 0.1 means only the tokens 
+                        comprising the top 10% probability mass are considered):</em></label><br>
+                    <input type="number" id="top_p" name="top_p" step="0.01" min="0" max="1" value="1" required><br>
+                    <label for="n"> <br>N <br><em>(default: 1. How many chat completion choices to generate for each input message):</em></label><br>
+                    <input type="number" id="n" name="n" value="1" required><br>
+                    <label for="presence_penalty"><br>Presence Penalty <br><em>(default: 0. Number between -2.0 and 2.0. Positive values 
+                        penalize new tokens based on whether they appear in the text so far):</em></label><br>
+                    <input type="number" id="presence_penalty" name="presence_penalty" step="0.01" min="0" max="1" value="0" required><br>
+                    <label for="frequency_penalty"><br>Frequency Penalty <br><em>(default: 0. Number between -2.0 and 2.0. Positive values 
+                        penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim):</em></label><br>
+                    <input type="number" id="frequency_penalty" name="frequency_penalty" step="0.01" min="0" max="1" value="0" required><br>
+                    <button type="button" onclick="createJsonFile()">Create JSON</button><br>
                 </form>
                 <pre id="json-output" style="background-color: #222; padding: 20px; color: #fff;"></pre>
             </main>
@@ -72,7 +77,7 @@
             <main id="edit-passwords">
                 <h2>Edit Passwords for Agent Conditions</h2>
                 <form id="edit-passwords-form">
-                    <label for="password">Password:<br></label>
+                    <label for="password">New Password:<br></label>
                     <input type="text" id="password" name="password" class="form-input" required>
                     <label for="agent"><br>Agent Condition:<br></label>
                     <select id="agent" name="agent" class="form-input" required></select>
@@ -89,7 +94,15 @@
         function createJsonFile() {
             const form = document.getElementById('agent-form');
             const data = new FormData(form);
+            const filename = data.get('json-filename').trim();
+
+            if (!filename) {
+                alert('Please enter a file name');
+                return;
+            }
+
             const jsonData = {
+                "filename": filename,
                 "PrePrompt": data.get('PrePrompt'),
                 "model": data.get('model'),
                 "temperature": parseFloat(data.get('temperature')),
@@ -98,7 +111,21 @@
                 "presence_penalty": parseFloat(data.get('presence_penalty')),
                 "frequency_penalty": parseFloat(data.get('frequency_penalty'))
             };
-            document.getElementById('json-output').textContent = JSON.stringify(jsonData, null, 2);
+
+            fetch('/create-json', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         }
     
         function showForm(formId) {
