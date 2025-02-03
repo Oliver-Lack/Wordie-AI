@@ -316,10 +316,10 @@ document.getElementById('chat-form').addEventListener('submit', function(event) 
     if (submitCount >= 4) {
         finishButton.style.display = 'block';
     }
-    if (submitCount >= 12) {
+    if (submitCount >= 8) {
         finishButton.style.backgroundColor = '#222';
     }
-    if (submitCount >= 18) {
+    if (submitCount >= 16) {
         finishButton.style.backgroundColor = '#FF8266';
     }
 });

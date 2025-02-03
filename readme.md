@@ -1,23 +1,43 @@
 # Wordie is a Flask based AI interface web app for Human-AI interaction research
 
-The app runs with gunicorn for the production server, currently integrated with an OpenAI API, and dumps data to various files when API calls are made. This includes interactions.json, interactions_backup.csv, and AWS S3 bucket API integration. 
-Each data files collects the same data from the interaction. Namely:
-- user_id
-- prolific_id
-- temperature
-- model
-- user message
-- AI message
-- logprobs (log probabilities) of AI message
-- sequence log probability
-- interaction log probability
-- prompt-tokens
-- completion-tokens
-- total-tokens
-- timestamps
+**Summary of the core Elements of Wordie App:**
 
-The users.db is used to store prolific IDs, interface assigned user_ids, conversation history, and passwords for experimental condition assignment.
-The users.db is used for the apps functionality and not data collection or analyses. 
+1. **Framework:** Flask
+2. **Production Server:** Gunicorn
+3. **API Integration:** OpenAI API
+4. **Data Files:**
+   - interactions.json
+   - interactions_backup.csv
+   - AWS S3 bucket (interaction_batch.json)
+5. **Data Attributes:**
+   - user_id
+   - prolific_id
+   - temperature
+   - model
+   - messages (user, AI)
+   - log probabilities (AI)
+   - Relative Sequence log probability 
+   - Relative Interaction log probability
+   - token counts
+   - timestamps
+6. **Database:** users.db
+    - The users.db is used for the apps functionality and not data collection or analyses. 
+7. **Environment Variables:** OPENAI_API_KEY, FLASK_SECRET_KEY, S3_BUCKET_NAME
+8. **Hosting:** AWS EC2 Instance
+9. **Web Server:** Apache2
+10. **SSL:** Certbot
+11. **Experimental Setup:**
+    - Participant conditioning via prolific ID, passwords 
+    - Conditioning set using passwords in add_passwords.py
+    - Agents directory holds condition settings
+12. **Performance Optimization:** Swap Space
+13. **Monitoring Tool:** htop
+14. **Log Data Collection:** AWS SSO session setup with boto3 
+    - S3 Bucket setup (bucket=wordie, SSOprofile=WordieLocal)
+    - This is for batched interactions and manual transfer commands
+15. ** Javascript:**
+    - Cookie tracks reset button for Command Button appearance
+    - All  button dynamics set between chat.js and chat.html
 
 
 ## How to run Wordie locally:
@@ -26,7 +46,12 @@ The users.db is used for the apps functionality and not data collection or analy
 
 - Register for an LLM API key and and create an environment variable named "OPENAI_API_KEY" with the key in it
 - Create an env variable named "FLASK_SECRET_KEY" with a secret key for the Flask app
-- For AWS S3 bucket integration on a production server, follow AWS documentation (S3 not necessary for local development, currently just a backup data dump method) 
+- S3 AWS bucket setup required to log data to bucket. Must setup aws cli and sso config before running the app. Terminal commands below:
+command: brew install awscli
+command: aws configure sso     (fill out required identity data from access portal sso info. requires awscli 2)
+Now create aws profile name and connect to admin account (profile name like WordieLocal).
+Change profile name in boto3.Session to newly assigned name. 
+
 
 Here's a rough bash command to set the env variables when deploying an EC2 instance:
             #!/bin/bash
@@ -36,10 +61,8 @@ Here's a rough bash command to set the env variables when deploying an EC2 insta
             # Flask Secret Key
             export FLASK_SECRET_KEY="your-flask-secret-key"
 
-            # AWS Credentials
-            export AWS_ACCESS_KEY_ID="your-aws-access-key-id"
-            export AWS_SECRET_ACCESS_KEY="your-aws-secret-access-key"
-            export AWS_DEFAULT_REGION="your-aws-region"
+            # AWS S3 Bucket
+            export S3_BUCKET_NAME=wordie
 
             echo "Environment variables have been set."
 
@@ -61,8 +84,15 @@ gunicorn -w 4 -b 0.0.0.0:8000 wordie:app
 How to run Wordie on an AWS EC2 Instance (on a magical cloud connected to this thing called the internet):
 
 ### Prerequisites
-- **User Role**: Attach AWS user role with S3 permissions.
-  - Required for S3 bucket data dumps. Adjust bucket name in `.env`.
+- **Configure S3 Bucket with AWS CLI SSO Config**:
+- S3 AWS bucket setup required to log data to bucket. Must setup aws cli and sso config before running the app. Terminal commands below:
+command: brew install awscli
+command: aws configure sso     (fill out required identity data from access portal sso info. requires awscli 2)
+Now create aws profile name and connect to admin account (profile name like WordieLocal).
+Change profile name in boto3.Session in wordie.py to newly assigned name (Do this BEFORE transferring app to instance). 
+
+  - Specify S3 bucket data dumps. Adjust bucket name in `.env`.
+  - Make sure profile_name matches the profile name in the boto3.Session in the app.
 
 ### Instance Specifications
 - **Environment**: AWS, Ubuntu, Flask, Gunicorn, Apache2.
@@ -218,7 +248,7 @@ How to run Wordie on an AWS EC2 Instance (on a magical cloud connected to this t
 3. **Add Variables**:
    ```
    # AWS S3 Bucket
-    S3_BUCKET_NAME=wordie
+   S3_BUCKET_NAME=wordie
    
    # OpenAI API Key
    OPENAI_API_KEY="Secret Key"
@@ -285,10 +315,10 @@ For other researchers:
 - IMPORTANT: IAM AWS role must have s3 access AND this role must be attached to the EC2 instance on launch (i.e., attach user role to instance on launch)
 - Create your own bucket and change name in .env file accordingly.
 - Scraping data files manually after experiment can be done by SSH into the instance and then running the following command to send to an S3 bucket:
-    aws s3 cp interactions.json s3://wordie/
-    aws s3 cp interactions_backup.csv s3://wordie/
-    aws s3 cp users.db s3://wordie/
-(Note: aws role must be attached to instance)
+(Change bucket name followed by set SSO CLI profile name accordingly)
+    aws s3 cp interactions.json s3://wordie/ --profile WordieLocal
+    aws s3 cp interactions_backup.csv s3://wordie/ --profile WordieLocal
+    aws s3 cp users.db s3://wordie/ --profile WordieLocal
 
 Extra info:
 - If the agents are edited, the app needs to be reset to apply the changes.

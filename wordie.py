@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, jsonify, render_template, request, session, redirect, url_for, flash
+from flask import Flask, jsonify, render_template, request, session as flask_session, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from API import API_Call
 import sys
@@ -15,20 +15,9 @@ interaction_batch = []
 
 # Setup with boto3 aws CLI for S3 AWS bucket backup to dump the batched interactions
 S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
-sts_client = boto3.client('sts')
-response = sts_client.assume_role(
-    RoleArn='arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME',
-    RoleSessionName='session_name'
-)
-credentials = response['Credentials']
+session = boto3.Session(profile_name='WordieLocal')
 
-s3 = boto3.client(
-    's3',
-    aws_access_key_id=credentials['AccessKeyId'],
-    aws_secret_access_key=credentials['SecretAccessKey'],
-    aws_session_token=credentials['SessionToken']
-)
-
+s3 = session.client('s3')
 
 # database initialization for usernames, passwords, and conversation history
 def init_db():
@@ -83,7 +72,7 @@ def log_user_data(data):
         }
 
     interaction_content = {k: v for k, v in data.items() if k not in ['user_id', 'username']}
-    interaction_content['password'] = session.get('password', 'N/A')
+    interaction_content['password'] = flask_session.get('password', 'N/A')
 
     if 'logprobs' in data:
         logprobs = data.get('logprobs', [])
@@ -105,7 +94,7 @@ def log_user_data(data):
         data.get('timestamp', ''),
         data.get('user_id', ''),
         data.get('username', ''),
-        session.get('password', 'N/A'),
+        flask_session.get('password', 'N/A'),
         data.get('interaction_type', ''),
         data.get('message', ''),
         data.get('response', ''),
@@ -158,7 +147,7 @@ def add_message(user_id, password, message, response, model, temperature, prompt
     conn.close()
     log_user_data({
         'user_id': user_id,
-        'username': session.get('username'),
+        'username': flask_session.get('username'),
         'interaction_type': 'message',
         'message': message,
         'response': response,
@@ -203,10 +192,10 @@ def login():
         c.execute('SELECT agent FROM passwords WHERE password = ?', (password,))
         agent = c.fetchone()
         if agent:
-            session['user_id'] = user_id
-            session['username'] = username
-            session['password'] = password
-            session['agent'] = agent[0]
+            flask_session['user_id'] = user_id
+            flask_session['username'] = username
+            flask_session['password'] = password
+            flask_session['agent'] = agent[0]
             wordie.update_agent(f"agents/{agent[0]}.json")
             flash('', 'success')
             conn.close()
@@ -222,13 +211,13 @@ def chat():
     env_var = os.environ.get('OPENAI_API_KEY')
     show_popup = env_var is None
 
-    if 'username' not in session:
+    if 'username' not in flask_session:
         return redirect(url_for('login'))
 
     try:
-        agent = session.get('agent', 'default')
+        agent = flask_session.get('agent', 'default')
         wordie.update_agent(f"agents/{agent}.json")
-        conversation = get_messages(session['user_id'], session['password'], wordie.agent_data["PrePrompt"])
+        conversation = get_messages(flask_session['user_id'], flask_session['password'], wordie.agent_data["PrePrompt"])
 
         if request.method == 'POST':
             message = request.form.get('message')
@@ -244,12 +233,12 @@ def chat():
                 app.logger.error(f"Error processing message: {e}")
                 return jsonify({'error': 'Error processing message'}), 500
 
-            user_id = session['user_id']
-            password = session['password']
+            user_id = flask_session['user_id']
+            password = flask_session['password']
             add_message(user_id, password, message, str(response), model, wordie.agent_data["temperature"], prompt_tokens, completion_tokens, total_tokens, logprobs_list)
             return jsonify({'response': response})
 
-        return render_template('chat.html', username=session['username'], messages=conversation, show_popup=show_popup)
+        return render_template('chat.html', username=flask_session['username'], messages=conversation, show_popup=show_popup)
     except Exception as ex:
         app.logger.error(f"Unexpected error occurred: {ex}")
         return jsonify({'error': 'Unexpected error occurred'}), 500
