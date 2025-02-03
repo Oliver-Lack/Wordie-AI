@@ -13,15 +13,21 @@ import boto3
 # Batch for S3 AWS bucket backup
 interaction_batch = []
 
-# Setup for S3 AWS bucket backup to dump the batched interactions
+# Setup with boto3 aws CLI for S3 AWS bucket backup to dump the batched interactions
 S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+sts_client = boto3.client('sts')
+response = sts_client.assume_role(
+    RoleArn='arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME',
+    RoleSessionName='session_name'
+)
+credentials = response['Credentials']
 
 s3 = boto3.client(
-    's3', 
-    aws_access_key_id=AWS_ACCESS_KEY_ID, 
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+    's3',
+    aws_access_key_id=credentials['AccessKeyId'],
+    aws_secret_access_key=credentials['SecretAccessKey'],
+    aws_session_token=credentials['SessionToken']
+)
 
 
 # database initialization for usernames, passwords, and conversation history
@@ -247,21 +253,6 @@ def chat():
     except Exception as ex:
         app.logger.error(f"Unexpected error occurred: {ex}")
         return jsonify({'error': 'Unexpected error occurred'}), 500
-
-
-# Test
-def test_s3_upload():
-    test_file_name = 'test_upload.txt'
-    try:
-        upload_to_s3(test_file_name, S3_BUCKET_NAME)
-        print(f"File '{test_file_name}' uploaded successfully to bucket '{S3_BUCKET_NAME}'.")
-    except Exception as e:
-        print(f"Failed to upload file '{test_file_name}' to bucket '{S3_BUCKET_NAME}': {e}")
-
-if __name__ == '__main__':
-    test_s3_upload()
-
-
 
 if __name__ == '__main__':
     pass

@@ -66,7 +66,9 @@ Got to README_EC2_Setup.md for a step by step guide on how to deploy Wordie on a
 ## Latest Experiment NOTES
 
 For other researchers:
-- The app currently logs data to my S3 bucket on AWS. Change the details in the wordie.py and setup your own bucket. 
+- The app currently logs data to MY S3 bucket on AWS. 
+- IMPORTANT: IAM AWS role must have s3 access AND this role must be attached to the EC2 instance on launch (i.e., attach user role to instance on launch)
+- Create your own bucket and change name in .env file accordingly.
 
 Extra info:
 - If the agents are edited, the app needs to be reset to apply the changes.

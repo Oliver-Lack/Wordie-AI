@@ -1,5 +1,9 @@
 This is a rough guid on setting this app up on an AWS Instance
-— AWS Ubuntu, Flask, Gunicorn, Apache2 —
+
+Before Instance launch! Attach an AWS user role with s3 permissions to the instance you are creating 
+(This is for s3 bucket batched data dumps. Change bucket name in env accordingly).
+
+Instance details -> AWS, Ubuntu, Flask, Gunicorn, Apache2
 
 Important Tip - DO NOT stuff up any of the sudo chown commands. You will F#*! up permissions to root if you forget the wrong /. I’ve done this twice and wanted to punch a window both times. If this happens…Pack up your belongings, delete the instance, and start again…
 
