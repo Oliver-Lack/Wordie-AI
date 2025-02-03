@@ -21,8 +21,47 @@
         </div>
     </div>
 </form>
-    <script>
-        document.getElementById('username').focus();
-    </script>
+<button class="researcher-button" onclick="toggleResearcherForm()">Researcher Access</button>
+
+<div id="researcher-popup" class="invisible">
+    <form class="researcher-form" onsubmit="submitResearcherForm(event)">
+        <div id="error-message" style="display:none; color: red; text-align: center;"></div>
+        <input type="text" class="input-field" placeholder="Researcher_Username" name="researcher_username">
+        <input type="password" class="input-field" placeholder="Researcher_Password" name="researcher_password">
+        <button type="submit">Login</button>
+    </form>
+</div>
+<script>
+    function toggleResearcherForm() {
+        var popup = document.getElementById('researcher-popup');
+        popup.classList.toggle('visible');
+        popup.classList.toggle('invisible');
+    }
+
+    function showError(message) {
+        var errorMessage = document.getElementById('error-message');
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+    }
+
+    async function submitResearcherForm(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+
+        const response = await fetch('/researcher', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            window.location.href = '/research_dashboard'; // On successful login
+        } else {
+            showError(result.message); // Display error message in popup
+        }
+    }
+
+    document.getElementById('username').focus();
+</script>
 </body>
 </html>

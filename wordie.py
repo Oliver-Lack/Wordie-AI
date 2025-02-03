@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, jsonify, render_template, request, session as flask_session, redirect, url_for, flash
+from flask import Flask, jsonify, render_template, request, session as flask_session, redirect, url_for, flash, send_from_directory
 from flask_bootstrap import Bootstrap
 from API import API_Call
 import sys
@@ -9,6 +9,10 @@ from datetime import datetime
 import subprocess
 import csv
 import boto3
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Batch for S3 AWS bucket backup
 interaction_batch = []
@@ -242,6 +246,45 @@ def chat():
     except Exception as ex:
         app.logger.error(f"Unexpected error occurred: {ex}")
         return jsonify({'error': 'Unexpected error occurred'}), 500
+
+# Everything below is for the Researcher access page
+@app.route('/researcher', methods=['POST'])
+def researcher_login():
+    researcher_username = request.form['researcher_username']
+    researcher_password = request.form['researcher_password']
+    if authenticate_researcher(researcher_username, researcher_password):
+        flask_session['researcher'] = True
+        return jsonify({'success': True}), 200
+    return jsonify({'success': False, 'message': 'Invalid credentials'}), 401
+
+@app.route('/research_dashboard', methods=['GET'])
+def research_dashboard():
+    if not flask_session.get('researcher'):
+        return redirect(url_for('researcher_login'))
+    return render_template('research_dashboard.html')
+
+def authenticate_researcher(researcher_username, researcher_password):
+    return (researcher_username == os.environ.get('researcher_username') and 
+            researcher_password == os.environ.get('researcher_password'))
+
+# Everything below is for reviewing the conditions in the researcher access
+AGENTS_FOLDER = os.path.join(os.path.dirname(__file__), 'agents')
+
+@app.route('/list-json-files')
+def list_json_files():
+    files = [f for f in os.listdir(AGENTS_FOLDER) if f.endswith('.json')]
+    return jsonify(files)
+
+@app.route('/get-file-content')
+def get_file_content():
+    filename = request.args.get('name')
+    try:
+        if filename and filename.endswith('.json'):
+            return send_from_directory(AGENTS_FOLDER, filename)
+        else:
+            return 'Invalid file name', 400
+    except FileNotFoundError:
+        return 'File not found', 404
 
 if __name__ == '__main__':
     pass

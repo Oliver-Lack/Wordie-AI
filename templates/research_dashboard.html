@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" charset="UTF-8">
+</head>
+<body>
+    <header class="header">
+        <div class="website-name">
+            <h1>Research Dashboard</h1>
+        </div>
+    </header>
+    <div class="main-container">
+        <aside class="researcher-sidebar">
+            <a href="{{ url_for('login') }}" class="special-back-button researcher-sidebar-content">Back to Login</a>
+            <button class="researcher-sidebar-content" onclick="showForm('about')">About</button>
+            <button class="researcher-sidebar-content" onclick="showForm('agent-creation')">Create Agent Condition</button>
+            <button class="researcher-sidebar-content" onclick="showForm('review-conditions')">Review Conditions</button>
+            <button class="researcher-sidebar-content" onclick="showForm('edit-passwords')">Edit Agent Condition Passwords</button>
+        </aside>
+        <div class="right-container">
+            <main id="about">
+                <h2>About</h2>
+                <p class="researcher-about">This research dashboard is the draft GUI to check and create agent conditions. This GUI is mainly
+                    designed to help out researchers that don't want to dig in and edit the code.<br>
+                <br>Prospective updates will include: <br>
+                -> Some "general settings" to change models, selection of output as text, audio, audio&text. <br>
+                -> An editor for the second interaction data capture (command-prompt/moral action button). <br>
+                -> A way to locally download the data files. <br>
+                -> Some visuals and descriptive graphics for interaction data<br><br>
+                    <strong> For the most updated version of the interface visit the public repo:</strong><br>
+                    <a href="https://github.com/Oliver-Lack/Wordie-AI" target="_blank">Wordie.ai</a><br><br>
+                    <strong>For open-source usage, questions or collaborations, please cite/acknowledge/contact Oliver Lack.</strong><br>
+                    <strong>Australian Institute for Machine Learning (AIML) | School of Psychology <br>
+                        The University of Adelaide<br>
+                        oliver.lack@adelaide.edu.au | oliver@oliverlack.com<br>
+                        <a href="https://www.oliverlack.com" target="_blank">www.oliverlack.com</a></strong>
+            </p>
+                
+            </main>
+            <main id="agent-creation">
+                <h2>Create Agent Condition</h2>
+                <form id="agent-form">
+                    <label for="preprompt">PrePrompt (System Message):<br></label>
+                    <textarea id="preprompt" name="PrePrompt" required></textarea>
+                    <label for="model"><br>Model (gpt-4o):<br></label>
+                    <input type="text" id="model" name="model" value="gpt-4o" required>
+                    <label for="temperature"><br>Temperature <br><br><em>(default: 1. Temp transformation of logits can be set between 0-2):</em></label>
+                    <input type="number" id="temperature" name="temperature" step="0.01" min="0" max="1" value="1" required>
+                    <label for="top_p"><br>Top P <br><br><em>(default: 1. For example, 0.1 means only the tokens 
+                        comprising the top 10% probability mass are considered):</em></label>
+                    <input type="number" id="top_p" name="top_p" step="0.01" min="0" max="1" value="1" required>
+                    <label for="n"> <br>N <br><br><em>(default: 1. How many chat completion choices to generate for each input message):</em></label>
+                    <input type="number" id="n" name="n" value="1" required>
+                    <label for="presence_penalty"><br>Presence Penalty <br><br><em>(default: 0. Number between -2.0 and 2.0. Positive values 
+                        penalize new tokens based on whether they appear in the text so far):</em></label>
+                    <input type="number" id="presence_penalty" name="presence_penalty" step="0.01" min="0" max="1" value="0" required>
+                    <label for="frequency_penalty"><br>Frequency Penalty <br><br><em>(default: 0. Number between -2.0 and 2.0. Positive values 
+                        penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim):</em></label>
+                    <input type="number" id="frequency_penalty" name="frequency_penalty" step="0.01" min="0" max="1" value="0" required>
+                    <button type="button" onclick="createJsonFile()">Create JSON</button>
+                </form>
+                <pre id="json-output" style="background-color: #222; padding: 20px; color: #fff;"></pre>
+            </main>
+            <main id="review-conditions">
+                <h2>Review Conditions</h2>
+                <ul id="file-list"></ul>
+                <div id="file-content-popup"></div>
+            </main>
+            <main id="edit-passwords">
+                <h2>Edit Passwords for Agent Conditions</h2>
+                <form id="edit-passwords-form">
+                    <label for="password">Password:<br></label>
+                    <input type="text" id="password" name="password" class="form-input" required>
+                    <label for="agent"><br>Agent Condition:<br></label>
+                    <select id="agent" name="agent" class="form-input" required></select>
+                    <button type="button" class="form-button" onclick="updatePasswords()">Submit</button>
+                </form>
+            </main>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            showForm('about');
+        });
+
+        function createJsonFile() {
+            const form = document.getElementById('agent-form');
+            const data = new FormData(form);
+            const jsonData = {
+                "PrePrompt": data.get('PrePrompt'),
+                "model": data.get('model'),
+                "temperature": parseFloat(data.get('temperature')),
+                "top_p": parseFloat(data.get('top_p')),
+                "n": parseInt(data.get('n')),
+                "presence_penalty": parseFloat(data.get('presence_penalty')),
+                "frequency_penalty": parseFloat(data.get('frequency_penalty'))
+            };
+            document.getElementById('json-output').textContent = JSON.stringify(jsonData, null, 2);
+        }
+    
+        function showForm(formId) {
+            const forms = document.querySelectorAll('main');
+            forms.forEach(form => form.style.display = 'none');
+            document.getElementById(formId).style.display = 'block';
+            localStorage.setItem('activeForm', formId);
+            const buttons = document.querySelectorAll('.researcher-sidebar-content');
+            buttons.forEach(button => button.classList.remove('active-button'));
+            document.querySelector(`button[onclick="showForm('${formId}')"]`).classList.add('active-button');
+        }
+
+        async function listJsonFiles() {
+            try {
+                const response = await fetch('/list-json-files');
+                const files = await response.json();
+                const fileList = document.getElementById('file-list');
+                fileList.innerHTML = '';
+    
+                files.forEach(filename => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = filename;
+                    listItem.onmouseover = () => showFileContent(filename);
+                    listItem.onmouseout = hideFileContent;
+                    fileList.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error('Error fetching files:', error);
+            }
+        }
+    
+        async function showFileContent(filename) {
+            try {
+                const response = await fetch(`/get-file-content?name=${filename}`);
+                const content = await response.text();
+                const popup = document.getElementById('file-content-popup');
+                popup.textContent = content;
+                popup.style.display = 'block';
+            } catch (error) {
+                console.error('Error fetching file content:', error);
+            }
+        }
+    
+        function hideFileContent() {
+            const popup = document.getElementById('file-content-popup');
+            popup.style.display = 'none';
+        }
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            const activeForm = localStorage.getItem('activeForm') || 'about';
+            showForm(activeForm);
+            listJsonFiles();
+        });
+        
+        async function updatePasswords() {
+        const password = document.getElementById('password').value;
+        const agent = document.getElementById('agent').value;
+        const response = await fetch('/update-passwords', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ password, agent })
+        });
+
+        if (response.ok) {
+            alert('Passwords updated successfully');
+        } else {
+            alert('Failed to update');
+        }
+        }
+    </script>
+</body>
+</html>
