@@ -2,7 +2,7 @@
 
 **Wordie is a custom AI interface web app for Human-AI interaction research**  
 
-The app is hosted for demo purposes at [Wordie.AI](https://wordie.xyz)  
+The app is hosted for demo purposes at [wordie.xyz](https://wordie.xyz)  
 
 default login: prolific_id = 1234, password = music  
 researcher login: username = wordie, password = laplace666$  
