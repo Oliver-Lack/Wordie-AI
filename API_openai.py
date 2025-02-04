@@ -6,7 +6,8 @@ import json
 def load_agent(filepath):
     with open(filepath, 'r') as file:
         return json.load(file)
-
+    
+# Open AI API request
 def openai_api_request(model="gpt-4o",
                        messages=None,
                        temperature=1,

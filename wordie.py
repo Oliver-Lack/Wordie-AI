@@ -1,7 +1,8 @@
 import sqlite3
 from flask import Flask, jsonify, render_template, request, session as flask_session, redirect, url_for, flash, send_from_directory, abort
 from flask_bootstrap import Bootstrap
-from API import API_Call
+from API_openai import API_Call
+from API_anthropic import API_Call_2
 import sys
 import os
 import json
@@ -14,9 +15,36 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Load API_Call script
-wordie = API_Call()
+# Initializing the flask app
+app = Flask(__name__)
+app.secret_key = os.environ['FLASK_SECRET_KEY']
 
+#### This is for selecting which API script to use (i.e., model selection)
+# Load the API script 
+wordie = API_Call()
+# Function to update the API instance
+def update_api(api_name):
+    global wordie
+    if api_name == 'API_Call':
+        wordie = API_Call()
+    elif api_name == 'API_Call_2':
+        wordie = API_Call_2()
+    else:
+        raise ValueError("Invalid API name")
+
+# Route to handle API selection
+@app.route('/select-api', methods=['POST'])
+def select_api():
+    data = request.json
+    api_name = data.get('api_name')
+    try:
+        update_api(api_name)
+        return jsonify({'message': 'API updated successfully'}), 200
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+
+
+### This is for batching interaction data and S3 bucket data backup
 # Batch for S3 AWS bucket backup
 interaction_batch = []
 
@@ -27,7 +55,7 @@ session = boto3.Session(profile_name='WordieLocal')
 s3 = session.client('s3')
 
 # database initialization for usernames, password conditions, and conversation history
-# First queries database to update passwords dictionary. 
+# It first queries database to update passwords dictionary. 
 
 def init_db():
     conn = sqlite3.connect('users.db')
@@ -94,12 +122,10 @@ def add_passwords():
 init_db()
 add_passwords()
 
-# Initializing the flask app
-app = Flask(__name__)
-app.secret_key = os.environ['FLASK_SECRET_KEY']
-
+# Function to calculate joint log probability in models that can call logprobs
 def calculate_joint_log_probability(logprobs):
     return sum(logprobs)
+
 # For logging interactions.json, interactions_backup.csv, and batched_interactions.json
 def log_user_data(data):
     global interaction_batch
@@ -221,6 +247,7 @@ def get_messages(user_id, password, systemprompt):
     conn.close()
     return conversation
 
+### Main flask app routes for Wordie
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -290,7 +317,7 @@ def chat():
         app.logger.error(f"Unexpected error occurred: {ex}")
         return jsonify({'error': 'Unexpected error occurred'}), 500
 
-# This is for the Researcher access page
+#### This is for the Researcher access page
 @app.route('/researcher', methods=['POST'])
 def researcher_login():
     researcher_username = request.form['researcher_username']
@@ -312,7 +339,6 @@ def authenticate_researcher(researcher_username, researcher_password):
 
 # This is for reviewing the conditions in the researcher access
 AGENTS_FOLDER = os.path.join(os.path.dirname(__file__), 'agents')
-
 @app.route('/list-json-files')
 def list_json_files():
     files = [f for f in os.listdir(AGENTS_FOLDER) if f.endswith('.json')]
@@ -335,7 +361,7 @@ def create_json_file():
     data = request.json
     filename = data["filename"]
     
-    # I should really validate the filename here to avoid injection vulnerabilities
+    # ToDo -> I should really validate the filename here to avoid injection vulnerabilities
 
     with open(f'agents/{filename}.json', 'w') as jsonfile:
         json.dump(data, jsonfile, indent=2)
@@ -395,7 +421,7 @@ def get_passwords():
 # This is for local download of data files in researcher access
 @app.route('/download/<filename>')
 def download_file(filename):
-    directory = '.'  # Specifies the root directory
+    directory = '.'  # Specifies root directory
 
     if not os.path.exists(os.path.join(directory, filename)):
         abort(404)  

@@ -18,6 +18,14 @@ For usage, questions or collaborations, please cite/acknowledge/contact:
 
 **Summary of the core Elements of Wordie-AI Interface:**  
 
+Wordie is designed to scrape a plethora of interaction data especially relevant to various human-AI interaction research.
+It is scalable and easy to experimentally customise and condition participant groups. This interface aims to make interaction with
+real-world AI systems more accessible. Integration with Qualtrics, Prolific, MTurk or other platforms for online sampling is easy.
+
+The code is adaptable for various experimental manipulations. For example, manipulations that involve prompt engineering, API call parameters, 
+AI model selection, communication modalities (audio/text), custom vector store retrieval, hardcoded experimental AI responses/prompts, and more. 
+
+Summary of Wordie's core features:
 1. **Framework:** Flask
 2. **Production Server:** Gunicorn
 3. **API Integration:** OpenAI API
