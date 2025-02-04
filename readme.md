@@ -1,4 +1,4 @@
-# Wordie.AI - Human-AI Interaction Research App  
+# Wordie: The Human-AI Interaction Research App  
 
 **Wordie is a custom AI interface web app for Human-AI interaction research**  
 
