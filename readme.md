@@ -14,7 +14,7 @@ For usage, questions or collaborations, please cite/acknowledge/contact Oliver L
 
 
 
-**Summary of the core Elements of Wordie App:**
+**Summary of the core Elements of Wordie-AI Interface:**
 
 1. **Framework:** Flask
 2. **Production Server:** Gunicorn
@@ -67,7 +67,7 @@ Now create aws profile name and connect to admin account (profile name like Word
 Change profile name in boto3.Session to newly assigned name. 
 
 
-Here's a rough bash command to set the env variables when deploying an EC2 instance:
+Here's some bash commands to set the other env variables:
             #!/bin/bash
             # OpenAI API Key
             export OPENAI_API_KEY="your-openai-api-key"
@@ -322,21 +322,19 @@ Change profile name in boto3.Session in wordie.py to newly assigned name (Do thi
 
 
 
-## Updated NOTES
+## Updates & Notes
 
 **Researcher Dashboard:**
 The researcher dashboard GUI is still a work in progress.
 Prospective updates will include:
                 -> Some "general settings" to change models, selection of output as text, audio, audio&text.
                 -> An editor for the second interaction data capture (command-prompt/moral action button).
-                -> A way to locally download the data files.
                 -> Some visuals and descriptive graphics for interaction data. 
 
 **Message to other researchers**
 - Please contact [me](https://oliverlack.com) if you want to collaborate/adapt the system for your purpose. Happy to help. 
 - The app currently logs data to MY S3 bucket on AWS. 
-- IMPORTANT: IAM AWS role must have s3 access AND this role must be attached to the EC2 instance on launch (i.e., attach user role to instance on launch)
-- Create your own bucket and change name in .env file accordingly.
+- Create your own bucket and change name in .env file and SSO CLI profile name accordingly (Instructions are above on setting s3 bucket).
 - Scraping data files manually after experiment can be done by SSH into the instance and then running the following command to send to an S3 bucket:
 (Change bucket name followed by set SSO CLI profile name accordingly)
     aws s3 cp interactions.json s3://wordie/ --profile WordieLocal
@@ -344,17 +342,14 @@ Prospective updates will include:
     aws s3 cp users.db s3://wordie/ --profile WordieLocal
 
 **Extra info**
-- If the agents are edited, the app needs to be reset to apply the changes.
-- o1 model and agent will not work as the API is not yet available (released on 17/12/24)
-- Numbers labelling agent conditions 1 = AI is guesser 2 = AI is giver.
+- Numbers labelling current AI agent conditions 1 = AI is guesser 2 = AI is giver.
 
 
 
 **PMC Study 1**
 TODO List:
-- Connect conversation history to username AND password. 
-- S3 Bucket send data 
 - Get other models working
+
 - Measures of unpredictability:
 1. joint probability of sequence and interactions (iterated exponent of the summed logprobs)
 2. prompt engineering score

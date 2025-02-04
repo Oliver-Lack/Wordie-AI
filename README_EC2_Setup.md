@@ -1,4 +1,4 @@
-This is a rough guid on setting this app up on an AWS Instance
+**This is my original rough guide on setting this app up on an AWS Instance**
 
 Before Instance launch! Attach an AWS user role with s3 permissions to the instance you are creating 
 (This is for s3 bucket batched data dumps. Change bucket name in env accordingly).
