@@ -28,7 +28,7 @@ AI model selection, communication modalities (audio/text), custom vector store r
 Summary of Wordie's core features:
 1. **Framework:** Flask
 2. **Production Server:** Gunicorn
-3. **API Integration:** OpenAI API
+3. **API Integration:** OpenAI, Anthropic, LLAMA, Gemini
 4. **Data Files:**
    - interactions.json
    - interactions_backup.csv
