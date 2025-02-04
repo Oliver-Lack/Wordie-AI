@@ -46,22 +46,22 @@ Summary of Wordie's core features:
    - timestamps
 6. **Database:** users.db
     - The users.db is used for the apps functionality and not data collection or analyses. 
-7. **Environment Variables:** OPENAI_API_KEY, FLASK_SECRET_KEY, S3_BUCKET_NAME
-8. **Hosting:** AWS EC2 Instance
+7. **Researcher Dashboard GUI**
+8. **Production Server Integration:** AWS EC2 Instance
 9. **Web Server:** Apache2
 10. **SSL:** Certbot
 11. **Experimental Setup:**
     - Participant conditioning via prolific ID, passwords 
-    - Conditioning set using passwords in add_passwords.py
-    - Agents directory holds condition settings
-12. **Performance Optimization:** Swap Space
-13. **Monitoring Tool:** htop
-14. **Log Data Collection:** AWS SSO session setup with boto3 
+    - Conditioning set using db passwords for survey integration
+    - Easily modified Agents JSON directory for condition settings
+12. **Performance Optimization:** 
+    - Swap Space, standardised delays, cookie tracking for dynamics
+13. **Log Data Collection:** AWS SSO session setup with boto3 
     - S3 Bucket setup (bucket=wordie, SSOprofile=WordieLocal)
     - This is for batched interactions and manual transfer commands
-15. ** Javascript:**
-    - Cookie tracks reset button for Command Button appearance
-    - All  button dynamics set between chat.js and chat.html
+14. **Aesthetics** 
+    - Customised graphics, logos, and aesthetics
+    - Full CSS and javascript dynamics drafted
 
 
 ## How to run Wordie locally:
