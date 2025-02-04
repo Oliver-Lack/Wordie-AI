@@ -418,6 +418,22 @@ button:active {
   background-color: #de222c;
 }
 
+.bottom-left-corner {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+  font-size: 16px;
+}
+.tiny-text {
+  color: grey;
+  font-size: 12px;
+}
+.highlighted-text {
+  font-size: 16px;
+  color: grey;
+}
+
 .password-table {
   position: absolute;
   right: 20%;
@@ -461,7 +477,7 @@ button:active {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #222;
+  background-color: #4c4c4c;
   color: #FFFFFF;
   border: none;
   padding: 10px 20px;
