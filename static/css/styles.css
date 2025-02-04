@@ -509,6 +509,10 @@ button:active {
   width: 100%; /* Adjust as needed */
 }
 
+#agent {
+  background-color: #dedede;
+}
+
 #agent-creation {
   width: 50%;
   margin-left: 40%;
@@ -576,6 +580,44 @@ button:active {
 
 .agent-creation-form button:hover {
   background-color: #FF8266;
+}
+
+.password-inspection-palace {
+  width: 50%;
+  margin-left: 40%;
+  margin-right: 10%;
+  margin-top: 8%;
+  padding: 20px;
+  border-radius: 10px;
+  color: #e9e9e9;
+  background-color: #222;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.password-inspection-palace h2 {
+  color: #e6e6e6;
+  text-align: center;
+}
+
+#password-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #e6e6e6;
+}
+
+#password-table th, #password-table td {
+  padding: 12px;
+  border-bottom: 1px solid #444;
+  text-align: left;
+}
+
+#password-table th {
+  background-color: #333;
+  color: #fff;
+}
+
+#password-table tr:hover {
+  background-color: #555;
 }
 
 .special-back-button {  
@@ -680,6 +722,40 @@ button:active {
 }
 
 #edit-passwords-form button:hover {
+  background-color: #FF8266;
+}
+
+.data-download-section {
+  width: 50%;
+  margin-left: 40%;
+  margin-right: 10%;
+  margin-top: 8%;
+  padding: 20px;
+  border-radius: 10px;
+  color: #e9e9e9;
+  background-color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.data-download-section h2 {
+  color: #e6e6e6;
+  text-align: center;
+}
+
+.download-button {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #818181;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+}
+
+.download-button:hover {
   background-color: #FF8266;
 }
 

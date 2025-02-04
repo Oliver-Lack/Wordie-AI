@@ -19,8 +19,8 @@
             <button class="researcher-sidebar-content" onclick="showForm('about')">About</button>
             <button class="researcher-sidebar-content" onclick="showForm('agent-creation')">Create Agent Condition</button>
             <button class="researcher-sidebar-content" onclick="showForm('edit-passwords')">Create Agent Condition Password</button>
-            <button class="researcher-sidebar-content" onclick="showForm('review-conditions')">Review Conditions</button>
-            <button class="researcher-sidebar-content" onclick="showForm('review-passwords')">Review Condition Passwords</button>
+            <button class="researcher-sidebar-content" onclick="showForm('review-passwords')">Review Conditions</button>
+            <button class="researcher-sidebar-content" onclick="showForm('download-section')">Download Data</button>
         </aside>
         <div class="right-container">
             <main id="about">
@@ -30,10 +30,9 @@
                 <br>Prospective updates will include: <br>
                 -> Some "general settings" to change models, selection of output as text, audio, audio&text. <br>
                 -> An editor for the second interaction data capture (command-prompt/moral action button). <br>
-                -> A way to locally download the data files. <br>
                 -> Some visuals and descriptive graphics for interaction data<br><br>
-                    <strong> For the most updated version of the interface visit the public repo:</strong><br>
-                    <a href="https://github.com/Oliver-Lack/Wordie-AI" target="_blank">Wordie.ai</a><br><br>
+                    <strong> For the newest version of the interface visit the public repo:</strong><br>
+                    <a href="https://github.com/Oliver-Lack/Wordie-AI" target="_blank">Wordie.AI</a><br><br>
                     <strong>For usage, questions or collaborations, please cite/acknowledge/contact: <br><br>
                         Oliver Lack.</strong><br>
                     <strong>Australian Institute for Machine Learning (AIML) | School of Psychology <br>
@@ -69,38 +68,56 @@
                 </form>
                 <pre id="json-output" style="background-color: #222; padding: 20px; color: #fff;"></pre>
             </main>
-            <main id="review-conditions">
-                <h2>Review Conditions</h2>
-                <ul id="file-list"></ul>
-                <div id="file-content-popup"></div>
-            </main>
             <main id="edit-passwords">
                 <h2>Edit Passwords for Agent Conditions</h2>
                 <form id="edit-passwords-form">
-                    <label for="password">New Password:<br></label>
-                    <input type="text" id="password" name="password" class="form-input" required>
                     <label for="agent"><br>Agent Condition:<br></label>
                     <select id="agent" name="agent" class="form-input" required></select>
+                    <label for="password"><br>New Password:<br></label>
+                    <input type="text" id="password" name="password" class="form-input" required>
                     <button type="button" class="form-button" onclick="updatePasswords()">Submit</button>
                 </form>
+            </main>
+            <main id="review-passwords" class="password-inspection-palace">
+                <h2>Review Conditions</h2>
+                <table id="password-table">
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Password</th>
+                            <th>File Content</th>
+                        </tr>
+                    </thead>
+                    <tbody id="password-table-body"></tbody>
+                </table>
+            </main>
+            <main id="download-section" class="data-download-section">
+                <h2>Download Data</h2>
+                <button class="download-button" onclick="downloadFile('interactions.json')">Download interactions.json</button>
+                <button class="download-button" onclick="downloadFile('interactions_backup.csv')">Download interactions_backup.csv</button>
+                <button class="download-button" onclick="downloadFile('download_log.json')">Download Log</button>
             </main>
         </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            showForm('about');
+            const activeForm = localStorage.getItem('activeForm') || 'about';
+            showForm(activeForm);
+            listJsonFiles();
+            populateAgentDropdown();
+            listPasswords();
         });
-
+    
         function createJsonFile() {
             const form = document.getElementById('agent-form');
             const data = new FormData(form);
             const filename = data.get('json-filename').trim();
-
+    
             if (!filename) {
                 alert('Please enter a file name');
                 return;
             }
-
+    
             const jsonData = {
                 "filename": filename,
                 "PrePrompt": data.get('PrePrompt'),
@@ -111,7 +128,7 @@
                 "presence_penalty": parseFloat(data.get('presence_penalty')),
                 "frequency_penalty": parseFloat(data.get('frequency_penalty'))
             };
-
+    
             fetch('/create-json', {
                 method: 'POST',
                 headers: {
@@ -137,11 +154,12 @@
             buttons.forEach(button => button.classList.remove('active-button'));
             document.querySelector(`button[onclick="showForm('${formId}')"]`).classList.add('active-button');
         }
-
+    
         async function listJsonFiles() {
             try {
                 const response = await fetch('/list-json-files');
                 const files = await response.json();
+                files.sort();
                 const fileList = document.getElementById('file-list');
                 fileList.innerHTML = '';
     
@@ -174,27 +192,89 @@
             popup.style.display = 'none';
         }
     
-        document.addEventListener('DOMContentLoaded', () => {
-            const activeForm = localStorage.getItem('activeForm') || 'about';
-            showForm(activeForm);
-            listJsonFiles();
-        });
-        
+        async function populateAgentDropdown() {
+            try {
+                const response = await fetch('/list-json-files');
+                const conditions = await response.json();
+                const select = document.getElementById('agent');
+                select.innerHTML = '';
+    
+                conditions.forEach(condition => {
+                    const option = document.createElement('option');
+                    option.value = condition;
+                    option.textContent = condition;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching conditions:', error);
+            }
+        }
+    
         async function updatePasswords() {
-        const password = document.getElementById('password').value;
-        const agent = document.getElementById('agent').value;
-        const response = await fetch('/update-passwords', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ password, agent })
-        });
+            const password = document.getElementById('password').value;
+            const agent = document.getElementById('agent').value.replace('.json', '');
+            const response = await fetch('/update-passwords', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ password, agent })
+            });
+    
+            if (response.ok) {
+                alert('Passwords updated successfully');
+            } else {
+                alert('Failed to update');
+            }
+        }
 
-        if (response.ok) {
-            alert('Passwords updated successfully');
-        } else {
-            alert('Failed to update');
+        async function listPasswords() {
+            try {
+                const response = await fetch('/get-passwords');
+                const passwords = await response.json();
+                passwords.sort((a, b) => a.agent.localeCompare(b.agent));
+                const tableBody = document.getElementById('password-table-body');
+                tableBody.innerHTML = '';
+
+                for (let item of passwords) {
+                    const row = document.createElement('tr');
+
+                    // Build the filename, defaulting to appending .json
+                    const filename = `${item.password}.json`;
+            
+                    // Log the filename to troubleshoot
+                    console.log(`Fetching content for: ${filename}`);
+
+                    try {
+                        const fileContentResponse = await fetch(`/get-file-content?name=${filename}`);
+                
+                        // Proceed only if the fetch was successful
+                        const fileContent = fileContentResponse.ok ? await fileContentResponse.text() : 'No content';
+
+                        row.innerHTML = `
+                            <td>${item.password || 'No password'}</td>
+                            <td>${item.agent}</td>
+                            <td>${fileContent}</td>
+                        `;
+
+                    } catch (error) {
+                        console.error('Error fetching file content:', error);
+                        row.innerHTML = `
+                            <td>${item.password || 'No password'}</td>
+                            <td>${item.agent}</td>
+                            <td>Error loading content</td>
+                        `;
+                    }
+
+                    tableBody.appendChild(row);
+                }
+            } catch (error) {
+                console.error('Error fetching passwords:', error);
+            }
         }
+
+        function downloadFile(filename) {
+            window.location.href = `/download/${filename}`;
         }
+        
     </script>
 </body>
 </html>

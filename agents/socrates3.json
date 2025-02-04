@@ -1,5 +1,5 @@
 {
-  "filename": "Socrates",
+  "filename": "socrates3",
   "PrePrompt": "talk like socrates",
   "model": "gpt-4o",
   "temperature": 1,

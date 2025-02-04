@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, jsonify, render_template, request, session as flask_session, redirect, url_for, flash, send_from_directory
+from flask import Flask, jsonify, render_template, request, session as flask_session, redirect, url_for, flash, send_from_directory, abort
 from flask_bootstrap import Bootstrap
 from API import API_Call
 import sys
@@ -14,6 +14,9 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Load API_Call script
+wordie = API_Call()
+
 # Batch for S3 AWS bucket backup
 interaction_batch = []
 
@@ -23,7 +26,9 @@ session = boto3.Session(profile_name='WordieLocal')
 
 s3 = session.client('s3')
 
-# database initialization for usernames, passwords, and conversation history
+# database initialization for usernames, password conditions, and conversation history
+# First queries database to update passwords dictionary. 
+
 def init_db():
     conn = sqlite3.connect('users.db')
     conn.text_factory = str
@@ -45,11 +50,49 @@ def init_db():
     conn.commit()
     conn.close()
 
-init_db()
-wordie = API_Call()
+def add_passwords():
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute('SELECT password, agent FROM passwords')
+    rows = c.fetchall()
+    
+    passwords = {password: agent for password, agent in rows}
 
-# Adding conditions to the passwords
-subprocess.run([sys.executable, 'add_passwords.py'])
+    # These are the default passwords/agents from startup 
+    static_passwords = {
+        'hat': '1_TEMP_high',
+        'lake': '1_TEMP_low',
+        'music': '1_TEMP_mid',
+        'red': '2_TEMP_high',
+        'blue': '2_TEMP_low',
+        'orange': '2_TEMP_mid',
+        'apple': '1_PROMPT_high',
+        'dingo': '1_PROMPT_low',
+        'swim': '2_PROMPT_high',
+        'run': '2_PROMPT_low',
+        'pilot1': 'temp0',
+        'pilot2': 'temp0_2',
+        'pilot3': 'temp0_4',
+        'pilot4': 'temp0_7',
+        'pilot5': 'temp1',
+        'pilot6': 'temp1_2',
+        'pilot7': 'temp1_4',
+        'pilot8': 'temp1_7',
+        'pilot9': 'temp2',
+        'wordie123': 'default',
+        'elderberry': 'experimental',
+        'gpt4o': 'llm_gpt4o',
+        'o1': 'llm_o1',
+    }
+
+    for password, agent in static_passwords.items():
+        c.execute('INSERT OR REPLACE INTO passwords (password, agent) VALUES (?, ?)', (password, agent))
+       
+    conn.commit()
+    conn.close()
+
+init_db()
+add_passwords()
 
 # Initializing the flask app
 app = Flask(__name__)
@@ -292,13 +335,85 @@ def create_json_file():
     data = request.json
     filename = data["filename"]
     
-    # Consider validating the filename here to avoid injection vulnerabilities
+    # I should really validate the filename here to avoid injection vulnerabilities
 
     with open(f'agents/{filename}.json', 'w') as jsonfile:
         json.dump(data, jsonfile, indent=2)
 
     return jsonify({"message": "File created successfully"}), 201
 
+# This is for updating the condition passwords in the researcher access
+def update_password_dict():
+    global passwords
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute('SELECT password, agent FROM passwords')
+    rows = c.fetchall()
+    passwords = {password: agent for password, agent in rows}
+    conn.close()
+
+add_passwords()
+update_password_dict()
+
+@app.route('/update-passwords', methods=['POST'])
+def update_passwords():
+    data = request.json
+    password = data.get('password')
+    agent = data.get('agent')
+    
+    if not password or not agent:
+        return jsonify({'error': 'Invalid data'}), 400
+
+    try:
+        conn = sqlite3.connect('users.db')
+        c = conn.cursor()
+        c.execute('INSERT OR REPLACE INTO passwords (password, agent) VALUES (?, ?)', (password, agent))
+        conn.commit()
+        conn.close()
+
+        update_password_dict()
+        
+        return jsonify({'message': 'Password updated successfully'}), 200
+    except sqlite3.Error as e:
+        return jsonify({'error': str(e)}), 500
+
+# This is for reviewing conditions with their passwords in researcher access
+@app.route('/get-passwords', methods=['GET'])
+def get_passwords():
+    connection = sqlite3.connect('users.db')
+    cursor = connection.cursor()
+
+    query = "SELECT * FROM passwords"
+    cursor.execute(query)
+
+    passwords = [{"agent": row[0], "password": row[1]} for row in cursor.fetchall()]
+
+    connection.close()
+    
+    return jsonify(passwords)
+
+# This is for local download of data files in researcher access
+@app.route('/download/<filename>')
+def download_file(filename):
+    directory = '.'  # Specifies the root directory
+
+    if not os.path.exists(os.path.join(directory, filename)):
+        abort(404)  
+
+    log_entry = {
+        "filename": filename,
+        "timestamp": datetime.now().isoformat(),
+        "client_ip": request.remote_addr
+    }
+
+    if not os.path.exists('download_log.json'):
+        with open('download_log.json', 'w') as log_file:
+            log_file.write('')
+
+    with open('download_log.json', 'a') as log_file:
+        log_file.write(json.dumps(log_entry) + '\n')
+
+    return send_from_directory(directory, filename, as_attachment=True)
 
 
 if __name__ == '__main__':

@@ -9097,6 +9097,61 @@
                     "relativeInteractionJointLogProbability": -38.00441013856202
                 }
             ]
+        },
+        "1": {
+            "username": "test999",
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hi",
+                    "response": "Greetings! How does the day find you, fellow seeker of wisdom? What questions or thoughts occupy your mind today? Let us explore them together in the pursuit of understanding.",
+                    "model": "gpt-4o",
+                    "temperature": 1,
+                    "prompt_tokens": 16,
+                    "completion_tokens": 35,
+                    "total_tokens": 51,
+                    "logprobs": [
+                        -1.5187774,
+                        -2.140071,
+                        -0.091812074,
+                        -1.0974461,
+                        -0.84256095,
+                        -0.15139824,
+                        -0.027418802,
+                        -0.0028757267,
+                        -0.90090555,
+                        -5.9939475,
+                        -0.06549941,
+                        -0.009779345,
+                        -0.2484542,
+                        -0.0005681643,
+                        -0.14279856,
+                        -1.4229624,
+                        -0.17551702,
+                        -0.21175496,
+                        -1.4739347,
+                        -0.00018804391,
+                        -0.000232384,
+                        -0.8498036,
+                        -0.044127423,
+                        -2.5889688,
+                        -3.9054008e-05,
+                        -0.87389386,
+                        -0.08401899,
+                        -0.067335635,
+                        -2.1711116,
+                        -0.537881,
+                        -0.5941048,
+                        -7.89631e-07,
+                        -0.90835744,
+                        -0.03833798
+                    ],
+                    "timestamp": "2025-02-04 11:33:35.736335",
+                    "password": "socrates3",
+                    "relativeSequenceJointLogProbability": -25.276883501549,
+                    "relativeInteractionJointLogProbability": -25.276883501549
+                }
+            ]
         }
     }
 }
