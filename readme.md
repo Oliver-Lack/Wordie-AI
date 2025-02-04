@@ -3,10 +3,12 @@
 **Wordie is a custom AI interface web app for Human-AI interaction research**
 
 The app is hosted for demo purposes at [Wordie.AI](https://wordie.xyz)
+
 default login: prolific_id = 1234, password = music
 researcher login: username = wordie, password = laplace666$
 
-For usage, questions or collaborations, please cite/acknowledge/contact Oliver Lack. 
+For usage, questions or collaborations, please cite/acknowledge/contact:
+        Oliver Lack
         Australian Institute for Machine Learning (AIML) | School of Psychology 
         The University of Adelaide
         oliver.lack@adelaide.edu.au | oliver@oliverlack.com
