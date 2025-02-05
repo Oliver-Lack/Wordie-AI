@@ -2,6 +2,9 @@ import os
 import openai
 import requests
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def load_agent(filepath):
     with open(filepath, 'r') as file:
@@ -77,6 +80,10 @@ class API_Call():
 
         if model is None:
             model = self.agent_data.get("model", "gpt-4o")
+        
+        if not any(msg["role"] == "system" for msg in conversation):
+           system_prompt = self.agent_data.get("PrePrompt", "")
+           conversation.insert(0, {"role": "system", "content": system_prompt})
 
         FormattedMessage = {"role": "user", "content": message}
         conversation.append(FormattedMessage)
@@ -118,9 +125,7 @@ class API_Call():
                 for i in conversation:
                     file.write(str(i) + "\n")
 
-        # Debugging information
         if not logprobs_list:
             print("Logprobs are empty. Response JSON:", response)
 
-        # Return additional logprob information
         return conversation, prompt_tokens, completion_tokens, total_tokens, logprobs_list

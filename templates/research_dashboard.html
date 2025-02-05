@@ -17,7 +17,7 @@
         <aside class="researcher-sidebar">
             <a href="{{ url_for('login') }}" class="special-back-button researcher-sidebar-content">Back to Login</a>
             <button class="researcher-sidebar-content" onclick="showForm('about')">About</button>
-            <button class="researcher-sidebar-content" onclick="showForm('api-selection')">Select Model API</button>
+            <button class="researcher-sidebar-content" onclick="showForm('api-selection')">Select API</button>
             <button class="researcher-sidebar-content" onclick="showForm('agent-creation')">Create Agent Condition</button>
             <button class="researcher-sidebar-content" onclick="showForm('edit-passwords')">Create Agent Condition Password</button>
             <button class="researcher-sidebar-content" onclick="showForm('review-passwords')">Review Conditions</button>
@@ -54,20 +54,21 @@
                     <input type="text" id="json-filename" name="json-filename" required>
                     <label for="preprompt"><br>PrePrompt (System Message):<br></label><br>
                     <textarea id="preprompt" name="PrePrompt" required></textarea><br>
-                    <label for="model"><br>Model (gpt-4o):<br></label><br>
+                    <label for="model"><br>Model <br><br><em>Selected API Client must be active to load agent. e.g., Select API "OpenAI" to load agents using OpenAI models:</em><br>
+                    <br>Example models (2025): <br>gpt-4o<br>claude-3-5-sonnet-20241022</label><br>
                     <input type="text" id="model" name="model" value="gpt-4o" required><br>
-                    <label for="temperature"><br>Temperature <br><em>(default: 1. Temp transformation of logits can be set between 0-2):</em></label><br>
+                    <label for="temperature"><br>Temperature <br><br><em>Temp transformation of logits can be set between 0-2 (OpenAI) or 0-1 (Anthropic):</em></label><br>
                     <input type="number" id="temperature" name="temperature" step="0.01" min="0" max="1" value="1" required><br>
-                    <label for="top_p"><br>Top P <br><em>(default: 1. For example, 0.1 means only the tokens 
+                    <label for="top_p"><br>Top P <br><br><em>(default: 1. For example, 0.1 means only the tokens 
                         comprising the top 10% probability mass are considered):</em></label><br>
                     <input type="number" id="top_p" name="top_p" step="0.01" min="0" max="1" value="1" required><br>
-                    <label for="n"> <br>N <br><em>(default: 1. How many chat completion choices to generate for each input message):</em></label><br>
+                    <label for="n"> <br>N <br><br><em>default: 1. How many chat completion choices to generate for each input message:</em></label><br>
                     <input type="number" id="n" name="n" value="1" required><br>
-                    <label for="presence_penalty"><br>Presence Penalty <br><em>(default: 0. Number between -2.0 and 2.0. Positive values 
-                        penalize new tokens based on whether they appear in the text so far):</em></label><br>
+                    <label for="presence_penalty"><br>Presence Penalty <br><br><em>default: 0. Number between -2.0 and 2.0. Positive values 
+                        penalize new tokens based on whether they appear in the text so far:</em></label><br>
                     <input type="number" id="presence_penalty" name="presence_penalty" step="0.01" min="0" max="1" value="0" required><br>
-                    <label for="frequency_penalty"><br>Frequency Penalty <br><em>(default: 0. Number between -2.0 and 2.0. Positive values 
-                        penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim):</em></label><br>
+                    <label for="frequency_penalty"><br>Frequency Penalty <br><br><em>default: 0. Number between -2.0 and 2.0. Positive values 
+                        penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim:</em></label><br>
                     <input type="number" id="frequency_penalty" name="frequency_penalty" step="0.01" min="0" max="1" value="0" required><br>
                     <button type="button" onclick="createJsonFile()">Create JSON</button><br>
                 </form>

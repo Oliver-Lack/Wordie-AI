@@ -21,14 +21,14 @@ app.secret_key = os.environ['FLASK_SECRET_KEY']
 
 #### This is for selecting which API script to use (i.e., model selection)
 # Load the API script 
-wordie = API_Call()
+API = API_Call_2()
 # Function to update the API instance
 def update_api(api_name):
-    global wordie
+    global API
     if api_name == 'API_Call':
-        wordie = API_Call()
+        API = API_Call()
     elif api_name == 'API_Call_2':
-        wordie = API_Call_2()
+        API = API_Call_2()
     else:
         raise ValueError("Invalid API name")
 
@@ -124,6 +124,8 @@ add_passwords()
 
 # Function to calculate joint log probability in models that can call logprobs
 def calculate_joint_log_probability(logprobs):
+    if not logprobs:
+        return 0
     return sum(logprobs)
 
 # For logging interactions.json, interactions_backup.csv, and batched_interactions.json
@@ -137,24 +139,24 @@ def log_user_data(data):
     except (FileNotFoundError, json.JSONDecodeError):
         interactions = {"users": {}}
 
-    user_id = str(data['user_id'])
-    if user_id not in interactions["users"]:
-        interactions["users"][user_id] = {
-            "username": data.get('username', ''),
+    username = data['username']
+    if username not in interactions["users"]:
+        interactions["users"][username] = {
+            "user_id": data.get('user_id', ''),
             "interactions": []
         }
 
-    interaction_content = {k: v for k, v in data.items() if k not in ['user_id', 'username']}
+    interaction_content = {k: v for k, v in data.items() if k not in ['username', 'user_id']}
     interaction_content['password'] = flask_session.get('password', 'N/A')
 
     if 'logprobs' in data:
         logprobs = data.get('logprobs', [])
         interaction_content['relativeSequenceJointLogProbability'] = calculate_joint_log_probability(logprobs)
-        all_logprobs = [lp for interaction in interactions["users"][user_id]["interactions"] if 'logprobs' in interaction for lp in interaction['logprobs']]
+        all_logprobs = [lp for interaction in interactions["users"][username]["interactions"] if 'logprobs' in interaction for lp in interaction['logprobs']]
         all_logprobs.extend(logprobs)
         interaction_content['relativeInteractionJointLogProbability'] = calculate_joint_log_probability(all_logprobs)
 
-    interactions["users"][user_id]["interactions"].append(interaction_content)
+    interactions["users"][username]["interactions"].append(interaction_content)
 
     with open('interactions.json', 'w') as f:
         json.dump(interactions, f, indent=4)
@@ -233,14 +235,13 @@ def add_message(user_id, password, message, response, model, temperature, prompt
         'timestamp': str(datetime.now())
     })
 
-def get_messages(user_id, password, systemprompt):
+def get_messages(user_id, password):
     conn = sqlite3.connect('users.db')
     conn.text_factory = str
     conversation = []
     c = conn.cursor()
     c.execute('SELECT * FROM messages WHERE user_id = ? AND password = ? ORDER BY timestamp', (user_id, password))
     messages = c.fetchall()
-    conversation.append({"role": "system", "content": systemprompt})
     for message in messages:
         conversation.append({"role": "user", "content": message[3]})
         conversation.append({"role": "assistant", "content": message[4]})
@@ -270,7 +271,7 @@ def login():
             flask_session['username'] = username
             flask_session['password'] = password
             flask_session['agent'] = agent[0]
-            wordie.update_agent(f"agents/{agent[0]}.json")
+            API.update_agent(f"agents/{agent[0]}.json")
             flash('', 'success')
             conn.close()
             return redirect(url_for('chat'))
@@ -282,16 +283,17 @@ def login():
 
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
-    env_var = os.environ.get('OPENAI_API_KEY')
-    show_popup = env_var is None
+    openai_api_key = os.environ.get('OPENAI_API_KEY')
+    x_api_key = os.environ.get('X_API_KEY')
+    show_popup = openai_api_key is None or x_api_key is None
 
     if 'username' not in flask_session:
         return redirect(url_for('login'))
 
     try:
         agent = flask_session.get('agent', 'default')
-        wordie.update_agent(f"agents/{agent}.json")
-        conversation = get_messages(flask_session['user_id'], flask_session['password'], wordie.agent_data["PrePrompt"])
+        API.update_agent(f"agents/{agent}.json")
+        conversation = get_messages(flask_session['user_id'], flask_session['password'])
 
         if request.method == 'POST':
             message = request.form.get('message')
@@ -299,9 +301,9 @@ def chat():
                 flash('Message cannot be empty', 'error')
                 return jsonify({'error': 'Message cannot be empty'}), 400
             
-            model = wordie.agent_data.get("model", "gpt-4o")
+            model = API.agent_data.get("model")
             try:
-                conversation, prompt_tokens, completion_tokens, total_tokens, logprobs_list = wordie.thinkAbout(message, conversation, model=model)
+                conversation, prompt_tokens, completion_tokens, total_tokens, logprobs_list = API.thinkAbout(message, conversation, model=model)
                 response = conversation[-1]["content"]
             except Exception as e:
                 app.logger.error(f"Error processing message: {e}")
@@ -309,7 +311,7 @@ def chat():
 
             user_id = flask_session['user_id']
             password = flask_session['password']
-            add_message(user_id, password, message, str(response), model, wordie.agent_data["temperature"], prompt_tokens, completion_tokens, total_tokens, logprobs_list)
+            add_message(user_id, password, message, str(response), model, API.agent_data["temperature"], prompt_tokens, completion_tokens, total_tokens, logprobs_list)
             return jsonify({'response': response})
 
         return render_template('chat.html', username=flask_session['username'], messages=conversation, show_popup=show_popup)
