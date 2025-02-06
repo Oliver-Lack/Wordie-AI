@@ -21,24 +21,26 @@ app.secret_key = os.environ['FLASK_SECRET_KEY']
 
 #### This is for selecting which API script to use (i.e., model selection)
 # Load the API script 
-API = API_Call_2()
+API = API_Call()
 # Function to update the API instance
-def update_api(api_name):
-    global API
-    if api_name == 'API_Call':
-        API = API_Call()
-    elif api_name == 'API_Call_2':
-        API = API_Call_2()
-    else:
-        raise ValueError("Invalid API name")
+class APIFactory:
+    @staticmethod
+    def get_api(api_name):
+        if api_name == 'API_Call':
+            return API_Call()
+        elif api_name == 'API_Call_2':
+            return API_Call_2()
+        else:
+            raise ValueError("Invalid API name")
 
 # Route to handle API selection
 @app.route('/select-api', methods=['POST'])
 def select_api():
     data = request.json
     api_name = data.get('api_name')
+    global API
     try:
-        update_api(api_name)
+        API = APIFactory.get_api(api_name)
         return jsonify({'message': 'API updated successfully'}), 200
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
@@ -110,7 +112,9 @@ def add_passwords():
         'wordie123': 'default',
         'elderberry': 'experimental',
         'gpt4o': 'llm_gpt4o',
-        'o1': 'llm_o1',
+        'anthropic35': 'default_anthropic',
+        'one_sentence35': 'one_sentence_claude',
+        'socrates': 'socrates3'
     }
 
     for password, agent in static_passwords.items():
