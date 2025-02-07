@@ -10,5 +10,3 @@ boto3
 flask-bootstrap
 awscli
 anthropic
-python-dotenv
-sqlite3
