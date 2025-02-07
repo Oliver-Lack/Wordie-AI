@@ -26,7 +26,7 @@ rsync -avz --exclude="vent" --exclude="__pycache__" ../Wordie_1_0/ ubuntu@wordie
 scp -i /Users/a1809024/Desktop/PMC/AI_Interface/AWS -r ./ ubuntu@13.237.109.252:/srv/wordie
 	Head back to SSH connection
 
-cd /srv/wordie && ls -l    (this checks whether files sent correctly)
+cd /srv/wordie && ls -l
 python3 -m venv venv
 source venv/bin/activate
 pip install Flask
@@ -43,9 +43,9 @@ After=network.target
 
 [Service]
 User=wordie_user
-Group-wordie_user
+Group=wordie_user
 WorkingDirectory=/srv/wordie/
-ExecStart=/srv/wordie/venv/bin/gunicorn server:app -w 4 -b 127.0.0.1:8000        
+ExecStart=/srv/wordie/venv/bin/gunicorn wordie:app -w 4 -b 127.0.0.1:8000        
 Restart=on-failure
 
 [Install]
@@ -57,8 +57,8 @@ sudo apt install apache2
 cd /etc/apache2/sites-available/
 sudo rm default-ssl.conf
 sudo service apache2 start
-sudo mv 000-default.conf wordie.xyz.conf
-sudo nano wordie.xyz.conf
+sudo mv 000-default.conf wordie-pilot.xyz.conf
+sudo nano wordie-pilot.xyz.conf
 	
 	Edit wordie conf file by pasting the below into the nan editor
 	
@@ -73,7 +73,7 @@ sudo nano wordie.xyz.conf
 
 sudo a2enmod proxy proxy_http
 sudo a2dissite 000-default.conf
-sudo a2ensite wordie.xyz.conf
+sudo a2ensite wordie-pilot.xyz.conf
 sudo service wordie start
 sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot

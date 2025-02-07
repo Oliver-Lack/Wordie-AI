@@ -131,7 +131,8 @@ sudo chown ubuntu:ubuntu /srv/wordie
 
 	Send directory from local computer to wordie AWS instance (Will need to edit paths and names 	accordingly)
 	From local workspace directory
-rsync -avz --exclude="vent" --exclude="__pycache__" ../Wordie_1_0/ ubuntu@wordie.xyz:/srv/wordie/	or
+rsync -avz --exclude="vent" --exclude="__pycache__" ../Wordie_1_0/ ubuntu@wordie.xyz:/srv/wordie/	
+or
 scp -i /Users/a1809024/Desktop/PMC/AI_Interface/AWS -r ./ ubuntu@13.237.109.252:/srv/wordie
 	Head back to SSH connection
 
