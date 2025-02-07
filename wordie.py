@@ -6,9 +6,7 @@ import sys
 import os
 import json
 from datetime import datetime
-import subprocess
 import csv
-import boto3
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -44,16 +42,6 @@ def select_api():
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
 
-
-### This is for batching interaction data and S3 bucket data backup
-# Batch for S3 AWS bucket backup
-interaction_batch = []
-
-# Setup with boto3 aws CLI for S3 AWS bucket backup to dump the batched interactions
-S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
-session = boto3.Session(profile_name='WordieLocal')
-
-s3 = session.client('s3')
 
 # database initialization for usernames, password conditions, and conversation history
 # It first queries database to update passwords dictionary. 
@@ -131,9 +119,8 @@ def calculate_joint_log_probability(logprobs):
         return 0
     return sum(logprobs)
 
-# For logging interactions.json, interactions_backup.csv, and batched_interactions.json
+# For logging interactions.json, interactions_backup.csv
 def log_user_data(data):
-    global interaction_batch
 
     try:
         with open('interactions.json', 'r') as f:
@@ -189,24 +176,7 @@ def log_user_data(data):
         if write_headers:
             writer.writerow(csv_headers)
         writer.writerow(interaction_data)
-
-    interaction_batch.append(data)
-
-    if len(interaction_batch) >= 20:
-        process_and_store_batch(interaction_batch)
-        interaction_batch.clear()
-# Upload function for AWS S3 backup data dump
-def upload_to_s3(file_name, bucket, object_name=None):
-    if object_name is None:
-        object_name = file_name
-    s3.upload_file(file_name, bucket, object_name)
-# Batching data for S3 AWS bucket backup
-def process_and_store_batch(batch):
-    batch_json = json.dumps(batch, indent=4)
-    with open('batched_interactions.json', 'a') as f:
-        f.write(batch_json + '\n')
-    upload_to_s3('batched_interactions.json', S3_BUCKET_NAME)
-
+   
 def add_user(username):
     conn = sqlite3.connect('users.db')
     conn.text_factory = str

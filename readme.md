@@ -154,7 +154,7 @@ After=network.target
 User=wordie_user
 Group=wordie_user
 WorkingDirectory=/srv/wordie/
-ExecStart=/srv/wordie/venv/bin/gunicorn server:app -w 4 -b 127.0.0.1:8000        
+ExecStart=/srv/wordie/venv/bin/gunicorn wordie:app -w 4 -b 127.0.0.1:8000        
 Restart=on-failure
 
 [Install]
