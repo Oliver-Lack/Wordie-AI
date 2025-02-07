@@ -2,9 +2,6 @@ import os
 import openai
 import requests
 import json
-from dotenv import load_dotenv
-
-load_dotenv()
 
 def load_agent(filepath):
     with open(filepath, 'r') as file:

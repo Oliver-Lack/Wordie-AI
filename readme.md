@@ -70,11 +70,11 @@ Summary of Wordie's core features:
 
 - Register for an LLM API key and and create an environment variable named "OPENAI_API_KEY" with the key in it
 - Create an env variable named "FLASK_SECRET_KEY" with a secret key for the Flask app
-- S3 AWS bucket setup required to log data to bucket. Must setup aws cli and sso config before running the app. Terminal commands below:
+- S3 AWS bucket setup required to log data to bucket. Must setup aws cli and sso config before running the app. Terminal commands below: (extra hint: create your own aws account and s3 bucket first)
 command: brew install awscli
 command: aws configure sso     (fill out required identity data from access portal sso info. requires awscli 2)
 Now create aws profile name and connect to admin account (profile name like WordieLocal).
-Change profile name in boto3.Session to newly assigned name. 
+Change profile name in boto3.Session in wordie.py to newly assigned name. 
 
 
 Here's some bash commands to set the other env variables:
@@ -107,227 +107,168 @@ gunicorn -w 4 -b 0.0.0.0:8000 wordie:app
 
 How to run Wordie on an AWS EC2 Instance (on a magical cloud connected to this thing called the internet):
 
-### Prerequisites
-- **Configure S3 Bucket with AWS CLI SSO Config**:
-- S3 AWS bucket setup required to log data to bucket. Must setup aws cli and sso config before running the app. Terminal commands below:
-command: brew install awscli
-command: aws configure sso     (fill out required identity data from access portal sso info. requires awscli 2)
-Now create aws profile name and connect to admin account (profile name like WordieLocal).
-Change profile name in boto3.Session in wordie.py to newly assigned name (Do this BEFORE transferring app to instance). 
+Before Instance launch! 
+- Get an AWS user with s3 permissions and create an s3 bucket.   
+(This is for the batched data dumps. Change bucket name in env accordingly).  
+- Get a domain name and set up host service on AWS. Set elastic IP to domain. You'll have to edit DNS settings in domain provider.  
 
-  - Specify S3 bucket data dumps. Adjust bucket name in `.env`.
-  - Make sure profile_name matches the profile name in the boto3.Session in the app.
+Instance details -> AWS, Ubuntu, Flask, Gunicorn, Apache2  
 
-### Instance Specifications
-- **Environment**: AWS, Ubuntu, Flask, Gunicorn, Apache2.
+Important Tip - DO NOT stuff up any of the sudo chown commands. You will F#*! up permissions to root if you forget the wrong /. I’ve done this twice and wanted to punch a window both times. If this happens…Pack up your belongings, delete the instance, and start again…  
 
-### Important Warning
-- **Permissions**: Avoid mistakes with `sudo chown` commands.
-  - Incorrect execution can lead to severe permission issues.
 
-### Initial Setup
+Now get an EC2 Instance running  
 
-#### Launching Instance
-1. **Start EC2**: Obtain instance with elastic IP.
-2. **Domain Setup**: Configure domain (`wordie.xyz`).
+	SSH into instance: (remember to be in directory of the .pem key file)
+EX.  ssh -i "wordie.pem" ubuntu@ec2-52-64-0-79.ap-southeast-2.compute.amazonaws.com
 
-#### SSH Access
-- **Connect Command**:
-  ```bash
-  ssh -i "wordie.pem" ubuntu@<your-instance-IP>
-  ```
+	Once SSH successful, follow these commands:
 
-#### Initial System Setup
-- **Update and Install**:
-  ```bash
-  sudo apt-get update
-  sudo apt-get install python3.venv
-  ```
+sudo apt-get update
+sudo apt-get install python3.venv
+sudo mkdir /srv/wordie
+sudo chown ubuntu:ubuntu /srv/wordie
 
-- **Create Directory**:
-  ```bash
-  sudo mkdir /srv/wordie
-  sudo chown ubuntu:ubuntu /srv/wordie
-  ```
+	Send directory from local computer to wordie AWS instance (Will need to edit paths and names 	accordingly)
+	From local workspace directory
+rsync -avz --exclude="vent" --exclude="__pycache__" ../Wordie_1_0/ ubuntu@wordie.xyz:/srv/wordie/	or
+scp -i /Users/a1809024/Desktop/PMC/AI_Interface/AWS -r ./ ubuntu@13.237.109.252:/srv/wordie
+	Head back to SSH connection
 
-#### Transfer Application Files
-- **From Local Workspace**:
-  ```bash
-  rsync -avz --exclude="venv" --exclude="__pycache__" ../Wordie_1_0/ ubuntu@wordie.xyz:/srv/wordie/
-  ```
+cd /srv/wordie && ls -l    (this checks whether files sent correctly)
+python3 -m venv venv
+source venv/bin/activate
+pip install Flask
+pip install gunicorn
+pip install -r requirements.txt
+deactivate
+sudo nano /etc/systemd/system/wordie.service
+	
+	Setup wordie background service in nano by pasting the following below into editor 
+	followed by 	control+O, enter, then control+X.
+[Unit]
+Description=Wordie Flask App
+After=network.target
 
-#### SSH Post-Transfer Setup
-1. **Validate Transfer**:
-   ```bash
-   cd /srv/wordie && ls -l
-   ```
-2. **Environment Setup**:
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   pip install Flask
-   pip install gunicorn
-   pip install -r requirements.txt
-   deactivate
-   ```
+[Service]
+User=wordie_user
+Group=wordie_user
+WorkingDirectory=/srv/wordie/
+ExecStart=/srv/wordie/venv/bin/gunicorn server:app -w 4 -b 127.0.0.1:8000        
+Restart=on-failure
 
-### Service Configuration
+[Install]
+WantedBy=multi-user.target
 
-#### Create Service File
-- **Edit `wordie.service`**:
-  ```bash
-  sudo nano /etc/systemd/system/wordie.service
-  ```
-- **Service Content**:
-  ```
-  [Unit]
-  Description=Wordie Flask App
-  After=network.target
-  
-  [Service]
-  User=wordie_user
-  WorkingDirectory=/srv/wordie/
-  ExecStart=/srv/wordie/venv/bin/gunicorn server:app -w 4 -b 127.0.0.1:8000        
-  Restart=on-failure
-  
-  [Install]
-  WantedBy=multi-user.target
-  ```
+sudo systemctl daemon-reload
+sudo systemctl enable --now wordie.service
+sudo apt install apache2
+cd /etc/apache2/sites-available/
+sudo rm default-ssl.conf
+sudo service apache2 start
+sudo mv 000-default.conf wordie.xyz.conf
+sudo nano wordie.xyz.conf
+	
+	Edit wordie conf file by pasting the below into the nan editor
+	
+<VirtualHost *:80>
+        ServerName wordie.xyz
+        ServerAlias www.wordie.xyz
 
-- **Reload and Enable**:
-  ```bash
-  sudo systemctl daemon-reload
-  sudo systemctl enable --now wordie.service
-  ```
+        ProxyPass / http://127.0.0.1:8000/
+        ProxyPassReverse / http://127.0.0.1:8000/
+</VirtualHost>
 
-### Web Server Configuration
 
-#### Apache Setup
-1. **Install & Start Apache**:
-   ```bash
-   sudo apt install apache2
-   sudo service apache2 start
-   ```
+sudo a2enmod proxy proxy_http
+sudo a2dissite 000-default.conf
+sudo a2ensite wordie.xyz.conf
+sudo service wordie start
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+sudo certbot --apache
+	set ssl cert fr both domains by selecting 1 2 enter
+sudo crontab -e
+	select 1 for nano and paste the following in nano, whiteout, exit, to renew SSL cert automatically
+	0 4 * * 1 /usr/bin/certbot --renew && /usr/sbin/service apache2 reload
+sudo adduser --system --no-create-home --group wordie_user
+sudo nano /etc/systemd/system/wordie.service
+	Set/Check the user and group in the .service file to the user you just added “wordie_user”
+sudo chown -R wordie_user:wordie_user /srv/wordie/
+sudo systemctl daemon-reload
+sudo service wordie restart
+sudo service wordie status
 
-2. **Configure Site**:
-   ```bash
-   cd /etc/apache2/sites-available/
-   sudo mv 000-default.conf wordie.xyz.conf
-   sudo nano wordie.xyz.conf
-   ```
 
-3. **Update Site Configuration**:
-   ```
-   <VirtualHost *:80>
-     ServerName wordie.xyz
-     ServerAlias www.wordie.xyz
-     ProxyPass / http://127.0.0.1:8000/
-     ProxyPassReverse / http://127.0.0.1:8000/
-   </VirtualHost>
-   ```
+	Now you need to set all env variables for secret keys and API keys. 
 
-4. **Enable Proxies and Site**:
-   ```bash
-   sudo a2enmod proxy proxy_http
-   sudo a2ensite wordie.xyz.conf
-   sudo service apache2 reload
-   ```
+cd /srv/wordie
+source venv/bin/activate
+sudo /srv/wordie/venv/bin/pip install python-dotenv
+sudo nano /srv/wordie/.env
+	
+	Now write in .env file
+ 	
+	EX. 
 
-#### SSL Certificate
-- **Install Certbot**:
-  ```bash
-  sudo snap install --classic certbot
-  sudo ln -s /snap/bin/certbot /usr/bin/certbot
-  ```
+	# AWS Access Keys
+	AWS_ACCESS_KEY_ID=“Secret Key” 
+	AWS_SECRET_ACCESS_KEY="Secret Key"
+	AWS_SESSION_TOKEN="Secret Key"
 
-- **Get SSL Certificate**:
-  ```bash
-  sudo certbot --apache
-  ```
+	#AWS S3 Bucket
+	S3_BUCKET_NAME=wordie
+	S3_KEY=Secret Key
+	S3_SECRET=Secret Key
 
-- **Automate Renewal**:
-  ```bash
-  sudo crontab -e
-  ```
-  - Add:
-    ```
-    0 4 * * 1 /usr/bin/certbot renew --quiet && /usr/sbin/service apache2 reload
-    ```
+	# OpenAI API Key (Wordie unpredictability project)
+	OPENAI_API_KEY=Secret Key
 
-### Environment Variables
+	# Flask Secret Key
+	FLASK_SECRET_KEY=Secret Key
 
-#### Configure `.env`
-1. **Navigate & Activate**:
-   ```bash
-   cd /srv/wordie
-   source venv/bin/activate
-   sudo pip install python-dotenv
-   ```
+sudo nano /etc/systemd/system/wordie.service
+	add    EnvironmentFile=/srv/wordie/.env
+	in the [Service] section of the service file
 
-2. **Create `.env`**:
-   ```bash
-   sudo nano /srv/wordie/.env
-   ```
+sudo systemctl daemon-reload
+sudo systemctl restart wordie
+sudo systemctl status wordie
+deactivate
 
-3. **Add Variables**:
-   ```
-   # AWS S3 Bucket
-   S3_BUCKET_NAME=wordie
-   
-   # OpenAI API Key
-   OPENAI_API_KEY="Secret Key"
-   
-   # Flask Secret Key
-   FLASK_SECRET_KEY="Secret Key"
-   ```
+	Adding swap space to stop memory crashing at hight spikes
+sudo fallocate -l 1G /swapfile
+sudo chmod 0600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+free -m
+sudo nano /etc/fstab
+	add this to bottom empty line
+	/swapfile       none            swap    sw              0 0
+sudo reboot
 
-#### Update Service with Env
-- **Modify `wordie.service`**:
-  - Add in `[Service]` section:
-    ```
-    EnvironmentFile=/srv/wordie/.env
-    ```
+**WOHOO done…hopefully....nearly**
 
-- **Restart Service**:
-  ```bash
-  sudo systemctl daemon-reload
-  sudo systemctl restart wordie
-  ```
+Now you need to setup the boto3 session for SSO to log data to an S3 bucket. The App requires this.  
+To do this, you must setup aws cli and sso config before running the app. Terminal commands below: (extra hint: create your own aws account and s3 bucket first)  
 
-### Performance Optimization
+(SSH into instance and run the following commands; You may need to uninstall the default aws CLI version first Version 2 required)
+pip apt install awscli 
+     (installing version 2 of awscli in the venv and globally might take some extra mucking around. Don't give up)
+aws configure sso     
 
-#### Add Swap Space
-- **Setup Swap**:
-  ```bash
-  sudo fallocate -l 1G /swapfile
-  sudo chmod 0600 /swapfile
-  sudo mkswap /swapfile
-  sudo swapon /swapfile
-  ```
+  (fill out required identity data from access portal sso info.)
+  Now create aws profile name and connect to admin account (profile name like WordieLocal).
+  Change profile name in boto3.Session in wordie.py to newly assigned name. 
 
-- **Persist Swap Setting**:
-  ```bash
-  sudo nano /etc/fstab
-  ```
-  - Add:
-    ```
-    /swapfile none swap sw 0 0
-    ```
+  Go to your browser and visit the IP or the domain name connected (domains can’t take up to 6 hours to connect to the IP). 
 
-- **Reboot Instance**:
-  ```bash
-  sudo reboot
-  ```
+	To monitor memory, compute etc… use the following method:
 
-### Monitoring
-- **Install `htop`**:
-  ```bash
-  sudo apt install htop
-  htop
-  ```
+SSH into the instance and commands:
+sudo apt install htop
+htop
 
-**Completion**:
-- Access your instance via IP or domain (`wordie.xyz`). Domain propagation may take up to 6 hours.
 
 
 

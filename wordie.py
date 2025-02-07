@@ -1,6 +1,5 @@
 import sqlite3
 from flask import Flask, jsonify, render_template, request, session as flask_session, redirect, url_for, flash, send_from_directory, abort
-from flask_bootstrap import Bootstrap
 from API_openai import API_Call
 from API_anthropic import API_Call_2
 import sys
