@@ -32,7 +32,6 @@ Summary of Wordie's core features:
 4. **Data Files:**
    - interactions.json
    - interactions_backup.csv
-   - AWS S3 bucket (interaction_batch.json)
 5. **Data Attributes:**
    - user_id
    - prolific_id
@@ -56,9 +55,8 @@ Summary of Wordie's core features:
     - Easily modified Agents JSON directory for condition settings
 12. **Performance Optimization:** 
     - Swap Space, standardised delays, cookie tracking for dynamics
-13. **Log Data Collection:** AWS SSO session setup with boto3 
-    - S3 Bucket setup (bucket=wordie, SSOprofile=WordieLocal)
-    - This is for batched interactions and manual transfer commands
+13. **Log Data Collection:** 
+    - interactions.json, interactions_backup.csv
 14. **Aesthetics** 
     - Customised graphics, logos, and aesthetics
     - Full CSS and javascript dynamics drafted
@@ -70,25 +68,16 @@ Summary of Wordie's core features:
 
 - Register for an LLM API key and and create an environment variable named "OPENAI_API_KEY" with the key in it
 - Create an env variable named "FLASK_SECRET_KEY" with a secret key for the Flask app
-- S3 AWS bucket setup required to log data to bucket. Must setup aws cli and sso config before running the app. Terminal commands below: (extra hint: create your own aws account and s3 bucket first)
-command: brew install awscli
-command: aws configure sso     (fill out required identity data from access portal sso info. requires awscli 2)
-Now create aws profile name and connect to admin account (profile name like WordieLocal).
-Change profile name in boto3.Session in wordie.py to newly assigned name. 
+- Rememebr researcher acces env varibales for login
+    #researcher login page
+    researcher_username="wordie"
+    researcher_password="laplace666$"
 
 
-Here's some bash commands to set the other env variables:
+Here's example bash command to set env variables:
             #!/bin/bash
             # OpenAI API Key
             export OPENAI_API_KEY="your-openai-api-key"
-
-            # Flask Secret Key
-            export FLASK_SECRET_KEY="your-flask-secret-key"
-
-            # AWS S3 Bucket
-            export S3_BUCKET_NAME=wordie
-
-            echo "Environment variables have been set."
 
 
 4. Start the app
@@ -107,9 +96,7 @@ gunicorn -w 4 -b 0.0.0.0:8000 wordie:app
 
 How to run Wordie on an AWS EC2 Instance (on a magical cloud connected to this thing called the internet):
 
-Before Instance launch! 
-- Get an AWS user with s3 permissions and create an s3 bucket.   
-(This is for the batched data dumps. Change bucket name in env accordingly).  
+Before Instance launch!  
 - Get a domain name and set up host service on AWS. Set elastic IP to domain. You'll have to edit DNS settings in domain provider.  
 
 Instance details -> AWS, Ubuntu, Flask, Gunicorn, Apache2  
@@ -136,7 +123,7 @@ or
 scp -i /Users/a1809024/Desktop/PMC/AI_Interface/AWS -r ./ ubuntu@13.237.109.252:/srv/wordie
 	Head back to SSH connection
 
-cd /srv/wordie && ls -l    (this checks whether files sent correctly)
+cd /srv/wordie && ls -l
 python3 -m venv venv
 source venv/bin/activate
 pip install Flask
@@ -210,23 +197,20 @@ sudo nano /srv/wordie/.env
 	
 	Now write in .env file
  	
-	EX. 
-
-	# AWS Access Keys
-	AWS_ACCESS_KEY_ID=“Secret Key” 
-	AWS_SECRET_ACCESS_KEY="Secret Key"
-	AWS_SESSION_TOKEN="Secret Key"
-
-	#AWS S3 Bucket
-	S3_BUCKET_NAME=wordie
-	S3_KEY=Secret Key
-	S3_SECRET=Secret Key
+	EX.
 
 	# OpenAI API Key (Wordie unpredictability project)
 	OPENAI_API_KEY=Secret Key
 
+    # Anthropic
+    ANTHROPIC_API_KEY=Secret Key
+
 	# Flask Secret Key
 	FLASK_SECRET_KEY=Secret Key
+
+    #researcher login page
+    researcher_username="wordie"
+    researcher_password="laplace666$"
 
 sudo nano /etc/systemd/system/wordie.service
 	add    EnvironmentFile=/srv/wordie/.env
@@ -249,18 +233,6 @@ sudo nano /etc/fstab
 sudo reboot
 
 **WOHOO done…hopefully....nearly**
-
-Now you need to setup the boto3 session for SSO to log data to an S3 bucket. The App requires this.  
-To do this, you must setup aws cli and sso config before running the app. Terminal commands below: (extra hint: create your own aws account and s3 bucket first)  
-
-(SSH into instance and run the following commands; You may need to uninstall the default aws CLI version first Version 2 required)
-pip apt install awscli 
-     (installing version 2 of awscli in the venv and globally might take some extra mucking around. Don't give up)
-aws configure sso     
-
-  (fill out required identity data from access portal sso info.)
-  Now create aws profile name and connect to admin account (profile name like WordieLocal).
-  Change profile name in boto3.Session in wordie.py to newly assigned name. 
 
   Go to your browser and visit the IP or the domain name connected (domains can’t take up to 6 hours to connect to the IP). 
 
@@ -285,16 +257,11 @@ Prospective updates will include:
 
 **Message to other researchers**
 - Please contact [me](https://oliverlack.com) if you want to collaborate/adapt the system for your purpose. Happy to help. 
-- The app currently logs data to MY S3 bucket on AWS. 
-- Create your own bucket and change name in .env file and SSO CLI profile name accordingly (Instructions are above on setting s3 bucket).
-- Scraping data files manually after experiment can be done by SSH into the instance and then running the following command to send to an S3 bucket:
-(Change bucket name followed by set SSO CLI profile name accordingly)
-    aws s3 cp interactions.json s3://wordie/ --profile WordieLocal
-    aws s3 cp interactions_backup.csv s3://wordie/ --profile WordieLocal
-    aws s3 cp users.db s3://wordie/ --profile WordieLocal
+
 
 **Extra info**
 - Numbers labelling current AI agent conditions 1 = AI is guesser 2 = AI is giver.
+- An instance with Wordie will total 3.7gb of volume storage before any data is logged. 
 
 
 
