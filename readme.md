@@ -4,7 +4,7 @@
 
 The app is hosted for demo purposes at [wordie.xyz](https://wordie.xyz)  
 
-default login: prolific_id = 1234, password = music  
+default login: prolific_id = [anything], password = music  
 researcher login: username = wordie, password = laplace666$  
 
 For usage, questions or collaborations, please cite/acknowledge/contact:  
