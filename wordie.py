@@ -77,7 +77,7 @@ def add_passwords():
 
     # These are the default passwords/agents from startup 
     static_passwords = {
-        'hat': '1_TEMP_high',
+        'hat': '1_TEMP_high',       #OpenAI models
         'lake': '1_TEMP_low',
         'music': '1_TEMP_mid',
         'red': '2_TEMP_high',
@@ -97,7 +97,27 @@ def add_passwords():
         'drive': 'PILOT_2_temp_1_2',
         'walk': 'PILOT_2_temp_1_5',
         'sand': 'PILOT_2_temp_1',
-        'wordie123': 'default',
+        'cloud': 'anthropic_1_TEMP_high',   #Anthropic models
+        'stone': 'anthropic_1_TEMP_low',
+        'river': 'anthropic_1_TEMP_mid',
+        'light': 'anthropic_2_TEMP_high',
+        'grass': 'anthropic_2_TEMP_low',
+        'trail': 'anthropic_2_TEMP_mid',
+        'chair': 'anthropic_1_PROMPT_high',
+        'table': 'anthropic_1_PROMPT_low',
+        'shore': 'anthropic_2_PROMPT_high',
+        'water': 'anthropic_2_PROMPT_low',
+        'plant': 'anthropic_PILOT_1_temp_0_2',
+        'creek': 'anthropic_PILOT_1_temp_0_4',
+        'shell': 'anthropic_PILOT_1_temp_0_6',
+        'field': 'anthropic_PILOT_1_temp_0_8',
+        'grain': 'anthropic_PILOT_1_temp_1',
+        'lemon': 'anthropic_PILOT_2_temp_0_2',
+        'melon': 'anthropic_PILOT_2_temp_0_4',
+        'baker': 'anthropic_PILOT_2_temp_0_6',
+        'grove': 'anthropic_PILOT_2_temp_0_8',
+        'cliff': 'anthropic_PILOT_2_temp_1',
+        'wordie123': 'default',             #Random models
         'elderberry': 'experimental',
         'gpt4o': 'llm_gpt4o',
         'anthropic35': 'default_anthropic',
