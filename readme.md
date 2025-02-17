@@ -267,7 +267,8 @@ Prospective updates will include:
 
 **PMC Study 1**
 TODO List:
-- Get other models working
+- Change instructions for write password and secret words down
+- bouncing finish button and timer
 
 - Measures of unpredictability:
 1. joint probability of sequence and interactions (iterated exponent of the summed logprobs)

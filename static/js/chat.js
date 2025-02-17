@@ -319,7 +319,30 @@ document.getElementById('chat-form').addEventListener('submit', function(event) 
     if (submitCount >= 8) {
         finishButton.style.backgroundColor = '#222';
     }
-    if (submitCount >= 16) {
+    if (submitCount >= 15) {
         finishButton.style.backgroundColor = '#FF8266';
     }
+    if (submitCount >= 18) {
+        finishButton.classList.add('bounce');
+    }
 });
+
+// Stuff for the progress timer
+
+var progressCircle = document.getElementById("progress");
+let colorChanged = false;
+let fullyFilled = false;
+
+const intervalId = setInterval(function () {
+    progressCircle.value += 0.1;
+    if (progressCircle.value >= 100 && !colorChanged) {
+        progressCircle.value = 0;
+        colorChanged = true;
+        progressCircle.style.setProperty('--progress-color', '#FF8266');
+        progressCircle.style.setProperty('--progress2-color', '#222');
+    } else if (progressCircle.value >= 100 && colorChanged && !fullyFilled) {
+        fullyFilled = true;
+        progressCircle.style.setProperty('--progress2-color', '#222');
+        clearInterval(intervalId); 
+    }
+}, 190);

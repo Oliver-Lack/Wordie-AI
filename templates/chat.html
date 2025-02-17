@@ -20,6 +20,8 @@
            <button id="quit" class="quit-button" onclick="showQuitPrompt()">Quit Study</button>
            <button class="finish-button" onclick="showFinishPrompt()">Have you finished the Wordgame?</button>
            <button id="redirection" onclick="redirectionReset(); redirectStudy();" class="redirection-button">NEXT<br>(exit to survey)</button>        
+           <progress id='progress' value='0' max='100'></progress>
+           <div id="arrow">↑</div>        
         </aside>
         <div class="right-container">
             <main class="chat-area" id="chat-area">
