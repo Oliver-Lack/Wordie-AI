@@ -345,4 +345,4 @@ const intervalId = setInterval(function () {
         progressCircle.style.setProperty('--progress2-color', '#222');
         clearInterval(intervalId); 
     }
-}, 190);
+}, 10);
