@@ -58,9 +58,15 @@
                     <input type="text" id="json-filename" name="json-filename" required>
                     <label for="preprompt"><br>PrePrompt (System Message):<br></label><br>
                     <textarea id="preprompt" name="PrePrompt" required></textarea><br>
-                    <label for="model"><br>Model <br><br><em>Selected API Client must be active to load agent. e.g., Select API "OpenAI" to load agents using OpenAI models:</em><br>
-                    <br>Example models (2025): <br>gpt-4o<br>claude-3-5-sonnet-20241022</label><br>
-                    <input type="text" id="model" name="model" value="gpt-4o" required><br>
+                    <label for="model"><br>Model:</label><br>
+                    <select id="model" name="model" required>
+                         <option value="gpt-4o">OpenAI GPT-4o</option>
+                         <option value="claude-3-5-sonnet">Anthropic Claude 3.5 Sonnet</option>
+                         <option value="llama-model">LLaMA Model</option>
+                         <option value="gemini-2-0-flash">Gemini 2.0 Flash</option>
+                         <option value="gemini-2-0-pro-exp-02-05">Gemini 2.0 Pro</option>
+                    </select>
+                    <input type="text" id="custom-model" name="custom-model" style="display:none;" placeholder="Enter model name">    
                     <label for="temperature"><br>Temperature <br><br><em>Temp transformation of logits can be set between 0-2 (OpenAI) or 0-1 (Anthropic):</em></label><br>
                     <input type="number" id="temperature" name="temperature" step="0.01" min="0" max="1" value="1" required><br>
                     <label for="top_p"><br>Top P <br><br><em>(default: 1. For example, 0.1 means only the tokens 

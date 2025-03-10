@@ -19,25 +19,25 @@ app.secret_key = os.environ['FLASK_SECRET_KEY']
 #### This is for selecting which API script to use (i.e., model selection)
 # Load the API script 
 API = API_Call()
-# Function to update the API instance
 class APIFactory:
-    @staticmethod
-    def get_api(api_name):
-        if api_name == 'API_Call':
-            return API_Call()
-        elif api_name == 'API_Call_2':
-            return API_Call_2()
-        else:
+    def __init__(self, api_map):
+        self.api_map = api_map
+
+    def get_api(self, api_name):
+        try:
+            return self.api_map[api_name]()
+        except KeyError:
             raise ValueError("Invalid API name")
 
-# Route to handle API selection
+api_factory = APIFactory({'API_Call': API_Call, 'API_Call_2': API_Call_2})
+
 @app.route('/select-api', methods=['POST'])
 def select_api():
     data = request.json
     api_name = data.get('api_name')
     global API
     try:
-        API = APIFactory.get_api(api_name)
+        API = api_factory.get_api(api_name)
         return jsonify({'message': 'API updated successfully'}), 200
     except ValueError as e:
         return jsonify({'error': str(e)}), 400

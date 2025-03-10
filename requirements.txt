@@ -10,3 +10,4 @@ boto3
 flask-bootstrap
 awscli
 anthropic
+google-generativeai

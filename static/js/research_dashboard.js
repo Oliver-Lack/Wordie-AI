@@ -177,3 +177,7 @@ async function listPasswords() {
 function downloadFile(filename) {
     window.location.href = `/download/${filename}`;
 }
+
+document.getElementById('model').addEventListener('change', function() {
+    document.getElementById('custom-model').style.display = this.value === 'custom' ? 'block' : 'none';
+  });

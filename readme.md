@@ -84,7 +84,6 @@ Prospective updates will include:
 
 **PMC Study 1**
 TODO List:
-- Add max completion tokens to agents
 - Audio integration (Researcher dashboard selection panel)
 - API Model selection reboot researcher dashboard
 - Simple Survey Integration
