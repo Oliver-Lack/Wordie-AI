@@ -12,7 +12,7 @@
     <header class="header">
         <img src="{{ url_for('static', filename='images/sphere2.gif') }}" alt="AI" class="sphere hidden">        
         <div class="website-name">
-            <h1>Australian Institute for Machine&nbsp;Learning<br>Beta Wordie.AI</h1>
+            <h1>Australian Institute for Machine&nbsp;Learning<br>Wordie-AI</h1>
         </div>
     </header>
     <div class="main-container">
@@ -20,8 +20,15 @@
            <button id="quit" class="quit-button" onclick="showQuitPrompt()">Quit Study</button>
            <button class="finish-button" onclick="showFinishPrompt()">Have you finished the Wordgame?</button>
            <button id="redirection" onclick="redirectionReset(); redirectStudy();" class="redirection-button">NEXT<br>(exit to survey)</button>        
-           <progress id='progress' value='0' max='100'></progress>
-           <div id="arrow">↑</div>        
+        <div class="progress">
+            <svg>
+                <circle class="circle-bg" cx="110" cy="110" r="100"></circle>
+                <circle class="circle-progress" cx="110" cy="110" r="100"></circle>
+              </svg>
+            <div id="timer" class="timer-display" data-duration="10.00">
+                <h1 class="time">10:00</h1>
+            </div>
+        </div>  
         </aside>
         <div class="right-container">
             <main class="chat-area" id="chat-area">

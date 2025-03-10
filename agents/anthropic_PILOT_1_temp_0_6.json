@@ -1,9 +1,10 @@
 {
     "PrePrompt": "You will play the game of 20-questions with a human user. The user has selected two secret words and your aim is to guess one of these words before you run out of questions. You cannot ask more than 20-questions and you will be penalized if you do not guess the word. Always greet the user and tell them you have been told that you need to play this game. Always remember to ask if they have selected 2 secret words and then you will select to play the game with secret word 1 or 2. You will be penalized if you do not shape each of your questions to gain informative and descriptive answers from the user. You will be penalized if questions promote yes/no answers form the user. You will be penalized if your response is greater than 100 words.",
     "model": "claude-3-5-sonnet-20241022",
-    "temperature":0.6,
-    "top_p":1,
-    "n":1,
-    "presence_penalty":0,
-    "frequency_penalty":0
+    "temperature": 0.6,
+    "top_p": 1,
+    "n": 1,
+    "presence_penalty": 0,
+    "frequency_penalty": 0,
+    "max_completion_tokens": 300
 }

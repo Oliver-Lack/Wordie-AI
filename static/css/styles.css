@@ -603,8 +603,8 @@ button:active {
 }
 
 .password-inspection-palace {
-  width: 50%;
-  margin-left: 40%;
+  width: 60%;
+  margin-left: 30%;
   margin-right: 10%;
   margin-top: 8%;
   padding: 20px;
@@ -1062,39 +1062,60 @@ select option:checked {
   animation: bounce 0.5s infinite alternate;
 }
 
-#progress {
-  appearance: none;
+.progress {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  height: 35%;
+  position: relative;
+  margin: 2.5rem 3rem;
+  text-align: center;
+  background: none;
+  border-radius: 10%;
+}
+
+.progress svg {
   position: absolute;
-  bottom: 300px;
-  left: 140px;
-  height: 100px;
-  width: 100px;
-  transform: rotate(270deg) scale(1.5);
-  overflow: hidden;
+  width: 220px;
+  height: 220px;
+  transform: rotate(-90deg);
 }
 
-progress{
-  -webkit-appearance:none;
-  border-radius:50%;
-}
-::-webkit-progress-bar{
-  border-radius:70px;
-  background-color: var(--progress2-color, #333333);
-
-}
-::-webkit-progress-value {
-  border-radius: 70px 0 0 70px;
-  background-color: var(--progress-color, #222);
+.progress circle {
+  fill: none;
+  stroke-width: 10;
+  stroke-dasharray: 628;
+  stroke-linecap: round;
 }
 
-#arrow {
-  position: absolute;
-  bottom: 300px;
-  left: 158px;
-  height: 100px;
-  width: 100px;
-  font-size: 100px;
-  color: #333333;
-  display: block;
-  z-index: 0;
+.circle-bg {
+  stroke: #FF8266;
+  opacity: 0.1;
+}
+
+.circle-progress {
+  stroke: #FF8266;
+  stroke-dashoffset: 628; /* 2πr, start fully offset */
+}
+
+.timer-display {
+  font-size: 3.5rem;
+  margin: 20px auto;
+}
+
+.time {
+  font-size: 3.5rem !important;
+  margin: 20px auto;
+}
+
+#timer-message {
+  color: white;
+  background-color: tomato;
+  display: none;
+  padding: .5rem;
+  font-size: 1rem;
+  text-align: center;
+  border-radius: 1rem;
 }

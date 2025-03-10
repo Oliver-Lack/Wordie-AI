@@ -319,7 +319,7 @@ document.getElementById('chat-form').addEventListener('submit', function(event) 
     if (submitCount >= 8) {
         finishButton.style.backgroundColor = '#222';
     }
-    if (submitCount >= 15) {
+    if (submitCount >= 13) {
         finishButton.style.backgroundColor = '#FF8266';
     }
     if (submitCount >= 18) {
@@ -327,22 +327,45 @@ document.getElementById('chat-form').addEventListener('submit', function(event) 
     }
 });
 
-// Stuff for the progress timer
+// Progress Timer
 
-var progressCircle = document.getElementById("progress");
-let colorChanged = false;
-let fullyFilled = false;
-
-const intervalId = setInterval(function () {
-    progressCircle.value += 0.1;
-    if (progressCircle.value >= 100 && !colorChanged) {
-        progressCircle.value = 0;
-        colorChanged = true;
-        progressCircle.style.setProperty('--progress-color', '#FF8266');
-        progressCircle.style.setProperty('--progress2-color', '#222');
-    } else if (progressCircle.value >= 100 && colorChanged && !fullyFilled) {
-        fullyFilled = true;
-        progressCircle.style.setProperty('--progress2-color', '#222');
-        clearInterval(intervalId); 
+window.addEventListener("DOMContentLoaded", () => {
+    let timer = document.getElementById("timer");
+    timer.setAttribute("data-duration", "10:00");
+    
+    function hideAll() {
+        document.querySelectorAll(".progress").forEach(progress => progress.style.display = "none");
     }
-}, 10);
+
+    function startTimer(timerDisplay) {
+        const duration = 10 * 60; // in seconds
+        const endTimestamp = Date.now() + duration * 1000;
+        const circleProgress = document.querySelector('.circle-progress');
+        const totalDashOffset = 628; // 2πr, circle perimeter
+
+        let myInterval = setInterval(function () {
+            const timeRemaining = Math.max(0, endTimestamp - Date.now());
+            if (timeRemaining <= 0) {
+                clearInterval(myInterval);
+                timerDisplay.textContent = "00:00";
+                circleProgress.style.strokeDashoffset = 0;
+                new Audio("https://www.freespecialeffects.co.uk/soundfx/scifi/electronic.wav").play();
+            } else {
+                const minutes = Math.floor(timeRemaining / 60000);
+                const seconds = ((timeRemaining % 60000) / 1000).toFixed(0);
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+                
+                const dashoffset = totalDashOffset * (timeRemaining / (duration * 1000));
+                circleProgress.style.strokeDashoffset = dashoffset;
+            }
+        }, 1000);
+    }
+
+    hideAll();
+    timer.closest('.progress').style.display = "flex"; // Show parent container
+    startTimer(timer);
+});
+
+document.getElementById("finish-prompt").addEventListener("click", () => {
+    document.querySelector(".progress").style.display = "none";
+});

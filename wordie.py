@@ -229,6 +229,7 @@ def add_message(user_id, password, message, response, model, temperature, prompt
         'timestamp': str(datetime.now())
     })
 
+# For conversation history in the API calls
 def get_messages(user_id, password):
     conn = sqlite3.connect('users.db')
     conn.text_factory = str
@@ -242,7 +243,7 @@ def get_messages(user_id, password):
     conn.close()
     return conversation
 
-### Main flask app routes for Wordie
+# MAIN flask app route for Wordie
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -275,11 +276,12 @@ def login():
             return redirect(url_for('login'))
     return render_template('login.html')
 
+# CHAT route for Wordie 
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
     openai_api_key = os.environ.get('OPENAI_API_KEY')
-    x_api_key = os.environ.get('X_API_KEY')
-    show_popup = openai_api_key is None or x_api_key is None
+    anthropic_api_key = os.environ.get('ANTHROPIC_API_KEY')
+    show_popup = openai_api_key is None or anthropic_api_key is None
 
     if 'username' not in flask_session:
         return redirect(url_for('login'))
@@ -313,7 +315,7 @@ def chat():
         app.logger.error(f"Unexpected error occurred: {ex}")
         return jsonify({'error': 'Unexpected error occurred'}), 500
 
-#### This is for the Researcher access page
+#### Researcher access routes
 @app.route('/researcher', methods=['POST'])
 def researcher_login():
     researcher_username = request.form['researcher_username']
@@ -333,7 +335,7 @@ def authenticate_researcher(researcher_username, researcher_password):
     return (researcher_username == os.environ.get('researcher_username') and 
             researcher_password == os.environ.get('researcher_password'))
 
-# This is for reviewing the conditions in the researcher access
+# These are both for loading in Agent JSON files and reviewing the conditions in the researcher access
 AGENTS_FOLDER = os.path.join(os.path.dirname(__file__), 'agents')
 @app.route('/list-json-files')
 def list_json_files():
@@ -357,7 +359,7 @@ def create_json_file():
     data = request.json
     filename = data["filename"]
     
-    # ToDo -> I should really validate the filename here to avoid injection vulnerabilities
+    # ToDo -> I might validate the filename here to avoid injections
 
     with open(f'agents/{filename}.json', 'w') as jsonfile:
         json.dump(data, jsonfile, indent=2)

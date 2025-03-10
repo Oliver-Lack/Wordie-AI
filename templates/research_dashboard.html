@@ -27,8 +27,11 @@
         <div class="right-container">
             <main id="about">
                 <h2>About</h2>
-                <p class="researcher-about">This research dashboard is the draft GUI to check and create agent conditions. This GUI is mainly
-                    designed to help out researchers that don't want to dig deep into the code.<br>
+                <p class="researcher-about">
+                    The Wordie-AI Interface app is designed using the base platform chatPsych. <br>
+                    This platform is open-source and available for research adaptions at
+                    <a href="https://github.com/Oliver-Lack/chatPsych" target="_blank">chatPsych</a><br><br>
+                    This research dashboard GUI is only a prototype.<br>
                 <br>Prospective updates will include: <br>
                 -> Some "general settings" to change models, selection of output as text, audio, audio&text. <br>
                 -> An editor for the second interaction data capture (command-prompt/moral action button). <br>
@@ -71,6 +74,8 @@
                     <label for="frequency_penalty"><br>Frequency Penalty <br><br><em>default: 0. Number between -2.0 and 2.0. Positive values 
                         penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim:</em></label><br>
                     <input type="number" id="frequency_penalty" name="frequency_penalty" step="0.01" min="0" max="1" value="0" required><br>
+                    <label for="max_completion_tokens"><br>Max Completion Tokens:</label><br>
+                    <input type="number" id="max_completion_tokens" name="max_completion_tokens" min="1" value="10000" required><br>
                     <button type="button" onclick="createJsonFile()">Create JSON</button><br>
                 </form>
                 <pre id="json-output" style="background-color: #222; padding: 20px; color: #fff;"></pre>
@@ -106,201 +111,6 @@
             </main>
         </div>
     </div>
-    <script> // I know...this whole script is insane. Will hopefully get to labelling it and putting it in a separate file soon.
-        document.addEventListener('DOMContentLoaded', () => {
-            const activeForm = localStorage.getItem('activeForm') || 'about';
-            showForm(activeForm);
-            listJsonFiles();
-            populateAgentDropdown();
-            listPasswords();
-        });
-    
-        function createJsonFile() {
-            const form = document.getElementById('agent-form');
-            const data = new FormData(form);
-            const filename = data.get('json-filename').trim();
-    
-            if (!filename) {
-                alert('Please enter a file name');
-                return;
-            }
-    
-            const jsonData = {
-                "filename": filename,
-                "PrePrompt": data.get('PrePrompt'),
-                "model": data.get('model'),
-                "temperature": parseFloat(data.get('temperature')),
-                "top_p": parseFloat(data.get('top_p')),
-                "n": parseInt(data.get('n')),
-                "presence_penalty": parseFloat(data.get('presence_penalty')),
-                "frequency_penalty": parseFloat(data.get('frequency_penalty'))
-            };
-    
-            fetch('/create-json', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(jsonData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        }
-        
-        function selectAPI(apiName) {
-            fetch('/select-api', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ api_name: apiName }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    alert(data.message);
-                } else if (data.error) {
-                    alert(data.error);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        function showForm(formId) {
-            const forms = document.querySelectorAll('main');
-            forms.forEach(form => form.style.display = 'none');
-            document.getElementById(formId).style.display = 'block';
-            localStorage.setItem('activeForm', formId);
-            const buttons = document.querySelectorAll('.researcher-sidebar-content');
-            buttons.forEach(button => button.classList.remove('active-button'));
-            document.querySelector(`button[onclick="showForm('${formId}')"]`).classList.add('active-button');
-        }
-    
-        async function listJsonFiles() {
-            try {
-                const response = await fetch('/list-json-files');
-                const files = await response.json();
-                files.sort();
-                const fileList = document.getElementById('file-list');
-                fileList.innerHTML = '';
-    
-                files.forEach(filename => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = filename;
-                    listItem.onmouseover = () => showFileContent(filename);
-                    listItem.onmouseout = hideFileContent;
-                    fileList.appendChild(listItem);
-                });
-            } catch (error) {
-                console.error('Error fetching files:', error);
-            }
-        }
-    
-        async function showFileContent(filename) {
-            try {
-                const response = await fetch(`/get-file-content?name=${filename}`);
-                const content = await response.text();
-                const popup = document.getElementById('file-content-popup');
-                popup.textContent = content;
-                popup.style.display = 'block';
-            } catch (error) {
-                console.error('Error fetching file content:', error);
-            }
-        }
-    
-        function hideFileContent() {
-            const popup = document.getElementById('file-content-popup');
-            popup.style.display = 'none';
-        }
-    
-        async function populateAgentDropdown() {
-            try {
-                const response = await fetch('/list-json-files');
-                const conditions = await response.json();
-                const select = document.getElementById('agent');
-                select.innerHTML = '';
-    
-                conditions.forEach(condition => {
-                    const option = document.createElement('option');
-                    option.value = condition;
-                    option.textContent = condition;
-                    select.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error fetching conditions:', error);
-            }
-        }
-    
-        async function updatePasswords() {
-            const password = document.getElementById('password').value;
-            const agent = document.getElementById('agent').value.replace('.json', '');
-            const response = await fetch('/update-passwords', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ password, agent })
-            });
-    
-            if (response.ok) {
-                alert('Passwords updated successfully');
-            } else {
-                alert('Failed to update');
-            }
-        }
-
-        async function listPasswords() {
-            try {
-                const response = await fetch('/get-passwords');
-                const passwords = await response.json();
-                passwords.sort((a, b) => a.agent.localeCompare(b.agent));
-                const tableBody = document.getElementById('password-table-body');
-                tableBody.innerHTML = '';
-
-                for (let item of passwords) {
-                    const row = document.createElement('tr');
-
-                    // Build the filename, defaulting to appending .json
-                    const filename = `${item.password}.json`;
-            
-                    // Log the filename to troubleshoot
-                    console.log(`Fetching content for: ${filename}`);
-
-                    try {
-                        const fileContentResponse = await fetch(`/get-file-content?name=${filename}`);
-                
-                        // Proceed only if the fetch was successful
-                        const fileContent = fileContentResponse.ok ? await fileContentResponse.text() : 'No content';
-
-                        row.innerHTML = `
-                            <td>${item.password || 'No password'}</td>
-                            <td>${item.agent}</td>
-                            <td>${fileContent}</td>
-                        `;
-
-                    } catch (error) {
-                        console.error('Error fetching file content:', error);
-                        row.innerHTML = `
-                            <td>${item.password || 'No password'}</td>
-                            <td>${item.agent}</td>
-                            <td>Error loading content</td>
-                        `;
-                    }
-
-                    tableBody.appendChild(row);
-                }
-            } catch (error) {
-                console.error('Error fetching passwords:', error);
-            }
-        }
-
-        function downloadFile(filename) {
-            window.location.href = `/download/${filename}`;
-        }
-        
-    </script>
+    <script src="{{ url_for('static', filename='js/research_dashboard.js') }}"></script>
 </body>
 </html>
