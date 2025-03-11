@@ -88,7 +88,7 @@ TODO List:
 - API Model selection reboot researcher dashboard
 - Simple Survey Integration
 - GithHub Readme files (local-deployment, deployment, updates, researcher_manual)
-- chatPsych.org landing page
+- chatPsych.org playground, source code
 
 - Measures of unpredictability:
 1. joint probability of sequence and interactions (iterated exponent of the summed logprobs)
