@@ -46,7 +46,7 @@ def anthropic_api_request(model=None,
     return response_json, input_tokens, output_tokens
 
 
-class API_Call_2():
+class API_Call_anthropic():
     
     def __init__(self, agent=None):
         api_key = os.getenv("ANTHROPIC_API_KEY")
@@ -59,6 +59,8 @@ class API_Call_2():
         self.agent_data = load_agent(filename)
    
     def thinkAbout(self, message, conversation, model=None):
+        if not conversation:
+            conversation = []  # I have to initialise this first message to stop logprobs retrieval from sending an error.
         if model is None:
            model = self.agent_data.get("model", "claude-3-5-sonnet-20241022")
         pre_prompt = self.agent_data.get("PrePrompt", "")

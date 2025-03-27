@@ -1,7 +1,9 @@
 import sqlite3
 from flask import Flask, jsonify, render_template, request, session as flask_session, redirect, url_for, flash, send_from_directory, abort
-from API_openai import API_Call
-from API_anthropic import API_Call_2
+from API_openai import API_Call_openai
+from API_anthropic import API_Call_anthropic
+from API_google import API_Call_google
+from API_xai import API_Call_xai
 import sys
 import os
 import json
@@ -18,7 +20,8 @@ app.secret_key = os.environ['FLASK_SECRET_KEY']
 
 #### This is for selecting which API script to use (i.e., model selection)
 # Load the API script 
-API = API_Call()
+# Other API call scripts include API_Call_anthropic, API_Call_google, API_Call_xai
+API = API_Call_openai()
 class APIFactory:
     def __init__(self, api_map):
         self.api_map = api_map
@@ -29,7 +32,7 @@ class APIFactory:
         except KeyError:
             raise ValueError("Invalid API name")
 
-api_factory = APIFactory({'API_Call': API_Call, 'API_Call_2': API_Call_2})
+api_factory = APIFactory({'API_Call_openai': API_Call_openai, 'API_Call_anthropic': API_Call_anthropic, 'API_Call_google': API_Call_google, 'API_Call_xai': API_Call_xai})
 
 @app.route('/select-api', methods=['POST'])
 def select_api():

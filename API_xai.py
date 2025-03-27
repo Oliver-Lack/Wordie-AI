@@ -36,7 +36,7 @@ def grok_api_request(model="grok-2-latest",
 
     return response_json, prompt_tokens, completion_tokens, total_tokens
 
-class GrokAPI_Call():
+class API_Call_xai():
 
     def __init__(self, agent=None):
         if agent is None:

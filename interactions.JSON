@@ -375,6 +375,609 @@
                     "relativeInteractionJointLogProbability": -10096.216117846021
                 }
             ]
+        },
+        "testAnthropic": {
+            "user_id": 4,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hello",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:16:29.726070",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "hmmm",
+                    "response": "Hi, I'm Claude. I aim to be direct and honest in my interactions. I noticed my previous response was incorrect - I should have simply greeted you properly. Is there something I can help you with today?",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 53,
+                    "completion_tokens": 47,
+                    "total_tokens": 100,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:16:36.087657",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "bhbh",
+                    "response": "Hi I'm Claude. I notice you've typed \"bhbh\" which doesn't appear to be a meaningful word or question. Could you please clarify what you'd like to discuss or how I can help you?",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 106,
+                    "completion_tokens": 48,
+                    "total_tokens": 154,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:16:43.402686",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
+        },
+        "newTest": {
+            "user_id": 5,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hi",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:17:47.041006",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "hello",
+                    "response": "Hi, I'm Claude. How can I help you today?",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 51,
+                    "completion_tokens": 16,
+                    "total_tokens": 67,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:17:52.885311",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
+        },
+        "bwdb": {
+            "user_id": 6,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hi",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:24:48.282723",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "s",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:24:52.632156",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
+        },
+        "testollie": {
+            "user_id": 7,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hello",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:25:09.624322",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "hello",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:25:12.003329",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "d",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:25:13.742358",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "d",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:25:13.878518",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "d",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:25:14.535040",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "d",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:25:14.627935",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "d",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:25:14.694118",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
+        },
+        "test555": {
+            "user_id": 8,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hello",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:25:44.520643",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "s",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:25:46.771522",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
+        },
+        "tetstsst": {
+            "user_id": 9,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hello",
+                    "response": "Hello! I've been informed that we need to play a game of 20 questions. Have you selected two secret words? Once you've confirmed, let me know which secret word\u20141 or 2\u2014we will play with. Let's dive in and have some fun!",
+                    "model": "gpt-4o",
+                    "temperature": 1,
+                    "prompt_tokens": 177,
+                    "completion_tokens": 53,
+                    "total_tokens": 230,
+                    "logprobs": [
+                        -0.005245379637926817,
+                        -0.06993810087442398,
+                        -0.053125910460948944,
+                        -0.0036384384147822857,
+                        -0.7865749001502991,
+                        -0.020083164796233177,
+                        -0.5730291604995728,
+                        -0.04340482875704765,
+                        -3.128163257315464e-07,
+                        -0.0005336135509423912,
+                        -0.1607302576303482,
+                        -0.04597584903240204,
+                        -0.001961224712431431,
+                        -2.2723104848410003e-05,
+                        0.0,
+                        -2.294529438018799,
+                        -0.20805460214614868,
+                        -0.09703927487134933,
+                        -3.128163257315464e-07,
+                        -0.02772495150566101,
+                        -0.49554598331451416,
+                        0.0,
+                        0.0,
+                        -0.9102382659912109,
+                        -1.168269395828247,
+                        -1.555345892906189,
+                        -0.14853280782699585,
+                        -0.030791519209742546,
+                        -1.46232008934021,
+                        -2.0339031834737398e-05,
+                        -3.4121114822482923e-06,
+                        -1.2107309103012085,
+                        -0.23977427184581757,
+                        -3.173704271830502e-06,
+                        -1.9237927198410034,
+                        -0.012333757244050503,
+                        -8.2994620242971e-06,
+                        0.0,
+                        0.0,
+                        -1.599947452545166,
+                        -3.7805800437927246,
+                        -2.038726329803467,
+                        -0.0812956914305687,
+                        -0.28840371966362,
+                        -1.2448148727416992,
+                        -2.5523338317871094,
+                        -0.4027526080608368,
+                        -1.1528971195220947,
+                        -0.157048299908638,
+                        -0.023375337943434715,
+                        -1.2664456789934775e-06,
+                        -0.033899255096912384
+                    ],
+                    "timestamp": "2025-03-27 15:26:28.972166",
+                    "password": "music",
+                    "relativeSequenceJointLogProbability": -26.90539911049757,
+                    "relativeInteractionJointLogProbability": -26.90539911049757
+                }
+            ]
+        },
+        "hhwi": {
+            "user_id": 10,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hello",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:26:49.236341",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "h",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:26:51.745698",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
+        },
+        "ollietetesanthropic": {
+            "user_id": 11,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hello",
+                    "response": "Hi I'm Claude! Nice to meet you. How can I help you today?",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 16,
+                    "completion_tokens": 20,
+                    "total_tokens": 36,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:27:20.167234",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
+        },
+        "testOllieanthro99": {
+            "user_id": 12,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hello",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:27:54.576760",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "hiu",
+                    "response": "Hi, I'm Claude. How can I help you today?",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 52,
+                    "completion_tokens": 16,
+                    "total_tokens": 68,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:27:58.548535",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
+        },
+        "testollieato": {
+            "user_id": 13,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hello",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:28:54.641689",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "hi",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:28:59.077455",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
+        },
+        "antrop teststs": {
+            "user_id": 14,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hello",
+                    "response": "Hi I'm Claude! Nice to meet you. How can I help you today?",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 16,
+                    "completion_tokens": 20,
+                    "total_tokens": 36,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:29:22.687766",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
+        },
+        "test5dead": {
+            "user_id": 16,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hi",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:29:50.618307",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "hello",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:29:55.588777",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "hi",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:30:07.281545",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
+        },
+        "testunivorn": {
+            "user_id": 17,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hi",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:30:34.279144",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "hi",
+                    "response": "Hi, I'm Claude. How can I help you today?",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 51,
+                    "completion_tokens": 16,
+                    "total_tokens": 67,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:30:38.629362",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
+        },
+        "unicrontest": {
+            "user_id": 18,
+            "interactions": [
+                {
+                    "interaction_type": "message",
+                    "message": "hi",
+                    "response": "The model `claude-3-5-sonnet-20241022` does not exist or you do not have access to it.",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 0,
+                    "completion_tokens": 0,
+                    "total_tokens": 0,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:30:52.837394",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                },
+                {
+                    "interaction_type": "message",
+                    "message": "hi",
+                    "response": "Hi, I'm Claude. How can I help you today?",
+                    "model": "claude-3-5-sonnet-20241022",
+                    "temperature": 1,
+                    "prompt_tokens": 51,
+                    "completion_tokens": 16,
+                    "total_tokens": 67,
+                    "logprobs": [],
+                    "timestamp": "2025-03-27 15:30:56.612228",
+                    "password": "anthropic35",
+                    "relativeSequenceJointLogProbability": 0,
+                    "relativeInteractionJointLogProbability": 0
+                }
+            ]
         }
     }
 }

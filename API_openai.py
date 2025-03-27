@@ -60,7 +60,7 @@ def openai_api_request(model="gpt-4o",
 
     return response_json, prompt_tokens, completion_tokens, total_tokens, logprobs_list
 
-class API_Call():
+class API_Call_openai():
 
     def __init__(self, agent=None):
         openai.api_key = os.getenv("OPENAI_API_KEY")

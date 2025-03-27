@@ -20,7 +20,7 @@ def google_api_request(model="gemini-1.5-pro", message="", history=None):
 
     return response.text
 
-class API_Call_Google:
+class API_Call_google:
     def __init__(self, agent=None):
         if agent is None:
             self.agent_data = load_agent("agents/default.json")
