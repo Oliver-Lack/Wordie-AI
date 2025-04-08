@@ -2,7 +2,7 @@
 
 **Wordie is a custom AI interface web app for Human-AI interaction research**  
 
-The app is built on the chatPsych platform (https://chatpsych.github.io)  
+The app is built on the chatPsych platform [chatPsych] https://chatpsych.github.io
 The app is hosted for demo purposes at [wordie.xyz](https://wordie-pilot.xyz)  
 
 default login: 		prolific_id = [anything], password = music   
