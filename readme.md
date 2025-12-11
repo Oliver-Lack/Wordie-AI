@@ -2,8 +2,7 @@
 
 **Wordie is a custom AI interface web app for Human-AI interaction research**  
 
-The app is built on the chatPsych codebase [chatPsych](https://chatpsych.github.io)  
-The app is hosted for demo purposes at [wordie.xyz](https://wordie-pilot.xyz)  
+The app is built from the chatPsych codebase [chatPsych](https://chatpsych.org)  
 
 default login: 		prolific_id = [anything], password = music   
 researcher login: 	username = wordie, password = laplace666$   
@@ -13,8 +12,8 @@ For usage, questions or collaborations, please cite/acknowledge/contact:
         Australian Institute for Machine Learning (AIML) | School of Psychology   
         The University of Adelaide  
         oliver.lack@adelaide.edu.au | oliver@oliverlack.com  
-        https://www.oliverlack.com  
-
+[        https://www.oliverlack.com   
+](https://oliverlack.com/)
 
 
 **Summary of the core Elements of Wordie-AI Interface:**  
@@ -62,37 +61,3 @@ Summary of Wordie's core features:
     - Customised graphics, logos, and aesthetics
     - Full CSS and javascript dynamics drafted
 
-## Updates, Notes & Message to Researchers
-
-**Researcher Dashboard:**
-The researcher dashboard GUI is still a work in progress.
-Prospective updates will include:
-                -> Some "general settings" to change models, selection of output as text/audio/audio&text.
-                -> An editor for the second interaction data capture (command-prompt/moral action button).
-                -> Some visuals and descriptive graphics for interaction data. 
-
-**Message to other researchers**
-- Please contact [me](https://oliverlack.com) if you want to collaborate/adapt the system for your purpose. Happy to help. 
-- Instances cannot yet run multiple API scripts simultaneously. Make sure the API_Call() in wordie.py is set to the correct API script. If agent models do not correspond to the select API_Call(), they will not load. 
-- Before deploying the app, if you want to set the passwords and conditions for your experiments manually, change the static_passwords vector in wordie.py.
-
-
-**Extra info**
-- Numbers labelling current AI agent conditions 1 = AI is guesser 2 = AI is giver.
-- An instance with Wordie will total 3.7gb of volume storage before any data is logged. 
-
-
-
-**PMC Study 1**
-TODO List:
-- Audio integration (Researcher dashboard selection panel)
-- API Model selection reboot researcher dashboard
-- Simple Survey Integration
-- GithHub Readme files (local-deployment, deployment, updates, researcher_manual)
-- chatPsych.org playground, source code
-
-- Measures of unpredictability:
-1. joint probability of sequence and interactions (iterated exponent of the summed logprobs)
-2. prompt engineering score
-3. Human Perception of unpredictability (survey)
-4. zipf law score
